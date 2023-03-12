@@ -5,7 +5,7 @@ The data pipeline is being developed as a precursor to a web application that wi
 
 The pipeline needed to be made because of the nature of the messy raw excel files. The excel files were never designed with the intention to do any sort of data extraction so they fairly accurately represent messy user-input data. The pipeline was created by engineering the data in Jupyter and Python and uploading the cleaned information to a postgreSQL database which could be called upon by the web application when the user enters their name. 
 
-Various problems include the nature of the data, how to best set up the database, and best way to develop logic rules for exercise prescription. Check out my progress as it develops! 
+Various problems include the nature of the data, how to best set up the database, and best way to develop logic rules for exercise prescription. Any files with the word "Exploratory" are usually my personal unedited, unformatted Jupyter Notebooks that show my process for developing subseqeunt functions and modules. Check out my progress as it develops! 
 
 
 I will also be doing a side data analysis project that examines what kind of exercises I prescribe the most and how those exercises have changed over time, and which clients have reached the greatest volume loads over time!
