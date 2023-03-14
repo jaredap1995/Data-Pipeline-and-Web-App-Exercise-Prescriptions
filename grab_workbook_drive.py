@@ -4,7 +4,6 @@ from pydrive2.drive import GoogleDrive
 from googleapiclient.discovery import build
 import openpyxl
 import io
-import streamlit as st
 from grab_all_workouts import grab_all_workouts
 
 
