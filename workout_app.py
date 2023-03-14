@@ -10,12 +10,14 @@ import streamlit as st
 from clean_workouts import clean_workouts
 from grab_all_workouts import grab_all_workouts
 from intensity_classification import intensity_classification
+from from_drive_test import grab_workbook_from_drive
 
 def show_new_workout():
     st.write("Feature coming soon! :)")
 
 def load_workouts(name):
-    files = grab_all_workouts(name)
+    workbook=grab_workbook_from_drive(name)
+    files = grab_all_workouts(workbook)
     files = clean_workouts(files)
     files = intensity_classification(files)
 
