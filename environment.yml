@@ -1,6 +1,7 @@
 name: flask_blog
 channels:
   - conda-forge
+  - defaults
 dependencies:
   - fuzzywuzzy==0.18.0
   - numpy==1.23.5
@@ -9,5 +10,5 @@ dependencies:
   - protobuf==3.19.4
   - psycopg2==2.9.3
   - pydrive2==1.15.1
- pip:
-  - google_api_python_client==2.81.0
+  - pip:
+    - google_api_python_client==2.81.0
