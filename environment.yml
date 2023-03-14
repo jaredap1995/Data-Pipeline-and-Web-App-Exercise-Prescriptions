@@ -3,11 +3,11 @@ channels:
   - conda-forge
 dependencies:
   - fuzzywuzzy==0.18.0
-  - google_api_python_client==2.81.0
   - numpy==1.23.5
   - openpyxl==3.0.10
   - pandas==1.5.3
   - protobuf==3.19.4
   - psycopg2==2.9.3
   - pydrive2==1.15.1
-  - streamlit==1.20.0
+- pip:
+  - google_api_python_client==2.81.0
