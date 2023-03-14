@@ -1,10 +1,6 @@
 import numpy as np
 import pandas as pd
 import random
-import glob
-import os
-import openpyxl
-import re
 import streamlit as st
 from clean_workouts import clean_workouts
 from grab_all_workouts import grab_all_workouts
