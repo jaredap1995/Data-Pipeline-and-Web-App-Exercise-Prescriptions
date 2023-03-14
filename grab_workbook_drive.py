@@ -4,13 +4,21 @@ from pydrive2.drive import GoogleDrive
 from googleapiclient.discovery import build
 import openpyxl
 import io
+import os
 from grab_all_workouts import grab_all_workouts
 
 
 
 def grab_workbook_from_drive (name):
+    json_data = os.environ['ENV_FILE']
 
-    creds = service_account.Credentials.from_service_account_file('/Users/jaredperez/documents/service_key.json')
+    # Write the contents to a temporary file
+    with open('temp.json', 'w') as f:
+        f.write(json_data)
+
+
+    creds = service_account.Credentials.from_service_account_file('temp.json')
+    
 
     # Authenticate with your credentials
     gauth = GoogleAuth()
@@ -40,7 +48,8 @@ def grab_workbook_from_drive (name):
     else:
         print(f'File "{file_name}" not found in folder "{folder_id}"')
 
-
+    os.remove('temp.json')
+        
     return workbook
 
 
