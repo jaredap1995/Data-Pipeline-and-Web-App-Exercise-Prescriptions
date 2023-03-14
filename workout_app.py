@@ -5,7 +5,7 @@ import streamlit as st
 from clean_workouts import clean_workouts
 from grab_all_workouts import grab_all_workouts
 from intensity_classification import intensity_classification
-from from_drive_test import grab_workbook_from_drive
+from grab_workbook_drive import grab_workbook_from_drive
 
 def show_new_workout():
     st.write("Feature coming soon! :)")
