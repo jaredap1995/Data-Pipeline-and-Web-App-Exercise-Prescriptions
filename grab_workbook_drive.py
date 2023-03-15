@@ -46,7 +46,6 @@ def grab_workbook_from_drive (name):
     else:
         print(f'File "{file_name}" not found in folder "{folder_id}"')
 
-    os.remove('temp.json')
         
     return workbook
 
