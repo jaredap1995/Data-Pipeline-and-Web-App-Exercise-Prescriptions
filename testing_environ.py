@@ -10,6 +10,4 @@ env_var = os.environ
 # environment variables
 print("User's Environment variable:")
 
-os.environ['type']= "service_account"
-
-print(env_var['type'])
+print(env_var['SERVICE_KEY'])
