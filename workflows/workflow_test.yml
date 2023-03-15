@@ -1,0 +1,6 @@
+- id: 'auth'
+      name: 'Testing Secrets'
+      run:
+        echo $"output"
+      env:
+        output: ${{ secrets.TEST }}
