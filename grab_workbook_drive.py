@@ -5,16 +5,13 @@ from googleapiclient.discovery import build
 import openpyxl
 import io
 import os
-import json
+import streamlit as st
 from grab_all_workouts import grab_all_workouts
-from config import key
 
 
 
 def grab_workbook_from_drive (name):
-    json_data = json.loads(key)
-
-    creds = service_account.Credentials.from_service_account_file(json_data)
+    creds = service_account.Credentials.from_service_account_file(**st.secrets.credentials)
     
 
     # Authenticate with your credentials
