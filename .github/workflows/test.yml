@@ -1,0 +1,12 @@
+name: 'Testing Secrets'
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:  
+  echo "$output"
+env:  
+  output: ${{ secrets.TEST }}
