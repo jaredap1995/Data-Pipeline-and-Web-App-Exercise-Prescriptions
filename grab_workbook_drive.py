@@ -11,7 +11,7 @@ from grab_all_workouts import grab_all_workouts
 
 
 def grab_workbook_from_drive (name):
-    creds = service_account.Credentials.from_service_account_file(**st.secrets.credentials)
+    creds = service_account.Credentials.from_service_account_file(filename=st.secrets.credentials)
     
 
     # Authenticate with your credentials
