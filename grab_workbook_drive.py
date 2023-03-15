@@ -6,12 +6,16 @@ import openpyxl
 import io
 import os
 import streamlit as st
-from grab_all_workouts import grab_all_workouts
+import toml
 
 
 
 def grab_workbook_from_drive (name):
-    creds = service_account.Credentials.from_service_account_file(filename=st.secrets.credentials)
+    # Load the credentials from the TOML file
+    with open(**st.secrets.credentials, 'r') as f:
+        creds_dict = toml.load(f)
+
+    creds = service_account.Credentials.from_service_account_info(info=creds_dict)
     
 
     # Authenticate with your credentials
