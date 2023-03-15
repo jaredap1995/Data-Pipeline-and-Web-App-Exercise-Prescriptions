@@ -54,6 +54,7 @@ def app():
         st.session_state.existing_workout=True
         with st.form(key='existing_workout_form'):
             name = st.text_input('Enter Your First Name:')
+            name=name.lower()
             intensities=['Moderate-Heavy', 'Moderate-Light', 'Light', 'Moderate', 'Heavy']
             intensity = st.selectbox('Select intensity level:', intensities)            
             submit_button = st.form_submit_button(label='Produce Workout')
