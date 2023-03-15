@@ -47,7 +47,7 @@ def app():
     if 'existing_workout' not in st.session_state:
         st.session_state['existing_workout']=False
 
-    st.write(st.session_state)
+
 
     
     if existing_workout_button or st.session_state.existing_workout:
