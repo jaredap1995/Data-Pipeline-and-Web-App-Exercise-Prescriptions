@@ -5,19 +5,18 @@ from googleapiclient.discovery import build
 import openpyxl
 import io
 import os
+import json
 from grab_all_workouts import grab_all_workouts
 
 
 
 def grab_workbook_from_drive (name):
-    json_data = os.environ['ENV_FILE']
+    json_data = os.environ['SERVICE_KEY']
 
-    # Write the contents to a temporary file
-    with open('temp.json', 'w') as f:
-        f.write(json_data)
+    json_data = json.loads(json_data)
 
 
-    creds = service_account.Credentials.from_service_account_file('temp.json')
+    creds = service_account.Credentials.from_service_account_file(json_data)
     
 
     # Authenticate with your credentials
