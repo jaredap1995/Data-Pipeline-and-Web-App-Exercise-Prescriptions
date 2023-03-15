@@ -7,8 +7,8 @@ import os
 import openpyxl
 import re
 
-def grab_all_workouts(client_name):
-    file=openpyxl.load_workbook(f'/Users/jaredperez/Client Folders/{client_name}.xlsx')
+def grab_all_workouts(workbook):
+    file=openpyxl.load_workbook(workbook)
     all_sheetnames = file.sheetnames
     valid_sheetnames = [name for name in all_sheetnames if "skip" not in name]
     sheets=[file[i] for i in valid_sheetnames]
