@@ -1,0 +1,16 @@
+name: flask_blog
+channels:
+  - conda-forge
+  - pip
+dependencies:
+  - numpy=1.23.5 *
+  - openpyxl=3.0.10 *
+  - pandas=1.5.3 *
+  - psycopg2=2.9.3 *
+  - PyDrive2=1.15.1 *
+  - streamlit=1.20.0 *
+  - pip=23.0.1 *
+  - pip:
+      google_api_python_client==2.81.0
+      protobuf==4.22.1
+
