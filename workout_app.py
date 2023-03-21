@@ -36,8 +36,8 @@ def app():
     with st.spinner('Connecting to Cloud...Please Wait'):
         
         # Start the Cloud SQL proxy when the application starts
-        proxy_process = subprocess.Popen(
-        ['./cloud-sql-proxy', '--address', st.secrets.proxy_credentials.address, '--port', st.secrets.proxy_credentials.port, st.secrets.proxy_credentials.name])
+        #proxy_process = subprocess.Popen(
+        #['./cloud-sql-proxy', '--address', st.secrets.proxy_credentials.address, '--port', st.secrets.proxy_credentials.port, st.secrets.proxy_credentials.name])
 
         time.sleep(5) 
 
