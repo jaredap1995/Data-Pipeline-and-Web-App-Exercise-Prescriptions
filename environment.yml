@@ -12,5 +12,5 @@ dependencies:
   - pip:
       google_api_python_client==2.81.0
       protobuf==4.22.1
-      psycopg2==2.9.3 
+      psycopg2-binary==2.9.5 
 
