@@ -36,13 +36,16 @@ def app():
     with st.spinner('Connecting to Cloud...Please Wait'):
         
         # Start the Cloud SQL proxy when the application starts
-        proxy_process = subprocess.Popen(
-        ['./cloud-sql-proxy', '--address', st.secrets.proxy_credentials.address, '--port', st.secrets.proxy_credentials.port, st.secrets.proxy_credentials.name])
+        #proxy_process = subprocess.Popen(
+        #['./cloud-sql-proxy', '--address', st.secrets.proxy_credentials.address, '--port', st.secrets.proxy_credentials.port, st.secrets.proxy_credentials.name])
 
         time.sleep(5) 
+        @st.cache_resource
+        def init_connection():
+            conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
+            return conn
 
-        conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
-
+    conn=init_connection()
 
     cursor = conn.cursor()
     cursor.execute("SELECT exercise FROM exercises")
