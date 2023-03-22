@@ -57,7 +57,6 @@ def track_workouts (conn, name, start_date, end_date):
     for df in dfs:
         st.dataframe(df)
 
-    conn.close()
 
 
 
