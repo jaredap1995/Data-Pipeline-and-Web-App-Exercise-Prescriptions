@@ -54,8 +54,9 @@ def app():
     # Define the home page
     st.header("""Welcome! Please Select an Option Below! 
     
-            As this is still a work in progress there may be 
-              instances when the application is not working properly or doing something weird. Please tell me about it!""")
+         As this is still a work in progress there may be 
+        instances when the application is not working properly or doing something weird. 
+        Please tell me about it!""")
 
     # Define the "New Workout" button
     new_workout=st.button('Produce New Workout')
