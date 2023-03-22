@@ -101,6 +101,7 @@ def app():
                     record_workout(conn, name, selected_exercises, reps, sets, weight)
                     # Confirmation message
                     st.success("Data has been submitted.")
+                    conn.close()
 
     #Track Weight Functionality
     track_progress_button = st.button('Track Progress in Exercise')
