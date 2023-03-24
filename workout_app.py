@@ -85,7 +85,7 @@ def app():
                 conn.commit()
                 st.success(f"Exercise '{new_exercise}' has been added to the database. Please wait")
                 time.sleep(1) # wait for 2 seconds before rerunning the script
-                #st.experimental_rerun()
+                st.experimental_rerun()
             submit_button = st.form_submit_button(label='Record Sets, Reps, and Weight')
             if submit_button or st.session_state.exercise_selection:
                 st.session_state['exercise_selection']=True
