@@ -76,7 +76,7 @@ def app():
     if record_a_workout or st.session_state.record_a_workout:
         st.session_state['record_a_workout'] = True
         with st.form(key='record_a_workout_form'):
-            name = st.text_input("Name")
+            name = st.text_input("Enter Your First Name")
             selected_exercises = st.multiselect('Select Exercises (Begin Typing in The Exercise You Performed):', existing_exercises)
             new_exercise = st.text_input("Don't See The exercise you want? Enter your own!")
             submit_new_exercise=st.form_submit_button('Submit New Exercise')
