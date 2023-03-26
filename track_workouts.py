@@ -49,13 +49,13 @@ def track_workouts (conn, name, start_date, end_date):
         """)
         rows = cursor.fetchall()
 
-        # Create a Pandas DataFrame from the query results...Need to modify this so rows in dataframe correspond to the order in which they are prescribed
+        # Create a Pandas DataFrame from the query results
         df = pd.DataFrame(rows, columns=["exercise_id", "workout_id", "exercise", "sets", "reps", "weight"])
         df=df.sort_values('exercise_id', key=make_sorter(order))
         dfs.append(df)
 
     for df in dfs:
-        st.dataframe(df)
+        st.experimental_data_editor(df)
 
 
 
