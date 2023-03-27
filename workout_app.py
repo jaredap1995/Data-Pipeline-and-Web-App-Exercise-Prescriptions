@@ -135,7 +135,7 @@ def app():
                 st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
             else:
                 st.error('Error: date must fall after start date.')
-            range_submission=st.form_submit_button('Produce workouts over designated period')
+            range_submission=st.form_submit_button('Show workouts')
             if range_submission:
                 track_workouts(conn, name, start_date, end_date)
 
