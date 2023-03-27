@@ -102,6 +102,8 @@ def app():
                     # Confirmation message
                     st.success("Data has been submitted.")
                     conn.close()
+                    time.sleep(2)
+                    st.experimental_rerun()
 
     #Track Weight Functionality
     track_progress_button = st.button('Track Progress in Exercise')
