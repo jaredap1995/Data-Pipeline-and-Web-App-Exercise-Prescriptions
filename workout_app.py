@@ -53,7 +53,7 @@ def app():
     existing_exercises = [row[0] for row in cursor.fetchall()]
 
     #Trackign session state changes
-    st.write(st.session_state)
+    #st.write(st.session_state)
 
     # Define the home page
     st.header("Welcome! Please Select an Option Below!")
