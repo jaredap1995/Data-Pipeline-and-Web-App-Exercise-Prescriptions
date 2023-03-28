@@ -10,7 +10,10 @@ from track_weight_changes import track_weight_changes
 import time
 import datetime
 from track_workouts import track_workouts
-import subprocess
+from coach_center import coach, create_a_block, deload, increasing_load
+from retrieve_prescriptions import retrieve_block
+from testing_coach_and_prescriptions import prescribe_block
+from update_actuals import update_workout
 
 def show_new_workout():
     st.write("Feature coming soon! :)")
@@ -50,14 +53,10 @@ def app():
     existing_exercises = [row[0] for row in cursor.fetchall()]
 
     #Trackign session state changes
-    #st.write(st.session_state)
+    st.write(st.session_state)
 
     # Define the home page
-    st.header("""Welcome! Please Select an Option Below! 
-    
-         As this is still a work in progress there may be 
-        instances when the application is not working properly or doing something weird. 
-        Please tell me about it!""")
+    st.header("Welcome! Please Select an Option Below!")
 
     # Define the "New Workout" button
     new_workout=st.button('Produce New Workout')
@@ -76,7 +75,7 @@ def app():
     if record_a_workout or st.session_state.record_a_workout:
         st.session_state['record_a_workout'] = True
         with st.form(key='record_a_workout_form'):
-            name = st.text_input("Enter Your First Name")
+            name = st.text_input("Name")
             selected_exercises = st.multiselect('Select Exercises (Begin Typing in The Exercise You Performed):', existing_exercises)
             new_exercise = st.text_input("Don't See The exercise you want? Enter your own!")
             submit_new_exercise=st.form_submit_button('Submit New Exercise')
@@ -101,7 +100,6 @@ def app():
                     record_workout(conn, name, selected_exercises, reps, sets, weight)
                     # Confirmation message
                     st.success("Data has been submitted.")
-                    conn.close()
                     time.sleep(2)
                     st.experimental_rerun()
 
@@ -117,6 +115,44 @@ def app():
             submit_button=st.form_submit_button(label='Track Progress in Selected Exercises')
             if submit_button:
                 track_weight_changes(conn, name, selected_exercises)
+
+    #Retrieve Block Functionality
+    if 'actual_workouts_2' not in st.session_state: #prepare actuals
+        st.session_state['actual_workouts_2']=False
+
+    if 'update_workout' not in st.session_state:
+        st.session_state['update_workout']=False
+
+    retrieve_a_block = st.button('Retrieve Block')
+    if 'Retrieve_Block' not in st.session_state:
+        st.session_state['Retrieve_Block']=False
+    if retrieve_a_block or st.session_state.Retrieve_Block:
+        st.session_state['Retrieve_Block']=True
+        with st.form(key='Retrieve a Block'):
+            name= st.text_input('Enter Your First Name:')
+            show=st.form_submit_button('Show')
+            if 'Show_Block' not in st.session_state:
+                st.session_state['Show_Block']=False
+            if show or st.session_state.Show_Block:
+                st.session_state['Show_Block']=True
+                adjustable_workouts, dfs=retrieve_block(conn, name)
+                update=st.form_submit_button('Update Workouts')
+                if update or st.session_state.update_workout:
+                    st.session_state['update_workout']=True
+                    st.warning('Please Hit Record Actuals For Changes to Take Effect')
+                    actuals=st.form_submit_button('Record Actuals')
+                    if actuals:
+                        try:
+                            adjusted_block, adjusted_workout=update_workout(name, conn, adjustable_workouts, dfs)
+                        except:
+                            st.error('Something Went Wrong :(')
+                            return
+                        if adjusted_workout is not None and adjusted_block is not None:
+                            st.success('Actual Workouts Recorded')
+                            st.dataframe(adjusted_workout)
+                        else:
+                            st.error('Something Went Wrong :(')
+
 
 
     #Track workouts over period of time functionality
@@ -135,10 +171,17 @@ def app():
                 st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
             else:
                 st.error('Error: date must fall after start date.')
-            range_submission=st.form_submit_button('Show workouts')
+            range_submission=st.form_submit_button('Produce workouts over designated period')
             if range_submission:
                 track_workouts(conn, name, start_date, end_date)
 
+    #Coach Center Functionality
+    prescribe_block_button = st.button('Coach Center')
+    if 'coach_center' not in st.session_state:
+        st.session_state['coach_center']=False
+    if prescribe_block_button or st.session_state.coach_center:
+        st.session_state['coach_center']=True
+        prescribe_block(conn)
 
 
     # Produce Archived Spreadsheet Workout Functionality
@@ -160,8 +203,8 @@ def app():
                 st.dataframe(workout)
 
         
-
-
+    conn.close()
+# if __name__ == "main":
 app()
 
 
