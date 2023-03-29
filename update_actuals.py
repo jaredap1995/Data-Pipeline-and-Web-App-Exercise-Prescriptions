@@ -103,7 +103,7 @@ def update_workout(name, conn, actual_workouts_2, dfs):
                 
         conn.commit()
 
-    return actual_workouts_2, WOD
+    return WOD
         
 
 
