@@ -38,7 +38,7 @@ def update_workout(name, conn, actual_workouts_2, dfs):
     if not modified_workouts:
          st.success("Way to Follow your program exactly! Great Work!")
          #Rest of my code that submits into workout exercises exactly what they did....i'll figure that out later.
-         return actual_workouts_2, actual_workouts_2[0] #This is a placeholder until later
+         return None #This is a placeholder until later
     else:
          pass
 
@@ -70,30 +70,32 @@ def update_workout(name, conn, actual_workouts_2, dfs):
         conn.commit()
         session_id=cursor.fetchone()[0]
 
-        exercise_ids = []
+        perf_exercise_ids = []
         WOD=actual_workouts_2[WOD_]
-        sel_ex=WOD['Exercise']
-        for ex in sel_ex:
-            cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(ex,))
+        prescribed_workout=dfs[WOD_]
+        performed_ex=WOD['Exercise']
+        for perf_ex in performed_ex:
+            cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(perf_ex,))
             exists = cursor.fetchone()[0]
             if not exists:
-                cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (ex,))
-            cursor.execute("SELECT id FROM exercises WHERE exercise = %s;", (ex,))
-            exercise_id = cursor.fetchone()[0]
-            exercise_ids.append(exercise_id)
+                cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (perf_ex,))
+            cursor.execute("SELECT id FROM exercises WHERE exercise = %s;", (perf_ex,))
+            perf_exercise_id = cursor.fetchone()[0]
+            perf_exercise_ids.append(perf_exercise_id)
 
         conn.commit()
 
-        exercise_ids=pd.Series(exercise_ids)
+        exercise_ids=pd.Series(perf_exercise_ids)
+        WOD=WOD.reset_index(drop=True)
         WOD['ex_id']=exercise_ids
         actual_workouts_2[WOD_]=WOD
-
+        
         for e_i, s,r,w in zip(WOD['ex_id'], WOD['Sets'], WOD['Reps'], WOD['Weight']):
                 #st.write(block_id, session_id, e_i, s, r, w)
                 try:
                     cursor.execute("""INSERT INTO workout_exercises (block_id, workout_id, exercise_id, sets, reps, weight)
-                VALUES (%s, %s, %s, %s, %s, %s)""",
-                (block_id, session_id, e_i, s, r, w))
+                    VALUES (%s, %s, %s, %s, %s, %s)""",
+                    (block_id, session_id, e_i, s, r, w))
                 except:
                     st.error("Please Fill in all Values for Sets, Reps, and Weight")
                     return

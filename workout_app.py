@@ -15,6 +15,7 @@ from retrieve_prescriptions import retrieve_block
 from testing_coach_and_prescriptions import prescribe_block
 from update_actuals import update_workout
 
+
 def show_new_workout():
     st.write("Feature coming soon! :)")
 
@@ -36,16 +37,20 @@ def show_existing_workout(files, selected_intensity):
 
 def app():
     st.set_page_config(page_title="Cabral Fitness Exercise Prescriptions")
-    
+    #with st.spinner('Connecting to Cloud...Please Wait'):
         
         # Start the Cloud SQL proxy when the application starts
         #proxy_process = subprocess.Popen(
-        #['./cloud-sql-proxy', '--address', st.secrets.proxy_credentials.address, '--port', st.secrets.proxy_credentials.port, st.secrets.proxy_credentials.name])
-    #@st.cache_resource
-    #def init_connection():
-        #return psycopg2.connect(**st.secrets.psycopg2_credentials)
+        #['./cloud-sql-proxy', '--address', '127.0.0.1', '--port', '1234', 'my-first-project-streamlit:us-west2:jaredp-coach'])
 
-    conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
+
+    # time.sleep(3) 
+    conn = psycopg2.connect(
+        host="localhost",
+        database="clients",
+        user="jaredp",
+        password="secret"
+            )
 
 
     cursor = conn.cursor()
@@ -53,7 +58,7 @@ def app():
     existing_exercises = [row[0] for row in cursor.fetchall()]
 
     #Trackign session state changes
-    #st.write(st.session_state)
+    st.write(st.session_state)
 
     # Define the home page
     st.header("Welcome! Please Select an Option Below!")
@@ -142,14 +147,10 @@ def app():
                     st.warning('Please Hit Record Actuals For Changes to Take Effect')
                     actuals=st.form_submit_button('Record Actuals')
                     if actuals:
-                        try:
-                            adjusted_block, adjusted_workout=update_workout(name, conn, adjustable_workouts, dfs)
-                        except:
-                            st.error('Something Went Wrong :(')
-                            return
-                        if adjusted_workout is not None and adjusted_block is not None:
-                            st.success('Actual Workouts Recorded')
-                            st.dataframe(adjusted_workout)
+                        adjusted_workout=update_workout(name, conn, adjustable_workouts, dfs)
+                        if adjusted_workout is not None:
+                            st.success('Perfomed Workout Recorded')
+                            st.dataframe(adjusted_workout[['Exercise', 'Sets', 'Reps', 'Weight']])
                         else:
                             st.error('Something Went Wrong :(')
 
