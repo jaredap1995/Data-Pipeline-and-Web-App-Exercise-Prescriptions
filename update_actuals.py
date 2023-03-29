@@ -101,7 +101,7 @@ def update_workout(name, conn, actual_workouts_2, dfs):
                     return
                      
                 
-        cursor.execute("""INSERT INTO actual_to_prescription(block_id, workout_number, session_id) VALUES (%s, %s, %s) """, (block_id, WOD_, session_id))
+        cursor.execute("""INSERT INTO actual_to_prescription(block_id, workout_number, workout_id) VALUES (%s, %s, %s) """, (block_id, WOD_, session_id))
                 
         conn.commit()
 
