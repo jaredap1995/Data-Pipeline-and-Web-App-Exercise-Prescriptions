@@ -74,7 +74,7 @@ def app():
     if record_a_workout or st.session_state.record_a_workout:
         st.session_state['record_a_workout'] = True
         with st.form(key='record_a_workout_form'):
-            name = st.text_input("Name")
+            name = st.text_input("Enter Your First Name")
             selected_exercises = st.multiselect('Select Exercises (Begin Typing in The Exercise You Performed):', existing_exercises)
             new_exercise = st.text_input("Don't See The exercise you want? Enter your own!")
             submit_new_exercise=st.form_submit_button('Submit New Exercise')
@@ -109,7 +109,7 @@ def app():
     if track_progress_button or st.session_state.track_progress:
         st.session_state['track_progress']=True
         with st.form(key='Track_weight_changes'):
-            name=st.text_input('Name')
+            name=st.text_input('Enter Your First Name')
             selected_exercises = st.multiselect('Select Exercises (Begin Typing in The Exercise You Performed):', existing_exercises)
             submit_button=st.form_submit_button(label='Track Progress in Selected Exercises')
             if submit_button:
