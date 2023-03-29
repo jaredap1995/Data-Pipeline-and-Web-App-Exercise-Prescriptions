@@ -5,6 +5,7 @@ from record_workout import record_workout
 import datetime
 from track_workouts import track_workouts
 import pandas as pd
+import numpy as np
 
 
 def increasing_load(workouts, operation, weeks):
@@ -133,26 +134,21 @@ def coach(conn):
                 cursor.execute("INSERT INTO exercises (exercise) VALUES (%s)", (new_exercise,))
                 conn.commit()
                 st.success(f"Exercise '{new_exercise}' has been added to the database. Please wait")
-                #time.sleep(2) # wait for 2 seconds before rerunning the script
+                time.sleep(2) # wait for 2 seconds before rerunning the script
                 st.experimental_rerun()
             submit_button = st.form_submit_button(label='Record Sets, Reps, and Weight 2')
             if submit_button or st.session_state.exercise_selection:
                 st.session_state['exercise_selection']=True
-                sets = []
-                reps = []
-                weight = []
-                for exercise in selected_exercises:
-                    sets.append(st.number_input(f'{exercise} - Sets: ', min_value=1, step=1))
-                    reps.append(st.number_input(f'{exercise} - Reps: ', min_value=1, step=1))
-                    weight.append(st.number_input(f'{exercise} - Weight: ', min_value=1, step=1))
-                rep_submit_button_2 = st.form_submit_button(label='Record Workout 2')
+                df=pd.DataFrame({'Exercise': selected_exercises,
+                                'Sets': np.zeros(len(selected_exercises)),
+                                'Reps': np.zeros(len(selected_exercises)),
+                                'Weight': np.zeros(len(selected_exercises))})
+                edited_df = st.experimental_data_editor(df)
+                rep_submit_button_2 = st.form_submit_button(label='Record Workout')
                 if rep_submit_button_2 or st.session_state.prescription_recording:
                     st.session_state['prescription_recording']=True
                     st.success('Prescription submitted. Adding to list')
-                    prescription=pd.DataFrame({'Exercise': selected_exercises,
-                    "Sets": sets,
-                    "Reps": reps,
-                    'Weight': weight})
+                    prescription=edited_df
                     st.session_state['prescriptions'].append(prescription)
                     st.session_state.exercise_selection = False
                     st.session_state.prescription_recording = False

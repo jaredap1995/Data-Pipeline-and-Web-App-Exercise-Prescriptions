@@ -1,6 +1,8 @@
 import psycopg2
 import random
 import streamlit as st
+import pandas as pd
+import numpy as np
 from clean_workouts import clean_workouts
 from grab_all_workouts import grab_all_workouts
 from intensity_classification import intensity_classification
@@ -53,6 +55,7 @@ def app():
     existing_exercises = [row[0] for row in cursor.fetchall()]
 
     #Trackign session state changes
+    st.write(st.session_state)
 
     # Define the home page
     st.header("Welcome! Please Select an Option Below!")
@@ -87,20 +90,18 @@ def app():
             submit_button = st.form_submit_button(label='Record Sets, Reps, and Weight')
             if submit_button or st.session_state.exercise_selection:
                 st.session_state['exercise_selection']=True
-                sets = []
-                reps = []
-                weight = []
-                for exercise in selected_exercises:
-                    sets.append(st.text_input(f'{exercise} - Sets: '))
-                    reps.append(st.text_input(f'{exercise} - Reps: '))
-                    weight.append(st.text_input(f'{exercise} - Weight: '))
-                rep_submit_button = st.form_submit_button(label='Record Workout')
-                if rep_submit_button:
-                    record_workout(conn, name, selected_exercises, reps, sets, weight)
-                    # Confirmation message
-                    st.success("Data has been submitted.")
-                    time.sleep(2)
-                    st.experimental_rerun()
+                df=pd.DataFrame({'Exercise': selected_exercises,
+                                'Sets': np.zeros(len(selected_exercises)),
+                                'Reps': np.zeros(len(selected_exercises)),
+                                'Weight': np.zeros(len(selected_exercises))})
+                edited_df = st.experimental_data_editor(df)
+            rep_submit_button = st.form_submit_button(label='Record Workout')
+            if rep_submit_button:
+                record_workout(conn, name, selected_exercises, edited_df['Reps'], edited_df['Sets'], edited_df['Weights'])
+                # Confirmation message
+                st.success("Data has been submitted.")
+                time.sleep(1)
+                st.experimental_rerun()
 
     #Track Weight Functionality
     track_progress_button = st.button('Track Progress in Exercise')
@@ -109,7 +110,7 @@ def app():
     if track_progress_button or st.session_state.track_progress:
         st.session_state['track_progress']=True
         with st.form(key='Track_weight_changes'):
-            name=st.text_input('Enter Your First Name')
+            name=st.text_input('Name')
             selected_exercises = st.multiselect('Select Exercises (Begin Typing in The Exercise You Performed):', existing_exercises)
             submit_button=st.form_submit_button(label='Track Progress in Selected Exercises')
             if submit_button:
