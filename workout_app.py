@@ -15,7 +15,6 @@ from retrieve_prescriptions import retrieve_block
 from testing_coach_and_prescriptions import prescribe_block
 from update_actuals import update_workout
 
-
 def show_new_workout():
     st.write("Feature coming soon! :)")
 
@@ -37,20 +36,16 @@ def show_existing_workout(files, selected_intensity):
 
 def app():
     st.set_page_config(page_title="Cabral Fitness Exercise Prescriptions")
-    #with st.spinner('Connecting to Cloud...Please Wait'):
+    
         
         # Start the Cloud SQL proxy when the application starts
         #proxy_process = subprocess.Popen(
-        #['./cloud-sql-proxy', '--address', '127.0.0.1', '--port', '1234', 'my-first-project-streamlit:us-west2:jaredp-coach'])
+        #['./cloud-sql-proxy', '--address', st.secrets.proxy_credentials.address, '--port', st.secrets.proxy_credentials.port, st.secrets.proxy_credentials.name])
+    #@st.cache_resource
+    #def init_connection():
+        #return psycopg2.connect(**st.secrets.psycopg2_credentials)
 
-
-    # time.sleep(3) 
-    conn = psycopg2.connect(
-        host="localhost",
-        database="clients",
-        user="jaredp",
-        password="secret"
-            )
+    conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
 
 
     cursor = conn.cursor()
