@@ -96,7 +96,7 @@ def app():
                 edited_df = st.experimental_data_editor(df)
             rep_submit_button = st.form_submit_button(label='Record Workout')
             if rep_submit_button:
-                record_workout(conn, name, selected_exercises, edited_df['Reps'], edited_df['Sets'], edited_df['Weights'])
+                record_workout(conn, name, selected_exercises, edited_df['Reps'], edited_df['Sets'], edited_df['Weight'])
                 # Confirmation message
                 st.success("Data has been submitted.")
                 time.sleep(1)
