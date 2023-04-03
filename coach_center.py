@@ -181,6 +181,6 @@ def coach(conn, name):
                         st.dataframe(block[i])
 
     
-    return block, name
+    return block, name, length_of_block
 
 
