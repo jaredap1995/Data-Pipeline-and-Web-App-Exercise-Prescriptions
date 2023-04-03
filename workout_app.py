@@ -41,7 +41,7 @@ def home_page():
     home_text=st.markdown(
     """
     Thank you for supporting me by using this application! 😃
-    As this is a work in progress and my first time developing a web page I appreciate your patience as I navigate this adventure and 
+    As this site is constantly evolving I appreciate your patience as I navigate this adventure and 
     attmept to provide you with the best service possible!
 
     ### 👈 Select your name from the drop down menu to the left to begin!
