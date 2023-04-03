@@ -37,7 +37,7 @@ def show_existing_workout(files, selected_intensity):
     return workout
 
 def home_page():
-    st.write("# Welcome 💪")
+    st.write("# Welcome!")
     home_text=st.markdown(
     """
     Thank you for supporting me by using this application! 😃
