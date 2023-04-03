@@ -110,7 +110,8 @@ def coach(conn, name):
 
     
     block=None
-    name=name                   
+    name=name
+    length_of_block=None                   
 
                 
     if 'prescriptions' not in st.session_state:
