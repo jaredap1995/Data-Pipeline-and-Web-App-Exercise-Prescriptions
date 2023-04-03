@@ -95,7 +95,7 @@ def create_a_block(workouts, operation, total_weeks):
     return workouts
 
 
-def coach(conn):
+def coach(conn, name):
     
     cursor=conn.cursor()
 
@@ -110,7 +110,7 @@ def coach(conn):
 
     
     block=None
-    name=None                    
+    name=name                   
 
                 
     if 'prescriptions' not in st.session_state:
@@ -134,7 +134,7 @@ def coach(conn):
                 cursor.execute("INSERT INTO exercises (exercise) VALUES (%s)", (new_exercise,))
                 conn.commit()
                 st.success(f"Exercise '{new_exercise}' has been added to the database. Please wait")
-                time.sleep(2) # wait for 2 seconds before rerunning the script
+                time.sleep(1) # wait for 2 seconds before rerunning the script
                 st.experimental_rerun()
             submit_button = st.form_submit_button(label='Record Sets, Reps, and Weight 2')
             if submit_button or st.session_state.exercise_selection:

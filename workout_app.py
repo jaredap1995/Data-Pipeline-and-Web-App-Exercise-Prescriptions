@@ -228,7 +228,7 @@ def app():
                 st.session_state['coach_center']=False
             if prescribe_block_button or st.session_state.coach_center:
                 st.session_state['coach_center']=True
-                prescribe_block(conn)
+                prescribe_block(conn, name)
 
 
         # Produce Archived Spreadsheet Workout Functionality
