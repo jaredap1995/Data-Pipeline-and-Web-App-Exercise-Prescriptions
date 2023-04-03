@@ -5,13 +5,13 @@ import psycopg2
 
 
 
-def prescribe_block(conn):
+def prescribe_block(conn, name):
 
     if 'block' not in st.session_state:
         st.session_state['block']=False
 
     #st.write('Testing Coach Center and Record Prescriptions Together')
-    st.session_state['block'], name=coach(conn)
+    st.session_state['block'], name=coach(conn, name)
     st.write(name)
     st.write(st.session_state['block'])
     # submit_button=st.button('Record Block in Database')

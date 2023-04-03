@@ -227,6 +227,7 @@ def app():
             if 'coach_center' not in st.session_state:
                 st.session_state['coach_center']=False
             if prescribe_block_button or st.session_state.coach_center:
+                name=name
                 st.session_state['coach_center']=True
                 prescribe_block(conn, name)
 
