@@ -21,7 +21,7 @@ def record_block(conn, name, block, length_of_block):
         client_id = cursor.fetchone()[0]
 
         cursor.execute("INSERT INTO blocks (client_id, workouts, workouts_per_week) \
-            VALUES (%s, %s) RETURNING id", 
+            VALUES (%s, %s, %s) RETURNING id", 
             (client_id, len(block), workouts_per_week))
         
         block_id=cursor.fetchone()[0]
@@ -65,7 +65,7 @@ def record_block(conn, name, block, length_of_block):
         client_id = cursor.fetchone()[0]
 
         cursor.execute("INSERT INTO blocks (client_id, workouts, workouts_per_week) \
-            VALUES (%s, %s) RETURNING id", 
+            VALUES (%s, %s, %s) RETURNING id", 
             (client_id, len(block), workouts_per_week))
         
         block_id=cursor.fetchone()[0]
