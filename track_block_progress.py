@@ -179,10 +179,8 @@ def show_progress_in_block(conn, name):
                 store_performed_workout=st.form_submit_button(f'Submit Workout Number {number+1}')
                 if store_performed_workout:
                     edited_df['Workout Number']=workout_number_column
-                    st.write(edited_df)
-                    time.sleep(3)
                     update_workout_in_block(name, conn, edited_df, dfs)
-                    st.write('Workout Submitted Successfully')
+                    st.success('Workout Submitted Successfully')
             else:
                 st.write('You have completed all of your prescribed workouts. Great job!')
 
