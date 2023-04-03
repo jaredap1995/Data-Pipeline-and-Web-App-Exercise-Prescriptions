@@ -5,20 +5,24 @@ import datetime
 import time
 
 
-def record_block(conn, name, block):
+def record_block(conn, name, block, length_of_block):
 
     # Check if client exists in database
     cursor = conn.cursor()
     cursor.execute("SELECT EXISTS(SELECT 1 FROM client WHERE name=%s)", (f"{name}",))
     exists = cursor.fetchone()[0]
 
+    #Calculate workouts per week
+    total_workouts=len(block)
+    workouts_per_week=total_workouts/length_of_block
+
     if exists:
         cursor.execute("SELECT id FROM client WHERE name=%s", (name,))
         client_id = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO blocks (client_id, workouts) \
+        cursor.execute("INSERT INTO blocks (client_id, workouts, workouts_per_week) \
             VALUES (%s, %s) RETURNING id", 
-            (client_id, len(block)))
+            (client_id, len(block), workouts_per_week))
         
         block_id=cursor.fetchone()[0]
         conn.commit()
@@ -60,9 +64,9 @@ def record_block(conn, name, block):
         conn.commit()
         client_id = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO blocks (client_id, workouts) \
+        cursor.execute("INSERT INTO blocks (client_id, workouts, workouts_per_week) \
             VALUES (%s, %s) RETURNING id", 
-            (client_id, len(block)))
+            (client_id, len(block), workouts_per_week))
         
         block_id=cursor.fetchone()[0]
         conn.commit()
