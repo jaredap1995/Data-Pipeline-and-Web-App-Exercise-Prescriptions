@@ -12,8 +12,6 @@ def prescribe_block(conn, name):
 
     #st.write('Testing Coach Center and Record Prescriptions Together')
     st.session_state['block'], name, length_of_block=coach(conn, name)
-    st.write(name)
-    st.write(st.session_state['block'])
     # submit_button=st.button('Record Block in Database')
     if st.session_state.block:
         record_block(conn, name, st.session_state['block'], length_of_block)
