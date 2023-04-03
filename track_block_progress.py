@@ -226,8 +226,6 @@ def show_progress_in_block(conn, name):
                                     pass
                                 if store_performed_workout:
                                     edited_df['Workout Number']=workout_number_column
-                                    st.write(edited_df)
-                                    time.sleep(3)
                                     update_workout_in_block(name, conn, edited_df, dfs)
                                     st.write('Workout Submitted Successfully')
                                     
