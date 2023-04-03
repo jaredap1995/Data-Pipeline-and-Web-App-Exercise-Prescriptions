@@ -40,15 +40,12 @@ def check_if_workout_performed(conn, block_id, workout_number):
     # Check if any rows were returned
     if len(table) > 0:
         table_headers=['workout_number','prescribed_exercise', 'prescribed_sets', 'prescribed_reps', 'prescribed_weight', 
-                   'performed_exercise', 'actual_sets', 'actual_reps', 'actual_weight']
+                'performed_exercise', 'actual_sets', 'actual_reps', 'actual_weight']
         table=pd.DataFrame(table, columns=table_headers)
-        length_of_prescription=len(table['prescribed_exercise'].unique())
-        length_of_actual=len(table['performed_exercise'].unique())
-        workout_number=table['workout_number'].unique()[0]
         workout_number_s=table['workout_number']
 
-        prescribed_df=table.loc[:,:'prescribed_weight'][::length_of_actual].reset_index(drop=True) #.drop(columns='workout_number')
-        performed_df=table.loc[:,'performed_exercise':][:length_of_actual].reset_index(drop=True)
+        prescribed_df=table.loc[:,:'prescribed_weight'].drop_duplicates().reset_index(drop=True) #.drop(columns='workout_number')
+        performed_df=table.loc[:,'performed_exercise':].drop_duplicates().reset_index(drop=True)
         performed_df['Workout Number']=workout_number_s
 
         prescribed_df['prescribed_exercise']=prescribed_df['prescribed_exercise'].map(exercises_dict)
