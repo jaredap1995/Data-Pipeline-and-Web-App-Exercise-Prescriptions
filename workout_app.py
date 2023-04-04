@@ -153,7 +153,7 @@ def app():
 
 
         #Record a Workout Functionality
-        record_a_workout = st.button('Record a Workout you Performed on Your Own')
+        record_a_workout = st.button('Record a Workout Outside of Your Current Block')
         if 'record_a_workout' not in st.session_state:
             st.session_state['record_a_workout']=False
         if record_a_workout or st.session_state.record_a_workout:
