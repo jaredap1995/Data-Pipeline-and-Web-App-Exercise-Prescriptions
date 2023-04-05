@@ -174,7 +174,7 @@ def show_progress_in_block(conn, name):
 
         num_weeks = len(dfs) // num_workouts
 
-        # actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=num_workouts, dfs=dfs, actuals=actuals)
+        actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=num_workouts, dfs=dfs, actuals=actuals)
             
         # unique_exercises = set()
         # unique_dfs = set()
