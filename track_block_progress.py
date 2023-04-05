@@ -7,50 +7,50 @@ from update_block import update_workout_in_block
 import time
 from collections import OrderedDict
 
-def ordering_function_for_performed_workouts(num_workouts, num_weeks, dfs, actuals):
+# def ordering_function_for_performed_workouts(num_workouts, num_weeks, dfs, actuals):
 
-    num_unique_arrangements = [tuple(df['Exercise']) for df in dfs]
-    unique_arrangements = list(OrderedDict.fromkeys(num_unique_arrangements))
+#     num_unique_arrangements = [tuple(df['Exercise']) for df in dfs]
+#     unique_arrangements = list(OrderedDict.fromkeys(num_unique_arrangements))
 
-    orders = [pd.Series(order) for order in unique_arrangements]
-
-
-    # define the indices of the dataframes that should use each ordering
-    order_indices = {
-        i: [j for j in range(i, num_workouts*num_weeks, num_workouts)] for i in range(num_workouts)
-    }
+#     orders = [pd.Series(order) for order in unique_arrangements]
 
 
-    for i, df in enumerate(actuals):
-        # determine which ordering to apply based on the index
-        for order_idx, df_indices in order_indices.items():
-            if i in df_indices:
-                order = orders[order_idx]
-                break
-        else:
-            raise ValueError(f"No ordering found for dataframe {i}")
-
-        # get the unique exercises in the dataframe
-        unique_exercises = df['Exercise'].unique()
-
-        # check if any exercise in the dataframe is not in the categorical
-        not_in_categorical = set(unique_exercises) - set(order)
-
-        order=list(order)
-        # loop through the exercises that are not in the categorical and replace NaN values with the original exercise name
-        for exercise in not_in_categorical:
-            original_exercise = df.loc[df['Exercise'] == exercise, 'Exercise'].iloc[0]
-            order.append(original_exercise)
+#     # define the indices of the dataframes that should use each ordering
+#     order_indices = {
+#         i: [j for j in range(i, num_workouts*num_weeks, num_workouts)] for i in range(num_workouts)
+#     }
 
 
-        order=pd.Series(order)
-        # apply the ordering to the "Exercise" column of the dataframe
-        df['Exercise'] = pd.Categorical(df['Exercise'], categories=order, ordered=True)
-        categories = df['Exercise'].cat.categories.tolist()
-        df.sort_values('Exercise', inplace=True)
+#     for i, df in enumerate(actuals):
+#         # determine which ordering to apply based on the index
+#         for order_idx, df_indices in order_indices.items():
+#             if i in df_indices:
+#                 order = orders[order_idx]
+#                 break
+#         else:
+#             raise ValueError(f"No ordering found for dataframe {i}")
+
+#         # get the unique exercises in the dataframe
+#         unique_exercises = df['Exercise'].unique()
+
+#         # check if any exercise in the dataframe is not in the categorical
+#         not_in_categorical = set(unique_exercises) - set(order)
+
+#         order=list(order)
+#         # loop through the exercises that are not in the categorical and replace NaN values with the original exercise name
+#         for exercise in not_in_categorical:
+#             original_exercise = df.loc[df['Exercise'] == exercise, 'Exercise'].iloc[0]
+#             order.append(original_exercise)
+
+
+#         order=pd.Series(order)
+#         # apply the ordering to the "Exercise" column of the dataframe
+#         df['Exercise'] = pd.Categorical(df['Exercise'], categories=order, ordered=True)
+#         categories = df['Exercise'].cat.categories.tolist()
+#         df.sort_values('Exercise', inplace=True)
         
         
-    return actuals
+#     return actuals
 
 
 
@@ -175,7 +175,7 @@ def show_progress_in_block(conn, name):
 
         num_weeks = len(dfs) // num_workouts
 
-        actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=num_workouts, dfs=dfs, actuals=actuals)
+        # actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=num_workouts, dfs=dfs, actuals=actuals)
             
         # unique_exercises = set()
         # unique_dfs = set()
