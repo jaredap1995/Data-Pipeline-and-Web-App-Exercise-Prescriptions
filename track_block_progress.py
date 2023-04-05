@@ -141,19 +141,19 @@ def show_progress_in_block(conn, name):
         unique_workout_nums = block.index.unique()
         unique_ex_ids=block['Exercise'].unique()
 
-        exercises=[]
-        for i in unique_ex_ids:
-            cursor.execute(f"""
-            SELECT exercise from exercises WHERE id={i}
-            """)
-            exercise=cursor.fetchone()[0]
-            pair=(i, exercise)
-            exercises.append(pair)
+        # exercises=[]
+        # for i in unique_ex_ids:
+        #     cursor.execute(f"""
+        #     SELECT exercise from exercises WHERE id={i}
+        #     """)
+        #     exercise=cursor.fetchone()[0]
+        #     pair=(i, exercise)
+        #     exercises.append(pair)
             
-        mapper=defaultdict(dict)
-        for i in exercises:
-            mapper[i[0]]=i[1]
-        block['Exercise']=block['Exercise'].map(mapper)
+        # mapper=defaultdict(dict)
+        # for i in exercises:
+        #     mapper[i[0]]=i[1]
+        # block['Exercise']=block['Exercise'].map(mapper)
 
         exercises_df = pd.read_sql("SELECT * FROM exercises", conn)
         exercises_df.set_index("id", inplace=True)
@@ -161,7 +161,7 @@ def show_progress_in_block(conn, name):
 
         dfs=[block.loc[block.index==i] for i in unique_workout_nums]
         
-        #dfs = [df.assign(Exercise=df['Exercise'].map(exercises_dict)) for df in dfs]
+        dfs = [df.assign(Exercise=df['Exercise'].map(exercises_dict)) for df in dfs]
         
         actuals=[]
         prescribed=[]
