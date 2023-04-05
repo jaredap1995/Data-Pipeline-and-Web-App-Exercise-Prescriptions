@@ -278,7 +278,7 @@ def show_progress_in_block(conn, name):
                                 if store_performed_workout:
                                     edited_df['Workout Number']=workout_number_column
                                     update_workout_in_block(name, conn, edited_df, dfs)
-                                    st.write('Workout Submitted Successfully')
+                                    st.success('Workout Submitted Successfully')
                                     
 
             with col2:
