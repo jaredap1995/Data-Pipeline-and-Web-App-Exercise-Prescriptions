@@ -269,7 +269,8 @@ def show_progress_in_block(conn, name):
                                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You performed workout number {number+1}, Good Work!</h3>", unsafe_allow_html=True)
                                 performed_df = new_dfs[index]
                                 visualized_df=performed_df[['Exercise', 'Sets', 'Reps', 'Weight']]
-                                st.dataframe(visualized_df) #.style.set_properties(**{'background-color': 'lightgreen'}))
+                                visualized_df=visualized_df.reset_index(drop=True)
+                                st.dataframe(visualized_df.style.set_properties(**{'background-color': 'lightgreen'}))
                             else:
                                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You have not yet performed workout number {number+1}.</h3>", unsafe_allow_html=True)
                                 workout_number_column=df['Workout Number']
