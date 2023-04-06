@@ -239,7 +239,14 @@ def show_progress_in_block(conn, name):
                     update_workout_in_block(name, conn, edited_df, dfs)
                     st.success('Workout Submitted Successfully')
             else:
-                st.write('You have completed all of your prescribed workouts. Great job!')
+                st.success('You have completed all of your prescribed workouts. Great job!')
+
+
+        #Code to organize the new_dfs according to the order of the prescribed workouts rather than performed workouts
+        big_df = pd.concat(new_dfs)
+        df_sorted = big_df.sort_values(by=['Workout Number'])
+        new_dfs = [df_sorted.loc[df_sorted['Workout Number'] == i] for i in df_sorted['Workout Number'].unique()]
+        new_dfs=[i.sort_index() for i in new_dfs]
 
 
         whole_block = st.form_submit_button('Show Whole Block')
@@ -259,17 +266,14 @@ def show_progress_in_block(conn, name):
                             performed = number in performed_workout_numbers
                             if performed:
                                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You performed workout number {number+1}, Good Work!</h3>", unsafe_allow_html=True)
-                                performed_index = performed_workout_numbers.index(number)
-                                performed_df = actuals[performed_index]
+                                performed_df = new_dfs[index]
                                 visualized_df=performed_df[['Exercise', 'Sets', 'Reps', 'Weight']]
-                                #performed_df=performed_df[["Exercise", 'Sets', 'Reps', "Weight"]]
-
-                                """Show dataframe without workout number, save column, then append back on after modification"""
                                 st.dataframe(visualized_df.style.set_properties(**{'background-color': 'lightgreen'}))
                             else:
                                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You have not yet performed workout number {number+1}.</h3>", unsafe_allow_html=True)
                                 workout_number_column=df['Workout Number']
                                 df=df.drop(columns='Workout Number')
+                                df=df.reset_index(drop=True)
                                 try: #try/except block for instance of where user hits both buttons, the keys for the current workout (appearing first) and the same wokrout later on are the same
                                     edited_df=st.experimental_data_editor(df, key=number, num_rows='dynamic')
                                     store_performed_workout=st.form_submit_button(f'Submit Workout Number {number+1}')
