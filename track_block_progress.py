@@ -269,12 +269,11 @@ def show_progress_in_block(conn, name):
                                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You performed workout number {number+1}, Good Work!</h3>", unsafe_allow_html=True)
                                 performed_df = new_dfs[index]
                                 visualized_df=performed_df[['Exercise', 'Sets', 'Reps', 'Weight']]
-                                st.dataframe(visualized_df.style.set_properties(**{'background-color': 'lightgreen'}))
+                                st.dataframe(visualized_df) #.style.set_properties(**{'background-color': 'lightgreen'}))
                             else:
                                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You have not yet performed workout number {number+1}.</h3>", unsafe_allow_html=True)
                                 workout_number_column=df['Workout Number']
                                 df=df.drop(columns='Workout Number')
-                                df=df.reset_index(drop=True)
                                 try: #try/except block for instance of where user hits both buttons, the keys for the current workout (appearing first) and the same wokrout later on are the same
                                     edited_df=st.experimental_data_editor(df, key=number, num_rows='dynamic')
                                     store_performed_workout=st.form_submit_button(f'Submit Workout Number {number+1}')
