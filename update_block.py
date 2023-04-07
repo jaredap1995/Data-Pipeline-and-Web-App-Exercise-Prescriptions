@@ -5,7 +5,7 @@ import datetime
 import pandas as pd
 import numpy as np
 
-def update_workout_in_block(name, conn, edited_workout, dfs):
+def update_workout_in_block(name, conn, edited_workout, dfs, notes):
 
     exercises_per_workout=[len(i) for i in edited_workout]
 
@@ -64,8 +64,8 @@ def update_workout_in_block(name, conn, edited_workout, dfs):
     #     # matched_workouts = num_workouts[~np.isin(num_workouts, WOD_)]
         
         cursor.execute(
-            "INSERT INTO sessions (session_date, client_id) VALUES (%s, %s) RETURNING id",
-            (datetime.datetime.now(), client_id))
+            "INSERT INTO sessions (session_date, client_id, notes) VALUES (%s, %s, %s) RETURNING id",
+            (datetime.datetime.now(), client_id, notes))
         
         conn.commit()
         session_id=cursor.fetchone()[0]
