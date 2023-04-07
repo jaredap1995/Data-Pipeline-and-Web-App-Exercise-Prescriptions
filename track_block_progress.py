@@ -278,7 +278,7 @@ def show_progress_in_block(conn, name):
                                 df=df.reset_index(drop=True)
                                 try: #try/except block for instance of where user hits both buttons, the keys for the current workout (appearing first) and the same wokrout later on are the same
                                     edited_df=st.experimental_data_editor(df, key=number, num_rows='dynamic')
-                                    notes=st.text_input('Notes', key=f"notes{number}")
+                                    notes=st.text_input('Notes', key=f"notes_{number}")
                                     store_performed_workout=st.form_submit_button(f'Submit Workout Number {number+1}')
                                 except:
                                     pass
