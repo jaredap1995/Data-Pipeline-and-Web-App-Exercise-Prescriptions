@@ -124,7 +124,11 @@ def show_progress_in_block(conn, name):
         """)
 
         block_ids=cursor.fetchall()
-        block_id=[i[0] for i in block_ids][-1]
+        try:
+            block_id=[i[0] for i in block_ids][-1]
+        except:
+            st.warning('No Block Found! Tell me to write one for you!')
+            return
 
         cursor.execute(f"""select * from prescriptions WHERE block_id={block_id};""")
 
