@@ -129,7 +129,6 @@ def show_progress_in_block(conn, name):
         except:
             st.error('No Block Found! Tell me to write one for you!')
             st.form_submit_button(label='No Block Found!')
-            st.experimental_rerun()
             return
 
         cursor.execute(f"""select * from prescriptions WHERE block_id={block_id};""")
