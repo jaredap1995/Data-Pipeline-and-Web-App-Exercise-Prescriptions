@@ -67,7 +67,6 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
             "INSERT INTO sessions (session_date, client_id, notes) VALUES (%s, %s, %s) RETURNING id",
             (datetime.datetime.now(), client_id, notes))
         
-        conn.commit()
         session_id=cursor.fetchone()[0]
 
         perf_exercise_ids = []
@@ -83,8 +82,6 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
             perf_exercise_id = cursor.fetchone()[0]
             perf_exercise_ids.append(perf_exercise_id)
 
-        conn.commit()
-
         exercise_ids=pd.Series(perf_exercise_ids)
         WOD=WOD.reset_index(drop=True)
         WOD['ex_id']=exercise_ids
@@ -99,12 +96,13 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
                 except:
                     st.error("There seems to be an error in your Sets, Reps, and Weight. Please check your input and try again.")
                     return
-                     
+                    
         try:     
             cursor.execute("""INSERT INTO actual_to_prescription(block_id, workout_number, session_id) VALUES (%s, %s, %s) """, (block_id, WOD_, session_id))
         except:
-            st.error("There appears to be an error with the workout being submitted. If everything looks correct, reach out directly to your coach.")
-                
+            st.error("""There appears to be an error with the workout being submitted. If you have recently hit submit it is likely because the workout is already submitted. 
+                    If you have not submitted a workout recently and everything looks correct, reach out directly to your coach.""")
+            return
         conn.commit()
 
     return WOD
