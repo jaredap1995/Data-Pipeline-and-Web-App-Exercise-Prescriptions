@@ -35,7 +35,7 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
     if len(modified_workouts)>1:
          st. error("""Please Only Modify The Workout You Performed Today. If you need to modify mutliple workouts from your block
          please modify one workout, then refresh the page and modify the next.""")
-         return
+         return None
     else:
          pass
     # Check if client exists in database
@@ -95,14 +95,15 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
                     (block_id, session_id, e_i, s, r, w))
                 except:
                     st.error("There seems to be an error in your Sets, Reps, and Weight. Please check your input and try again.")
-                    return
+                    return None
                     
         try:     
             cursor.execute("""INSERT INTO actual_to_prescription(block_id, workout_number, session_id) VALUES (%s, %s, %s) """, (block_id, WOD_, session_id))
         except:
             st.error("""There appears to be an error with the workout being submitted. If you have recently hit submit it is likely because the workout is already submitted. 
                     If you have not submitted a workout recently and everything looks correct, reach out directly to your coach.""")
-            return
+            return None
+        
         conn.commit()
 
     return WOD
