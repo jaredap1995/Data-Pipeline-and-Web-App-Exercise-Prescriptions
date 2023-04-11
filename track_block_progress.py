@@ -293,6 +293,8 @@ def show_progress_in_block(conn, name):
                                     result=update_workout_in_block(name, conn, edited_df, dfs, notes)
                                     if result is not None:
                                         st.success('Workout Submitted Successfully')
+                                        time.sleep(1)
+                                        st.experimental_rerun()
                                     
                                     
 
