@@ -48,9 +48,9 @@ def record_block(conn, name, block, length_of_block):
 #Use the columns and the new ex_id column to enter all the data into the prescirptions table for each client
         for idx_df, df in enumerate(block):
             for e_i, s,r,w in zip(df['ex_id'], df['Sets'], df['Reps'], df['Weight']):
-                cursor.execute("""INSERT INTO prescriptions (block_id, workout_number, exercise_id, sets, reps, weight)
-            VALUES (%s, %s, %s, %s, %s, %s)""",
-            (block_id, idx_df, e_i, s, r, w))
+                cursor.execute("""INSERT INTO prescriptions (block_id, workout_number, exercise_id, sets, reps, weight, client_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (block_id, idx_df, e_i, s, r, w, client_id))
                 
         conn.commit()
 
@@ -92,9 +92,9 @@ def record_block(conn, name, block, length_of_block):
         #Use the columns and the new ex_id column to enter all the data into the prescirptions table for each client
         for idx_df, df in enumerate(block):
             for e_i, s,r,w in zip(df['ex_id'], df['Sets'], df['Reps'], df['Weight']):
-                cursor.execute("""INSERT INTO prescriptions (block_id, workout_number, exercise_id, sets, reps, weight)
-            VALUES (%s, %s, %s, %s, %s, %s)""",
-            (block_id, idx_df, e_i, s, r, w))
+                cursor.execute("""INSERT INTO prescriptions (block_id, workout_number, exercise_id, sets, reps, weight, client_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (block_id, idx_df, e_i, s, r, w, client_id))
                 
         conn.commit()
     

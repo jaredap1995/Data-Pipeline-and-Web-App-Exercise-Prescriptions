@@ -140,7 +140,7 @@ def show_progress_in_block(conn, name):
         cursor.execute(f"""select workouts_per_week from blocks where id ={block_id}""")
         num_workouts=cursor.fetchone()[0]
 
-        block = pd.DataFrame(prescriptions[:, 2:], columns=['Workout Number', 'Exercise', 'Sets', 'Reps', 'Weight'])
+        block = pd.DataFrame(prescriptions[:, 2:7], columns=['Workout Number', 'Exercise', 'Sets', 'Reps', 'Weight'])
         block.set_index('Workout Number', inplace=True)
         unique_workout_nums = block.index.unique()
         unique_ex_ids=block['Exercise'].unique()
