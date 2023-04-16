@@ -12,6 +12,7 @@ import numpy as np
 
 def test(in_progress, name, notes, workout_number):
     conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
+
     cursor=conn.cursor()
 
 

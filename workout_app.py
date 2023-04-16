@@ -18,6 +18,7 @@ from testing_coach_and_prescriptions import prescribe_block
 from update_actuals import update_workout
 from track_block_progress import check_if_workout_performed, show_progress_in_block
 from update_block import update_workout_in_block
+from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 
 def show_new_workout():
     st.write("Feature coming soon! :)")
@@ -104,6 +105,30 @@ def name_function():
 
 def app():
     st.set_page_config(page_title="Exercise Tracking", layout='wide')
+
+    #Initialize session state
+    if 'exercise_selection' not in st.session_state:
+            st.session_state['exercise_selection']=False
+
+    if 'actual_workouts_2' not in st.session_state: 
+        st.session_state['actual_workouts_2']=False
+
+    if 'update_workout' not in st.session_state:
+        st.session_state['update_workout']=False
+    
+    if 'Show_Block_Progress' not in st.session_state:
+        st.session_state['Show_Block_Progress']=False
+
+    if 'next_workout' not in st.session_state:
+        st.session_state['next_workout']=False
+    if 'whole_block' not in st.session_state:
+        st.session_state['whole_block']=False
+
+    if 'continued' not in st.session_state:
+        st.session_state['continued'] = False
+
+
+
     name=None
     name=name_function()
     if not name:
@@ -116,36 +141,15 @@ def app():
         cursor.execute("SELECT exercise FROM exercises")
         existing_exercises = [row[0] for row in cursor.fetchall()]
 
-
         # Define the home page
         st.header(f'Hello {name}! Welcome to your Dashboard. Please Select an Option Below')
 
-        # Define the "New Workout" button
-        new_workout=st.button('Produce New Workout')
-        if 'new_workout' not in st.session_state:
-            st.session_state['new_workout']= False
-        if new_workout:
-            show_new_workout()
-
-        if 'exercise_selection' not in st.session_state:
-            st.session_state['exercise_selection']=False
-
-
-        #Track Progress Over Block Functionality
-        if 'actual_workouts_2' not in st.session_state: #prepare actuals
-            st.session_state['actual_workouts_2']=False
-
-        if 'update_workout' not in st.session_state:
-            st.session_state['update_workout']=False
-        
-        if 'Show_Block_Progress' not in st.session_state:
-            st.session_state['Show_Block_Progress']=False
-
-        if 'next_workout' not in st.session_state:
-            st.session_state['next_workout']=False
-        if 'whole_block' not in st.session_state:
-            st.session_state['whole_block']=False
-
+        if st.session_state.Show_Block_Progress==False:
+            continued_workout=check_if_in_progress_exists(conn, name)
+            if continued_workout is not None:   
+                st.session_state['continued'] = True
+                st.stop()
+            
         show_progress_in_a_block = st.button('Track and Record Training Across Current Block')
         if show_progress_in_a_block or st.session_state.Show_Block_Progress:
             st.session_state['Show_Block_Progress']=True
@@ -249,6 +253,14 @@ def app():
                     workout=show_existing_workout(files, intensity)        
                     st.text("Don't like the workout? Just hit the button again!")
                     st.dataframe(workout)
+
+
+        # Define the "New Workout" button
+        new_workout=st.button('Produce New Workout')
+        if 'new_workout' not in st.session_state:
+            st.session_state['new_workout']= False
+        if new_workout:
+            show_new_workout()
 
             
         conn.close()

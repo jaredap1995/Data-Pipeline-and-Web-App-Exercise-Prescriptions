@@ -5,7 +5,10 @@ import datetime
 import pandas as pd
 import numpy as np
 
-def update_workout_in_block(name, conn, edited_workout, dfs, notes):
+
+
+
+def update_workout_in_block(name, conn, edited_workout, dfs, notes=None):
 
     exercises_per_workout=[len(i) for i in edited_workout]
 
@@ -18,10 +21,8 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
     modified_workouts = []
     for df_p, df_a in zip(dfs, edited_workout):
         if not (df_p.equals(df_a)):
-            if 'Workout Number' in df_p.columns:
-                modified_workouts.append(df_a['Workout Number'].unique()[0])
-            else:
-                modified_workouts.append('Unknown Workout Number')
+            # if 'Workout Number' in df_p.columns:
+            modified_workouts.append(df_a['Workout Number'].unique()[0])
         if (df_p.equals(df_a)):
             st.success("Way to Follow your program exactly! Great Work!")
             if 'Workout Number' in df_p.columns:
@@ -35,14 +36,17 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
     if len(modified_workouts)>1:
          st. error("""Please Only Modify The Workout You Performed Today. If you need to modify mutliple workouts from your block
          please modify one workout, then refresh the page and modify the next.""")
-         return
+         return None
     else:
          pass
     # Check if client exists in database
     # st.write(df_p)
 
-
+    
     WOD_=int(modified_workouts[0])
+    # except:
+    #     st.error("Something seems to have gone wrong regardining the workout number. Try refreshing the page and trying again.")
+    #     return None
     cursor = conn.cursor()
     cursor.execute("SELECT EXISTS(SELECT 1 FROM client WHERE name=%s)", (f"{name}",))
     exists = cursor.fetchone()[0]
@@ -67,7 +71,6 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
             "INSERT INTO sessions (session_date, client_id, notes) VALUES (%s, %s, %s) RETURNING id",
             (datetime.datetime.now(), client_id, notes))
         
-        conn.commit()
         session_id=cursor.fetchone()[0]
 
         perf_exercise_ids = []
@@ -83,27 +86,30 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes):
             perf_exercise_id = cursor.fetchone()[0]
             perf_exercise_ids.append(perf_exercise_id)
 
-        conn.commit()
-
         exercise_ids=pd.Series(perf_exercise_ids)
         WOD=WOD.reset_index(drop=True)
         WOD['ex_id']=exercise_ids
         #dfs[WOD_]=WOD
         
         for e_i, s,r,w in zip(WOD['ex_id'], WOD['Sets'], WOD['Reps'], WOD['Weight']):
-                #st.write(block_id, session_id, e_i, s, r, w)
                 try:
-                    cursor.execute("""INSERT INTO workout_exercises (block_id, workout_id, exercise_id, sets, reps, weight, session_id)
+                    cursor.execute("""INSERT INTO workout_exercises (block_id, workout_id, exercise_id, sets, reps, weight, client_id)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)""",
                     (block_id, session_id, e_i, s, r, w, client_id))
                 except:
                     st.error("Please Fill in all Values for Sets, Reps, and Weight")
-                    return
-                     
+                    return None
+                    
                 
-        cursor.execute("""INSERT INTO actual_to_prescription(block_id, workout_number, session_id) VALUES (%s, %s, %s) """, (block_id, WOD_, session_id))
+        try:     
+            cursor.execute("""INSERT INTO actual_to_prescription(block_id, workout_number, session_id) VALUES (%s, %s, %s) """, (block_id, WOD_, session_id))
+        except:
+            st.error("""There appears to be an error with the workout being submitted. If you have recently hit submit it is likely because the workout is already submitted. 
+                    If you have not submitted a workout recently and everything looks correct, reach out directly to your coach.""")
+            return None
                 
         conn.commit()
+            
 
     return WOD
         
