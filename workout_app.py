@@ -146,14 +146,10 @@ def app():
         if 'whole_block' not in st.session_state:
             st.session_state['whole_block']=False
 
-        col_1, col_2 = st.columns(2)
-
-        with col_1:
-            show_progress_in_a_block = st.button('Track and Record Training Across Current Block')
-            if show_progress_in_a_block or st.session_state.Show_Block_Progress:
-                st.session_state['Show_Block_Progress']=True
-                with col_2:    
-                    show_progress_in_block(conn, name)
+        show_progress_in_a_block = st.button('Track and Record Training Across Current Block')
+        if show_progress_in_a_block or st.session_state.Show_Block_Progress:
+            st.session_state['Show_Block_Progress']=True
+            show_progress_in_block(conn, name)
 
 
         #Record a Workout Functionality
