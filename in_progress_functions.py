@@ -36,17 +36,16 @@ def test(conn, in_progress, name, workout_number, notes):
 
     workout_number=int(workout_number)
 
-    cursor.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
-        ON in_progress (exercise_id, sets, reps, weight)
-    """)
+    # cursor.execute("""
+    #     CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
+    #     ON in_progress (exercise_id, sets, reps, weight);
+    # """)
     
-    st.write(in_progress)
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
         # try:
         cursor.execute("""
         INSERT INTO in_progress (workout_number, exercise_id, sets, reps, weight, block_id, client_id) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;""", 
+        VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (exercise_id, sets, reps, weight, client_id, block_id, workout_number) DO NOTHING;""", 
         (workout_number, ex_id, sets, reps, weight, block_id, client_id))
         # except:
         #     pass
