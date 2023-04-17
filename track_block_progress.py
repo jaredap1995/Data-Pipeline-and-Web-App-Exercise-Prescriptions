@@ -215,9 +215,7 @@ def show_progress_in_block(conn, name):
 
     edited_df=None
 
-    for i in new_dfs:
-        st.dataframe(i)
-    st.stop()
+
 
     show_next_workout = st.button('See Next Workout')
     if show_next_workout or st.session_state.next_workout:
@@ -253,15 +251,16 @@ def show_progress_in_block(conn, name):
     new_dfs = [df_sorted.loc[df_sorted['Workout Number'] == i] for i in df_sorted['Workout Number'].unique()]
     new_dfs=[i.sort_index() for i in new_dfs]
 
+    for i in new_dfs:
+        st.dataframe(i)
+    st.stop()
 
     whole_block = st.button('Show Whole Block')
     if whole_block or st.session_state.whole_block:
         st.session_state['whole_block']=True
         #Split The screen for visualizations
         # col1, col2 = st.columns(2)
-    for i in actuals:
-        st.dataframe(i)
-    st.stop() 
+    
     
         # Print workouts for each week
         # for week, indices in enumerate(week_indices):
