@@ -202,6 +202,7 @@ def show_progress_in_block(conn, name):
     for i in dfs:
         st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
 
+    st.write(performed_workout_numbers)
 
     performed_workout_numbers.reverse()
     for i in performed_workout_numbers:
@@ -211,7 +212,7 @@ def show_progress_in_block(conn, name):
     new_dfs.extend(dfs)
 
     for i in new_dfs:
-        st.dataframe(i)
+        st.dataframe(i.style.set_properties(**{'background-color': 'red'}))
     
     for i in dfs:
         st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
