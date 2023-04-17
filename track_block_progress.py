@@ -271,7 +271,7 @@ def show_progress_in_block(conn, name):
                         performed_df = new_dfs[index]
                         visualized_df=performed_df[['Exercise', 'Sets', 'Reps', 'Weight']]
                         #performed_df=performed_df[["Exercise", 'Sets', 'Reps', "Weight"]]
-                        """Show dataframe without workout number, save column, then append back on after modification"""
+                        visualized_df=visualized_df.reset_index(drop=True)
                         st.dataframe(visualized_df.style.set_properties(**{'background-color': 'lightgreen'}))
                     else:
                         st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You have not yet performed workout number {number+1}.</h3>", unsafe_allow_html=True)
