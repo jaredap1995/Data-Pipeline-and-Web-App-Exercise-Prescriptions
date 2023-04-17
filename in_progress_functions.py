@@ -74,11 +74,11 @@ def set_state():
 def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
     in_progress = in_progress.loc[in_progress["Done"]][["Exercise", "Sets", "Reps", "Weight"]]
     st.write(in_progress)
-    st.write(workout_number)
+    # st.write(workout_number)
 
     while True:
         if in_progress.shape[0] > 0:
-            ex_ids, in_progress=test(conn, in_progress, name, notes, workout_number)
+            ex_ids, in_progress=test(conn, in_progress, name, workout_number, notes)
             #st.write(ex_ids)
             break
         else:
