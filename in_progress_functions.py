@@ -52,8 +52,7 @@ def test(conn, in_progress, name, workout_number, notes):
         # try:
         cursor.execute("""
         INSERT INTO in_progress (workout_id, exercise_id, sets, reps, weight, block_id, client_id) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s);""",
-        # ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;, 
+        VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;""", 
         (session_id, ex_id, sets, reps, weight, block_id, client_id))
         # except:
         #     pass
