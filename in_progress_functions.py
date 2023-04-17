@@ -48,7 +48,7 @@ def test(in_progress, name, notes, workout_number):
         CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
         ON in_progress (exercise_id, sets, reps, weight)
     """)
-    st.write('Hello')
+    
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
         # try:
         cursor.execute("""
@@ -58,7 +58,7 @@ def test(in_progress, name, notes, workout_number):
         (session_id, ex_id, sets, reps, weight, block_id, client_id))
         # except:
         #     pass
-
+        st.write('Hello')
     
     conn.commit()
         
