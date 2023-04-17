@@ -256,7 +256,7 @@ def show_progress_in_block(conn, name):
         st.session_state['whole_block']=True
         #Split The screen for visualizations
         # col1, col2 = st.columns(2)
-    for i in new_dfs:
+    for i in actuals:
         st.dataframe(i)
     st.stop() 
     
@@ -286,7 +286,7 @@ def show_progress_in_block(conn, name):
         #                     notes=st.text_input('Notes', key=f"notes_{number}")
         #                     edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') # on_change=update_in_progress_workout, args=(edited_df, name, notes))
         #                     store_performed_workout=st.button(f'Submit Workout Number {number+1}')
-        #                     update_in_progress_workout(edited_df, name, workout_number_column[0], notes)
+        #                     update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
         #                 except:
         #                     pass
         #                 if store_performed_workout:

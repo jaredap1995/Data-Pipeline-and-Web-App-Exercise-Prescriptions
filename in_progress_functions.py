@@ -10,9 +10,7 @@ import numpy as np
 
 
 
-def test(in_progress, name, notes, workout_number):
-    conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
-
+def test(conn, in_progress, name, notes, workout_number):
     cursor=conn.cursor()
 
 
@@ -62,8 +60,6 @@ def test(in_progress, name, notes, workout_number):
         st.write('Hello')
     
     conn.commit()
-        
-    conn.close()
 
     return perf_exercise_ids, in_progress
 
@@ -72,14 +68,14 @@ def set_state():
 
 
 #In progress==edited_df
-def update_in_progress_workout(in_progress, name, workout_number, notes=None):
+def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
     in_progress = in_progress.loc[in_progress["Done"]][["Exercise", "Sets", "Reps", "Weight"]]
     st.write(in_progress)
     st.write(workout_number)
 
     while True:
         if in_progress.shape[0] > 0:
-            ex_ids, in_progress=test(in_progress, name, notes, workout_number)
+            ex_ids, in_progress=test(conn, in_progress, name, notes, workout_number)
             #st.write(ex_ids)
             break
         else:
