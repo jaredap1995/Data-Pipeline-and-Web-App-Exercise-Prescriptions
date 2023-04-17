@@ -287,27 +287,28 @@ def show_progress_in_block(conn, name):
                         df=df.drop(columns='Workout Number')
                         df=df.reset_index(drop=True)
                         #try/except block for instance of where user hits both buttons, the keys for the current workout (appearing first) and the same wokrout later on are the same
-                        try:
-                            df['Done']=[False for _ in range(len(df.index))]
-                            notes=st.text_input('Notes', key=f"notes_{number}")
-                            edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') # on_change=update_in_progress_workout, args=(edited_df, name, notes))
-                            store_performed_workout=st.button(f'Submit Workout Number {number+1}')
-                            update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
-                        except:
-                            pass
-                        if store_performed_workout:
-                            edited_df['Workout Number']=workout_number_column
-                            result=update_workout_in_block(name, conn, edited_df, dfs, notes)
-                            if result is not None:
-                                st.success('Workout Submitted Successfully')
-                                time.sleep(1)
-                                st.experimental_rerun()
+                        # try:
+                        df['Done']=[False for _ in range(len(df.index))]
+                        notes=st.text_input('Notes', key=f"notes_{number}")
+                        edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') # on_change=update_in_progress_workout, args=(edited_df, name, notes))
+                        store_performed_workout=st.button(f'Submit Workout Number {number+1}')
+                        st.write(workout_number_column[0], type(workout_number_column[0]))
+                        update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
+    #                     except:
+    #                         pass
+    #                     if store_performed_workout:
+    #                         edited_df['Workout Number']=workout_number_column
+    #                         result=update_workout_in_block(name, conn, edited_df, dfs, notes)
+    #                         if result is not None:
+    #                             st.success('Workout Submitted Successfully')
+    #                             time.sleep(1)
+    #                             st.experimental_rerun()
                                 
 
-            # text = 'Visualization Features Coming Soon!'
-            # formatted_text = '<br>'.join(text.split())
-            # st.markdown(f"<h2 style='font-size: 36px; text-align: center;'>{formatted_text}</h2>", unsafe_allow_html=True)
+    #         # text = 'Visualization Features Coming Soon!'
+    #         # formatted_text = '<br>'.join(text.split())
+    #         # st.markdown(f"<h2 style='font-size: 36px; text-align: center;'>{formatted_text}</h2>", unsafe_allow_html=True)
 
 
-    return dfs, actuals, new_dfs, edited_df
+    # return dfs, actuals, new_dfs, edited_df
 
