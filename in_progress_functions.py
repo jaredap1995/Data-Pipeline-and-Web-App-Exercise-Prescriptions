@@ -39,8 +39,9 @@ def test(conn, in_progress, name, workout_number, notes):
     #     (datetime.datetime.now(), client_id, notes))
     # session_id=cursor.fetchone()[0]
     st.write(workout_number)
-    st.stop()
     session_id=int(workout_number)
+    st.write(session_id)
+    st.stop()
 
     st.write(session_id)
     st.write(perf_exercise_ids)
