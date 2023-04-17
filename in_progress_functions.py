@@ -10,7 +10,7 @@ import numpy as np
 
 
 
-def test(conn, in_progress, name, notes, workout_number):
+def test(conn, in_progress, name, workout_number, notes):
     cursor=conn.cursor()
 
 
@@ -141,7 +141,7 @@ def check_if_in_progress_exists(conn, name):
             df_2['Done']=[False for _ in range(len(df.index))]
             continued_workout=st.experimental_data_editor(df_2, num_rows='dynamic')
             continued_workout['Workout Number']=workout_number
-            update_in_progress_workout(continued_workout, name, workout_number)
+            update_in_progress_workout(conn, continued_workout, name, workout_number)
 
             """All below needs to go as it's own button within track_block_progress
             or find a way to make it work outside of the function as the first thing someone sees"""
