@@ -250,53 +250,52 @@ def show_progress_in_block(conn, name):
     new_dfs = [df_sorted.loc[df_sorted['Workout Number'] == i] for i in df_sorted['Workout Number'].unique()]
     new_dfs=[i.sort_index() for i in new_dfs]
 
-    for i in new_dfs:
-        st.dataframe(i)
-    st.stop() 
 
     whole_block = st.button('Show Whole Block')
     if whole_block or st.session_state.whole_block:
         st.session_state['whole_block']=True
         #Split The screen for visualizations
         # col1, col2 = st.columns(2)
-
+    for i in new_dfs:
+        st.dataframe(i)
+    st.stop() 
     
         # Print workouts for each week
-        for week, indices in enumerate(week_indices):
-            st.markdown(f"<h1 style='text-align: left;'>Week {week+1}--------------------------------</h1>", unsafe_allow_html=True)
-            for index in indices:
-                if index < total_prescribed_workouts:
-                    df = new_dfs[index]
-                    number = df['Workout Number'].unique()[0]
-                    performed = number in performed_workout_numbers
-                    if performed:
-                        st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You performed workout number {number+1}, Good Work!</h3>", unsafe_allow_html=True)
-                        performed_df = new_dfs[index]
-                        visualized_df=performed_df[['Exercise', 'Sets', 'Reps', 'Weight']]
-                        #performed_df=performed_df[["Exercise", 'Sets', 'Reps', "Weight"]]
-                        visualized_df=visualized_df.reset_index(drop=True)
-                        st.dataframe(visualized_df.style.set_properties(**{'background-color': 'lightgreen'}))
-                    else:
-                        st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You have not yet performed workout number {number+1}.</h3>", unsafe_allow_html=True)
-                        workout_number_column=df['Workout Number']
-                        df=df.drop(columns='Workout Number')
-                        df=df.reset_index(drop=True)
-                        #try/except block for instance of where user hits both buttons, the keys for the current workout (appearing first) and the same wokrout later on are the same
-                        try:
-                            df['Done']=[False for _ in range(len(df.index))]
-                            notes=st.text_input('Notes', key=f"notes_{number}")
-                            edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') # on_change=update_in_progress_workout, args=(edited_df, name, notes))
-                            store_performed_workout=st.button(f'Submit Workout Number {number+1}')
-                            update_in_progress_workout(edited_df, name, workout_number_column[0], notes)
-                        except:
-                            pass
-                        if store_performed_workout:
-                            edited_df['Workout Number']=workout_number_column
-                            result=update_workout_in_block(name, conn, edited_df, dfs, notes)
-                            if result is not None:
-                                st.success('Workout Submitted Successfully')
-                                time.sleep(1)
-                                st.experimental_rerun()
+        # for week, indices in enumerate(week_indices):
+        #     st.markdown(f"<h1 style='text-align: left;'>Week {week+1}--------------------------------</h1>", unsafe_allow_html=True)
+        #     for index in indices:
+        #         if index < total_prescribed_workouts:
+        #             df = new_dfs[index]
+        #             number = df['Workout Number'].unique()[0]
+        #             performed = number in performed_workout_numbers
+        #             if performed:
+        #                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You performed workout number {number+1}, Good Work!</h3>", unsafe_allow_html=True)
+        #                 performed_df = new_dfs[index]
+        #                 visualized_df=performed_df[['Exercise', 'Sets', 'Reps', 'Weight']]
+        #                 #performed_df=performed_df[["Exercise", 'Sets', 'Reps', "Weight"]]
+        #                 visualized_df=visualized_df.reset_index(drop=True)
+        #                 st.dataframe(visualized_df.style.set_properties(**{'background-color': 'lightgreen'}))
+        #             else:
+        #                 st.markdown(f"<h3 style='font-size: 20px; font-style: italic;'>You have not yet performed workout number {number+1}.</h3>", unsafe_allow_html=True)
+        #                 workout_number_column=df['Workout Number']
+        #                 df=df.drop(columns='Workout Number')
+        #                 df=df.reset_index(drop=True)
+        #                 #try/except block for instance of where user hits both buttons, the keys for the current workout (appearing first) and the same wokrout later on are the same
+        #                 try:
+        #                     df['Done']=[False for _ in range(len(df.index))]
+        #                     notes=st.text_input('Notes', key=f"notes_{number}")
+        #                     edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') # on_change=update_in_progress_workout, args=(edited_df, name, notes))
+        #                     store_performed_workout=st.button(f'Submit Workout Number {number+1}')
+        #                     update_in_progress_workout(edited_df, name, workout_number_column[0], notes)
+        #                 except:
+        #                     pass
+        #                 if store_performed_workout:
+        #                     edited_df['Workout Number']=workout_number_column
+        #                     result=update_workout_in_block(name, conn, edited_df, dfs, notes)
+        #                     if result is not None:
+        #                         st.success('Workout Submitted Successfully')
+        #                         time.sleep(1)
+        #                         st.experimental_rerun()
                                 
 
             # text = 'Visualization Features Coming Soon!'
