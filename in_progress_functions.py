@@ -40,8 +40,6 @@ def test(conn, in_progress, name, workout_number, notes):
     # session_id=cursor.fetchone()[0]
     session_id=int(workout_number)
 
-    st.write(session_id)
-    st.write(perf_exercise_ids)
     cursor.execute("""
         CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
         ON in_progress (exercise_id, sets, reps, weight)
@@ -56,7 +54,6 @@ def test(conn, in_progress, name, workout_number, notes):
         (session_id, ex_id, sets, reps, weight, block_id, client_id))
         # except:
         #     pass
-        st.write('Hello')
     
     conn.commit()
 
@@ -69,7 +66,7 @@ def set_state():
 #In progress==edited_df
 def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
     in_progress = in_progress.loc[in_progress["Done"]][["Exercise", "Sets", "Reps", "Weight"]]
-    st.write(in_progress)
+    # st.write(in_progress)
     # st.write(workout_number)
 
     while True:
@@ -78,7 +75,7 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
             #st.write(ex_ids)
             break
         else:
-            st.write("No exercises selected")
+            # st.write("No exercises selected")
             break
     
     return in_progress
@@ -142,8 +139,6 @@ def check_if_in_progress_exists(conn, name):
             continued_workout['Workout Number']=workout_number
             update_in_progress_workout(conn, continued_workout, name, workout_number)
 
-            """All below needs to go as it's own button within track_block_progress
-            or find a way to make it work outside of the function as the first thing someone sees"""
 
             #Grabbing dfs for submission
             cursor.execute(f"""select * from prescriptions WHERE block_id={block_id};""")
