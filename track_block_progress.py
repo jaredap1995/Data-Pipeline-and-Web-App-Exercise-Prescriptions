@@ -296,13 +296,13 @@ def show_progress_in_block(conn, name):
                         update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
     #                     except:
     #                         pass
-    #                     if store_performed_workout:
-    #                         edited_df['Workout Number']=workout_number_column
-    #                         result=update_workout_in_block(name, conn, edited_df, dfs, notes)
-    #                         if result is not None:
-    #                             st.success('Workout Submitted Successfully')
-    #                             time.sleep(1)
-    #                             st.experimental_rerun()
+                        if store_performed_workout:
+                            edited_df['Workout Number']=workout_number_column
+                            result=update_workout_in_block(name, conn, edited_df, dfs, notes)
+                            if result is not None:
+                                st.success('Workout Submitted Successfully')
+                                time.sleep(1)
+                                st.experimental_rerun()
                                 
 
     #         # text = 'Visualization Features Coming Soon!'
