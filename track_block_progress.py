@@ -309,5 +309,5 @@ def show_progress_in_block(conn, name):
     #         # st.markdown(f"<h2 style='font-size: 36px; text-align: center;'>{formatted_text}</h2>", unsafe_allow_html=True)
 
 
-    # return dfs, actuals, new_dfs, edited_df
+    return dfs, actuals, new_dfs, edited_df
 
