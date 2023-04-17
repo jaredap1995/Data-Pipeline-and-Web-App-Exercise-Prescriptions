@@ -243,10 +243,13 @@ def show_progress_in_block(conn, name):
         else:
             st.success('You have completed all of your prescribed workouts. Great job!')
 
-
+    for i in new_dfs:
+        st.dataframe(i)
     #Code to organize the new_dfs according to the order of the prescribed workouts rather than performed workouts
     new_dfs=[i.reset_index(drop=True) for i in new_dfs]
     big_df = pd.concat(new_dfs)
+    st.dataframe(big_df)
+    st.stop()
     df_sorted = big_df.sort_values(by=['Workout Number'])
     new_dfs = [df_sorted.loc[df_sorted['Workout Number'] == i] for i in df_sorted['Workout Number'].unique()]
     new_dfs=[i.sort_index() for i in new_dfs]
