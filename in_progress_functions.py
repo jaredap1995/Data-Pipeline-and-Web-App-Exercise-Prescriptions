@@ -42,6 +42,7 @@ def test(in_progress, name, notes, workout_number):
     # session_id=cursor.fetchone()[0]
     session_id=int(workout_number)
 
+    st.write(session_id)
     cursor.execute("""
         CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
         ON in_progress (exercise_id, sets, reps, weight)
