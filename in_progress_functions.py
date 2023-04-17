@@ -45,7 +45,7 @@ def test(conn, in_progress, name, workout_number, notes):
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
         # try:
         cursor.execute("""
-        INSERT INTO in_progress (workout_id, exercise_id, sets, reps, weight, block_id, client_id) 
+        INSERT INTO in_progress (workout_number, exercise_id, sets, reps, weight, block_id, client_id) 
         VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;""", 
         (workout_number, ex_id, sets, reps, weight, block_id, client_id))
         # except:
