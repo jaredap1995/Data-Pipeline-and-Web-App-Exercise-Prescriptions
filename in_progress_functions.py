@@ -38,6 +38,8 @@ def test(conn, in_progress, name, workout_number, notes):
     #     "INSERT INTO sessions (session_date, client_id, notes) VALUES (%s, %s, %s) RETURNING id",
     #     (datetime.datetime.now(), client_id, notes))
     # session_id=cursor.fetchone()[0]
+    st.write(workout_number)
+    st.stop()
     session_id=int(workout_number)
 
     st.write(session_id)
