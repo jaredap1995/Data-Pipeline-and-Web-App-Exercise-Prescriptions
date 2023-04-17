@@ -202,7 +202,13 @@ def show_progress_in_block(conn, name):
     for i in dfs:
         st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
 
-    dfs = sorted(dfs, key=lambda x: x['Workout Number'])
+    dfs=[i.reset_index(drop=True) for i in dfs]
+    big_df = pd.concat(dfs)
+    df_sorted = big_df.sort_values(by=['Workout Number'])
+    dfs = [df_sorted.loc[df_sorted['Workout Number'] == i] for i in df_sorted['Workout Number'].unique()]
+    dfs=[i.sort_index() for i in dfs]
+
+
 
 
     performed_workout_numbers.reverse()
