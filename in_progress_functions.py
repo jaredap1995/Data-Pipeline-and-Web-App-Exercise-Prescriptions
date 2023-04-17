@@ -47,14 +47,14 @@ def test(in_progress, name, notes, workout_number):
         ON in_progress (exercise_id, sets, reps, weight)
     """)
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
-        try:
-            cursor.execute("""
-            INSERT INTO in_progress (workout_id, exercise_id, sets, reps, weight, block_id, client_id) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;
-        """, (session_id, ex_id, sets, reps, weight, block_id, client_id))
-        except:
-            pass
+        # try:
+        cursor.execute("""
+        INSERT INTO in_progress (workout_id, exercise_id, sets, reps, weight, block_id, client_id) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;
+    """, (session_id, ex_id, sets, reps, weight, block_id, client_id))
+        # except:
+        #     pass
 
     
     conn.commit()
