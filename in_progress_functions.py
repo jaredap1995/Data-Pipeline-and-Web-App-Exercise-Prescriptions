@@ -55,6 +55,7 @@ def test(in_progress, name, notes, workout_number):
         VALUES (%s, %s, %s, %s, %s, %s, %s);""",
         # ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;, 
         (session_id, ex_id, sets, reps, weight, block_id, client_id))
+        st.write('Hello')
         # except:
         #     pass
 
