@@ -92,13 +92,13 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes=None):
         #dfs[WOD_]=WOD
         
         for e_i, s,r,w in zip(WOD['ex_id'], WOD['Sets'], WOD['Reps'], WOD['Weight']):
-                try:
-                    cursor.execute("""INSERT INTO workout_exercises (block_id, workout_id, exercise_id, sets, reps, weight, client_id)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-                    (block_id, session_id, e_i, s, r, w, client_id))
-                except:
-                    st.error("Please Fill in all Values for Sets, Reps, and Weight")
-                    return None
+            # try:
+            cursor.execute("""INSERT INTO workout_exercises (block_id, workout_id, exercise_id, sets, reps, weight, client_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (block_id, session_id, e_i, s, r, w, client_id))
+        # except:
+            # st.error("Please Fill in all Values for Sets, Reps, and Weight")
+                # return None
                     
                 
         try:     
