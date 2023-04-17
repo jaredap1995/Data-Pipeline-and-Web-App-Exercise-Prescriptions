@@ -49,6 +49,7 @@ def test(in_progress, name, notes, workout_number):
         ON in_progress (exercise_id, sets, reps, weight)
     """)
     
+    st.write(in_progress)
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
         # try:
         cursor.execute("""
