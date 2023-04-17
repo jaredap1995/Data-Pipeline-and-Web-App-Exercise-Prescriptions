@@ -196,6 +196,9 @@ def show_progress_in_block(conn, name):
         #if performed_workout_number != prescribed_workout_number:
         new_dfs.append(j)
 
+    for i in new_dfs:
+        st.dataframe(i)
+    st.stop()
     performed_workout_numbers.reverse()
     for i in performed_workout_numbers:
         dfs.pop(i)
