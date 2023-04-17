@@ -196,9 +196,6 @@ def show_progress_in_block(conn, name):
         #if performed_workout_number != prescribed_workout_number:
         new_dfs.append(j)
 
-    for i in new_dfs:
-        st.dataframe(i)
-    st.stop()
     performed_workout_numbers.reverse()
     for i in performed_workout_numbers:
         dfs.pop(i)
@@ -218,6 +215,9 @@ def show_progress_in_block(conn, name):
 
     edited_df=None
 
+    for i in new_dfs:
+        st.dataframe(i)
+    st.stop()
 
     show_next_workout = st.button('See Next Workout')
     if show_next_workout or st.session_state.next_workout:
