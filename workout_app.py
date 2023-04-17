@@ -154,6 +154,7 @@ def app():
         if show_progress_in_a_block or st.session_state.Show_Block_Progress:
             st.session_state['Show_Block_Progress']=True
             show_progress_in_block(conn, name)
+            st.stop()
 
 
         #Record a Workout Functionality

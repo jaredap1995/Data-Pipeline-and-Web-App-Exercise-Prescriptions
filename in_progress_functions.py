@@ -34,11 +34,7 @@ def test(conn, in_progress, name, workout_number, notes):
         perf_exercise_id = cursor.fetchone()[0]
         perf_exercise_ids.append(perf_exercise_id)
 
-    # cursor.execute(
-    #     "INSERT INTO sessions (session_date, client_id, notes) VALUES (%s, %s, %s) RETURNING id",
-    #     (datetime.datetime.now(), client_id, notes))
-    # session_id=cursor.fetchone()[0]
-    session_id=int(workout_number)
+    workout_number=int(workout_number)
 
     cursor.execute("""
         CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
@@ -51,7 +47,7 @@ def test(conn, in_progress, name, workout_number, notes):
         cursor.execute("""
         INSERT INTO in_progress (workout_id, exercise_id, sets, reps, weight, block_id, client_id) 
         VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;""", 
-        (session_id, ex_id, sets, reps, weight, block_id, client_id))
+        (workout_number, ex_id, sets, reps, weight, block_id, client_id))
         # except:
         #     pass
     
