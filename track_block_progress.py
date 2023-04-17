@@ -284,7 +284,6 @@ def show_progress_in_block(conn, name):
                             notes=st.text_input('Notes', key=f"notes_{number}")
                             edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') # on_change=update_in_progress_workout, args=(edited_df, name, notes))
                             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
-                            st.write('Hello')
                             update_in_progress_workout(edited_df, name, workout_number_column[0], notes)
                         except:
                             pass
