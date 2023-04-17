@@ -50,9 +50,9 @@ def test(in_progress, name, notes, workout_number):
         # try:
         cursor.execute("""
         INSERT INTO in_progress (workout_id, exercise_id, sets, reps, weight, block_id, client_id) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-        ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;
-    """, (session_id, ex_id, sets, reps, weight, block_id, client_id))
+        VALUES (%s, %s, %s, %s, %s, %s, %s);""",
+        # ON CONFLICT (exercise_id, sets, reps, weight) DO NOTHING;, 
+        (session_id, ex_id, sets, reps, weight, block_id, client_id))
         # except:
         #     pass
 
@@ -70,16 +70,16 @@ def set_state():
 #In progress==edited_df
 def update_in_progress_workout(in_progress, name, workout_number, notes=None):
     in_progress = in_progress.loc[in_progress["Done"]][["Exercise", "Sets", "Reps", "Weight"]]
-    # st.write(in_progress)
-    # st.write(workout_number)
+    st.write(in_progress)
+    st.write(workout_number)
 
     while True:
         if in_progress.shape[0] > 0:
             ex_ids, in_progress=test(in_progress, name, notes, workout_number)
-            # st.write(ex_ids)
+            st.write(ex_ids)
             break
         else:
-            # st.write("No exercises selected")
+            st.write("No exercises selected")
             break
     
     return in_progress
