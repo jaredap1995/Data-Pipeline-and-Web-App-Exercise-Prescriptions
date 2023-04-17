@@ -196,13 +196,30 @@ def show_progress_in_block(conn, name):
         #if performed_workout_number != prescribed_workout_number:
         new_dfs.append(j)
 
+    for i in new_dfs:
+        st.dataframe(i)
+    
+    for i in dfs:
+        st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
+
+
     performed_workout_numbers.reverse()
     for i in performed_workout_numbers:
         dfs.pop(i)
 
+
     new_dfs.extend(dfs)
 
+    for i in new_dfs:
+        st.dataframe(i)
+    
+    for i in dfs:
+        st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
+
     performed_workout_numbers.reverse()
+
+    st.write(performed_workout_numbers)
+    st.stop()
     
     # Define parameters
     workouts_per_week = num_workouts
@@ -243,8 +260,7 @@ def show_progress_in_block(conn, name):
         else:
             st.success('You have completed all of your prescribed workouts. Great job!')
 
-    for i in new_dfs:
-        st.dataframe(i)
+
     #Code to organize the new_dfs according to the order of the prescribed workouts rather than performed workouts
     new_dfs=[i.reset_index(drop=True) for i in new_dfs]
     big_df = pd.concat(new_dfs)
