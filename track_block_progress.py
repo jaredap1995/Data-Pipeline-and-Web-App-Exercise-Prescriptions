@@ -202,7 +202,8 @@ def show_progress_in_block(conn, name):
     for i in dfs:
         st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
 
-    st.write(performed_workout_numbers)
+    dfs = sorted(dfs, key=lambda x: x['Workout Number'])
+
 
     performed_workout_numbers.reverse()
     for i in performed_workout_numbers:
