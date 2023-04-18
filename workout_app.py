@@ -15,7 +15,6 @@ from track_workouts import track_workouts
 from coach_center import coach, create_a_block, deload, increasing_load
 from retrieve_prescriptions import retrieve_block
 from testing_coach_and_prescriptions import prescribe_block
-from update_actuals import update_workout
 from track_block_progress import check_if_workout_performed, show_progress_in_block
 from update_block import update_workout_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
