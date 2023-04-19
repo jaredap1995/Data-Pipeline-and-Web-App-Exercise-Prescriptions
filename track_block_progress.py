@@ -171,12 +171,12 @@ def show_progress_in_block(conn, name):
     actuals=[]
     prescribed=[]
     for i in range(0,len(dfs)):
-        try:
-            perf,pres,num=check_if_workout_performed(conn=conn, block_id=block_id, workout_number=i)
-            actuals.append(perf)
-            prescribed.append(pres)
-        except:
-            pass
+        # try:
+        perf,pres,num=check_if_workout_performed(conn=conn, block_id=block_id, workout_number=i)
+        actuals.append(perf)
+        prescribed.append(pres)
+        # except:
+        #     pass
 
     num_weeks = len(dfs) // num_workouts
 
@@ -198,7 +198,7 @@ def show_progress_in_block(conn, name):
 
     for i in actuals:
         st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
-        
+
     for i in dfs:
         st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
 
