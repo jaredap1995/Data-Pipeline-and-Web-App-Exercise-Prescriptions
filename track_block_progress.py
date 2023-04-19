@@ -212,6 +212,10 @@ def show_progress_in_block(conn, name):
 
     performed_workout_numbers.reverse()
     
+    for i in new_dfs:
+        st.dataframe(i)
+    st.stop()
+
     # Define parameters
     workouts_per_week = num_workouts
     total_prescribed_workouts = len(new_dfs)
