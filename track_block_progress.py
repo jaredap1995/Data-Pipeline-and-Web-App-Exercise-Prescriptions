@@ -296,7 +296,7 @@ def show_progress_in_block(conn, name):
                             update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
                         except ValueError as e:
                             if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
-                                st.erro("Make sure to hit the checkbox after entering a new workout")
+                                st.error("Make sure to hit the checkbox after entering a new workout")
                             st.stop()
                         if store_performed_workout:
                             edited_df['Workout Number']=workout_number_column
