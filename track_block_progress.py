@@ -294,17 +294,18 @@ def show_progress_in_block(conn, name):
                             notes=st.text_input('Notes', key=f"notes_{number}")
                             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
                             update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
+                            if store_performed_workout:
+                                edited_df['Workout Number']=workout_number_column
+                                result=update_workout_in_block(name, conn, edited_df, dfs, notes)
+                                if result is not None:
+                                    st.success('Workout Submitted Successfully')
+                                    time.sleep(1)
+                                    st.experimental_rerun()
                         except ValueError as e:
                             if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
-                                st.error("Make sure to hit the checkbox after entering a new workout")
+                                st.error("Make sure to hit the checkbox after entering a new exercise")
                             st.stop()
-                        if store_performed_workout:
-                            edited_df['Workout Number']=workout_number_column
-                            result=update_workout_in_block(name, conn, edited_df, dfs, notes)
-                            if result is not None:
-                                st.success('Workout Submitted Successfully')
-                                time.sleep(1)
-                                st.experimental_rerun()
+                        
                                 
 
     #         # text = 'Visualization Features Coming Soon!'
