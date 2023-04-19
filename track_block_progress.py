@@ -295,7 +295,7 @@ def show_progress_in_block(conn, name):
                             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
                             update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
                         except ValueError as e:
-                            st.write(e)
+                            st.write(e+"hello")
                             st.stop()
                             st.error("Make sure to hit the checkbox after entering a new workout")
                         if store_performed_workout:
