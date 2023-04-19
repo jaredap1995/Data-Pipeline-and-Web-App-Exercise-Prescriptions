@@ -36,10 +36,6 @@ def test(conn, in_progress, name, workout_number, notes):
 
     workout_number=int(workout_number)
 
-    # cursor.execute("""
-    #     CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
-    #     ON in_progress (exercise_id, sets, reps, weight);
-    # """)
     
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
         try:
