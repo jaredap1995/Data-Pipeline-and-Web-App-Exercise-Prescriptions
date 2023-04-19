@@ -140,6 +140,8 @@ def check_if_in_progress_exists(conn, name):
                             if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                                 st.error("Make sure to hit the checkbox after entering a new exercise")
                                 st.stop()
+
+            
             #Grabbing dfs for submission
             cursor.execute("""select * from prescriptions WHERE block_id=%s;""", (block_id,))
 
