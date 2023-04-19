@@ -298,6 +298,8 @@ def show_progress_in_block(conn, name):
                             if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                                 st.error("Make sure to hit the checkbox after entering a new exercise")
                                 st.stop()
+                        except st.errors.DuplicateWidgetID as e:
+                            pass
                         store_performed_workout=st.button(f'Submit Workout Number {number+1}')
                         if store_performed_workout:
                             edited_df['Workout Number']=workout_number_column
