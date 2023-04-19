@@ -294,12 +294,12 @@ def show_progress_in_block(conn, name):
                             edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') # on_change=update_in_progress_workout, args=(edited_df, name, notes))
                             notes=st.text_input('Notes', key=f"notes_{number}")
                             update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
+                        except st.errors.DuplicateWidgetID:
+                            pass
                         except ValueError as e:
                             if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                                 st.error("Make sure to hit the checkbox after entering a new exercise")
                                 st.stop()
-                        except st.errors.DuplicateWidgetID:
-                            pass
                         store_performed_workout=st.button(f'Submit Workout Number {number+1}')
                         if store_performed_workout:
                             edited_df['Workout Number']=workout_number_column
