@@ -134,17 +134,20 @@ def check_if_in_progress_exists(conn, name):
             df_2['Done']=[False for _ in range(len(df.index))]
             continued_workout=st.experimental_data_editor(df_2, num_rows='dynamic')
             continued_workout['Workout Number']=workout_number
-            update_in_progress_workout(conn, continued_workout, name, workout_number)
-
-
+            try:
+                update_in_progress_workout(conn, continued_workout, name, workout_number)
+            except ValueError as e:
+                            if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
+                                st.error("Make sure to hit the checkbox after entering a new exercise")
+                                st.stop()
             #Grabbing dfs for submission
-            cursor.execute(f"""select * from prescriptions WHERE block_id={block_id};""")
+            cursor.execute("""select * from prescriptions WHERE block_id=%s;""", (block_id,))
 
             prescriptions=cursor.fetchall()
             prescriptions
             prescriptions=np.asarray(prescriptions)
 
-            cursor.execute(f"""select workouts_per_week from blocks where id ={block_id}""")
+            cursor.execute("""select workouts_per_week from blocks where id =%s;""", (block_id,))
             num_workouts=cursor.fetchone()[0]
 
             block = pd.DataFrame(prescriptions[:, 2:7], columns=['Workout Number', 'Exercise', 'Sets', 'Reps', 'Weight'])
