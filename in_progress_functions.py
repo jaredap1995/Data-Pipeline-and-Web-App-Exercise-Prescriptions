@@ -49,7 +49,7 @@ def test(conn, in_progress, name, workout_number, notes):
             (workout_number, exercise_id, sets, reps, weight, block_id, client_id) DO NOTHING;;""", 
             (workout_number, ex_id, sets, reps, weight, block_id, client_id))
         except psycopg2.errors.NumericValueOutOfRange:
-            raise ValueError("Please make sure all values are integers")
+            st.error("Please make sure all values are integers")
     
     conn.commit()
 
