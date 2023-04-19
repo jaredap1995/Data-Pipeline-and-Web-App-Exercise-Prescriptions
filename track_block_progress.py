@@ -196,6 +196,12 @@ def show_progress_in_block(conn, name):
         #if performed_workout_number != prescribed_workout_number:
         new_dfs.append(j)
 
+    for i in dfs:
+        st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
+
+    for i in new_dfs:
+        st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
+    st.stop()
     #Ordering original_dfs because occasionally it gets pulled from database in random order causing error later on
     dfs=[i.reset_index(drop=True) for i in dfs]
     big_df = pd.concat(dfs)
@@ -212,9 +218,6 @@ def show_progress_in_block(conn, name):
 
     performed_workout_numbers.reverse()
     
-    for i in new_dfs:
-        st.dataframe(i)
-    st.stop()
 
     # Define parameters
     workouts_per_week = num_workouts
