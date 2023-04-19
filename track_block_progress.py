@@ -200,7 +200,7 @@ def show_progress_in_block(conn, name):
         st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
 
     for i in new_dfs:
-        st.dataframe(i.style.set_properties(**{'background-color': 'lightgreen'}))
+        st.dataframe(i.style.set_properties(**{'background-color': 'red'}))
     st.stop()
     #Ordering original_dfs because occasionally it gets pulled from database in random order causing error later on
     dfs=[i.reset_index(drop=True) for i in dfs]
