@@ -292,9 +292,10 @@ def show_progress_in_block(conn, name):
                         try:
                             #df['Done']=[False for _ in range(len(df.index))]
                             notes=None
-                            st.write(workout_number_column[0])
-                            st.write(number)
-                            edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic', on_change=update_in_progress_workout, args=(conn, st.dataframe(st.session_state[f"editor{number}"]), name, workout_number_column[0], notes))
+                            if f'edited_df{number}' not in st.session_state:
+                                st.session_state[f'edited_df{number}'] = df
+                            edited_df = st.experimental_data_editor(st.session_state[f'edited_df{number}'], num_rows='dynamic', on_change=update_in_progress_workout, args=(conn, st.session_state[f'edited_df{number}'], name, workout_number_column[0], notes))
+                            
                             notes=st.text_input('Workout Notes', key=f"notes_{number}")
                             #update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
                             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
