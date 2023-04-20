@@ -46,7 +46,7 @@ def test(conn, in_progress, name, workout_number, notes):
             cursor.execute("""
             INSERT INTO in_progress (workout_number, exercise_id, sets, reps, weight, block_id, client_id) 
             VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT 
-            (workout_number, exercise_id, sets, reps, weight, block_id, client_id) DO UPDATE;""", 
+            (workout_number, exercise_id, sets, reps, weight, block_id, client_id) DO UPDATE""", 
             (workout_number, ex_id, sets, reps, weight, block_id, client_id))
         except psycopg2.errors.NumericValueOutOfRange:
             st.error("""Please make sure all values are integers before you store workout.""")
