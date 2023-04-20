@@ -131,11 +131,13 @@ def check_if_in_progress_exists(conn, name):
             remaining.columns=['Sets', 'Reps', 'Weight']
             df_2=pd.concat([original, remaining], axis=0)
             df_2=df_2.reset_index()
-            df_2['Done']=[False for _ in range(len(df.index))]
+            #df_2['Done']=[False for _ in range(len(df.index))]
             continued_workout=st.experimental_data_editor(df_2, num_rows='dynamic')
-            continued_workout['Workout Number']=workout_number
             try:
-                update_in_progress_workout(conn, continued_workout, name, workout_number)
+                if not (continued_workout.equals(df_2)):
+                    diff_rows = continued_workout[continued_workout != df_2].dropna(how='all').index
+                    diff_rows=continued_workout.loc[diff_rows]
+                    update_in_progress_workout(conn, diff_rows, name, workout_number)
             except ValueError as e:
                             if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                                 st.error("Make sure to hit the checkbox after entering a new exercise")
