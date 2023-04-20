@@ -299,8 +299,8 @@ def show_progress_in_block(conn, name):
                                 diff_rows=edited_df.loc[diff_rows]
                                 update_in_progress_workout(conn, diff_rows, name, workout_number_column[0], notes)
                             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
-                        except st.errors.DuplicateWidgetID:
-                            pass
+                        # except st.errors.DuplicateWidgetID:
+                        #     pass
                         except ValueError as e:
                             if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                                 st.error("Make sure to hit the checkbox after entering a new exercise")
