@@ -242,8 +242,8 @@ def show_progress_in_block(conn, name):
             st.markdown(f"<h1 style='text-align: left;'>Next Workout: Workout {number+1}--------------------------------</h1>", unsafe_allow_html=True)
             workout_number_column=df['Workout Number']
             df=df.drop(columns='Workout Number')
-            edited_df=st.experimental_data_editor(df, key=number, num_rows='dynamic')
-            notes=st.text_input('Notes', key=f"workout_notes{number}")
+            edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic')
+            notes=st.text_input('Notes', key=f"notes_{number}")
             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
             if store_performed_workout:
                 edited_df['Workout Number']=workout_number_column
