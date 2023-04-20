@@ -243,7 +243,7 @@ def show_progress_in_block(conn, name):
             workout_number_column=df['Workout Number']
             df=df.drop(columns='Workout Number')
             edited_df=st.experimental_data_editor(df, key=number, num_rows='dynamic')
-            notes=st.text_input('Notes', key=f"notes_{number}")
+            notes=st.text_input('Notes', key=f"notes_next{number}")
             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
             if store_performed_workout:
                 edited_df['Workout Number']=workout_number_column
