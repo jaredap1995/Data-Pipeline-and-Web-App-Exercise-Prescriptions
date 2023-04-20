@@ -72,7 +72,7 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
             #st.write(ex_ids)
             break
         else:
-            # st.write("No exercises selected")
+            st.write("No exercises selected")
             break
     
     return in_progress
