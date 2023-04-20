@@ -139,9 +139,9 @@ def check_if_in_progress_exists(conn, name):
                     diff_rows=continued_workout.loc[diff_rows]
                     update_in_progress_workout(conn, diff_rows, name, workout_number)
             except ValueError as e:
-                            if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
-                                st.error("Make sure to hit the checkbox after entering a new exercise")
-                                st.stop()
+                if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
+                    st.error("Make sure to hit the checkbox after entering a new exercise")
+                    st.stop()
 
             
             #Grabbing dfs for submission
