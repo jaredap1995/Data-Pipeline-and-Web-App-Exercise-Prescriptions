@@ -104,11 +104,12 @@ def check_if_in_progress_exists(conn, name):
             if "df_value" not in st.session_state:
                 st.session_state.df_value = df 
             continued_workout=st.experimental_data_editor(st.session_state['df_value'], num_rows='dynamic')
+            st.session_state['df_value'] = continued_workout
             st.write(continued_workout.style.set_properties(**{'background-color': 'lightgreen'}))
             try:
                 if not continued_workout.equals(st.session_state["df_value"]):
                  # st.session_state['continued_workout'] = True
-                    st.session_state['df_value'] = continued_workout
+                    
                     update_in_progress_workout(conn, continued_workout, name, workout_number)
             except ValueError as e:
                 if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
