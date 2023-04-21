@@ -46,9 +46,9 @@ def home_page():
 
     ### 👈 If you are a client select your name from the drop down menu to the left to begin!
 
-    ### If you are interested in a Demo of the application, click the Demo button below! 👇""")
+    """)
 
-    st.button('Demo!')
+    st.button('Demo')
     
     ("""
     ### Want to know about the features this application provides?
@@ -57,6 +57,9 @@ def home_page():
     - Track your Volume-Load across workouts, weeks, and months to monitor injury risk and optimize performance!
     - Get additional supplemenatry workouts anytime, anywhere, at no extra cost. 
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
+
+    ### If you are interested in a Demo of the application, click the Demo button below! 👇
+
 """
 )
     return home_text
