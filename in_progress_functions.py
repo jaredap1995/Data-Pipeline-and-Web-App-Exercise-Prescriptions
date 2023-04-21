@@ -102,35 +102,35 @@ def check_if_in_progress_exists(conn, name):
             workout_number=df.iloc[0,1]
             df=df.iloc[:, 2:6]
             df.columns=['Exercise', 'Sets', 'Reps', 'Weight']
-            df_in_progress = df.assign(Exercise=df['Exercise'].map(exercises_dict))
+            df = df.assign(Exercise=df['Exercise'].map(exercises_dict))
 
-            #Find what is left to do (original prescription)
-            cursor.execute("""SELECT * FROM prescriptions WHERE block_id IN 
-                            (SELECT %s FROM in_progress) AND client_id IN 
-                            (SELECT %s FROM in_progress)
-                            AND workout_number IN (SELECT %s FROM in_progress);""", 
-                            (block_id, client_id,int(workout_number)))
+            # #Find what is left to do (original prescription)
+            # cursor.execute("""SELECT * FROM prescriptions WHERE block_id IN 
+            #                 (SELECT %s FROM in_progress) AND client_id IN 
+            #                 (SELECT %s FROM in_progress)
+            #                 AND workout_number IN (SELECT %s FROM in_progress);""", 
+            #                 (block_id, client_id,int(workout_number)))
             
-            df_original=pd.DataFrame(cursor.fetchall())
-            df_original=df_original.iloc[:, 3:7]
-            df_original.columns=['Exercise', 'Sets', 'Reps', 'Weight']
-            df_original=df_original.assign(Exercise=df_original['Exercise'].map(exercises_dict))
+            # df_original=pd.DataFrame(cursor.fetchall())
+            # df_original=df_original.iloc[:, 3:7]
+            # df_original.columns=['Exercise', 'Sets', 'Reps', 'Weight']
+            # df_original=df_original.assign(Exercise=df_original['Exercise'].map(exercises_dict))
 
-            #Concatenate what has been done, with what is left to do
+            # #Concatenate what has been done, with what is left to do
 
-            df=pd.merge(df_in_progress, df_original, on=['Exercise'], how='outer', suffixes=("_in_progress", "_original"))
-            df.index=df['Exercise']
-            df=df.drop(columns='Exercise')
-            original=df.iloc[:len(df_in_progress),:3]
-            remaining=df.iloc[len(df_in_progress):,3:]
-            original.columns=['Sets', 'Reps', 'Weight']
-            remaining.columns=['Sets', 'Reps', 'Weight']
-            df_2=pd.concat([original, remaining], axis=0)
-            df_2=df_2.reset_index()
+            # df=pd.merge(df_in_progress, df_original, on=['Exercise'], how='outer', suffixes=("_in_progress", "_original"))
+            # df.index=df['Exercise']
+            # df=df.drop(columns='Exercise')
+            # original=df.iloc[:len(df_in_progress),:3]
+            # remaining=df.iloc[len(df_in_progress):,3:]
+            # original.columns=['Sets', 'Reps', 'Weight']
+            # remaining.columns=['Sets', 'Reps', 'Weight']
+            # df_2=pd.concat([original, remaining], axis=0)
+            # df_2=df_2.reset_index()
             #df_2['Done']=[False for _ in range(len(df.index))]
-            continued_workout=st.experimental_data_editor(df_2, num_rows='dynamic')
+            continued_workout=st.experimental_data_editor(df, num_rows='dynamic')
             try:
-                if not (continued_workout.equals(df_2)):
+                if not (continued_workout.equals(df)):
                     # diff_rows = continued_workout[continued_workout != df_2].dropna(how='all').index
                     # diff_rows=continued_workout.loc[diff_rows]
                     update_in_progress_workout(conn, continued_workout, name, workout_number)
@@ -184,7 +184,7 @@ def check_if_in_progress_exists(conn, name):
                     st.experimental_rerun()
                 
             if reset_workout:
-                ##A function that will delete the in_progress row and start over
+                #A function that will delete the in_progress row and start over
                 cursor.execute("""DELETE FROM in_progress WHERE client_id=%s""", (client_id,))
                 conn.commit()
                 st.experimental_rerun()
