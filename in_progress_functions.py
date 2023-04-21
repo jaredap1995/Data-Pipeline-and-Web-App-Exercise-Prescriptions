@@ -107,7 +107,7 @@ def check_if_in_progress_exists(conn, name):
             if st.session_state['df_value'] is None:
                 st.session_state['df_value']=df
             continued_workout=st.session_state['df_value']
-            st.session_state['df_value']=st.experimental_data_editor(continued_workout, num_rows='dynamic', on_change=update_df_value, args=(continued_workout,))
+            continued_workout=st.experimental_data_editor(continued_workout, num_rows='dynamic', on_change=update_df_value, args=(continued_workout,))
             # st.session_state['df_value']=continued_workout
             # try:
                 # if not continued_workout.equals(st.session_state["df_value"]):
