@@ -72,6 +72,8 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
     
     return in_progress
 
+def update_df_value(continued_workout):
+    st.session_state['df_value']=continued_workout
 
 
 def check_if_in_progress_exists(conn, name):
@@ -104,8 +106,9 @@ def check_if_in_progress_exists(conn, name):
             df = df.assign(Exercise=df['Exercise'].map(exercises_dict))
             if st.session_state['df_value'] is None:
                 st.session_state['df_value']=df
-            continued_workout=st.experimental_data_editor(df, num_rows='dynamic')
-            st.session_state['df_value']=continued_workout
+            continued_workout=st.session_state['df_value']
+            st.session_state['df_value']=st.experimental_data_editor(continued_workout, num_rows='dynamic', on_change=update_df_value, args=(continued_workout,))
+            # st.session_state['df_value']=continued_workout
             # try:
                 # if not continued_workout.equals(st.session_state["df_value"]):
                  # st.session_state['continued_workout'] = True
