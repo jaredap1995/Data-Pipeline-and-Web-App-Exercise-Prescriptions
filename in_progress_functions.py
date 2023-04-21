@@ -33,8 +33,6 @@ def test(conn, in_progress, name, workout_number, notes):
         cursor.execute("SELECT id FROM exercises WHERE exercise = %s;", (perf_ex,))
         try:
             perf_exercise_id = cursor.fetchone()[0]
-            if 227 in perf_exercise_id:
-                raise TypeError("Please make sure the name of all exercises are filled in completely and spelled correctly.")
         except TypeError:
             st.error("Please make sure the name of all exercises are filled in completely and spelled correctly.")
             st.stop()
