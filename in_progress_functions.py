@@ -61,7 +61,7 @@ def test(conn, in_progress, name, workout_number, notes):
 def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
     # st.write(in_progress)
     #st.write(workout_number)
-    st.dataframe(in_progress)
+    # st.dataframe(in_progress)
     st.session_state['df_value']=in_progress
     #st.write(st.session_state['df_value'].style.set_properties(**{'background-color': 'lightgreen'}))
 
@@ -159,8 +159,6 @@ def check_if_in_progress_exists(conn, name):
             store_workout=st.button("Store Workout")
             reset_workout=st.button("Reset Workout")
 
-
-            st.write(continued_workout.style.set_properties(**{'background-color': 'red'}))
             if store_workout:
                 continued_workout['Workout Number']=workout_number
                 result=update_workout_in_block(name, conn, continued_workout, dfs)
