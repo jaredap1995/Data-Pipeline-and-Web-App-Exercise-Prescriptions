@@ -31,7 +31,11 @@ def test(conn, in_progress, name, workout_number, notes):
         if not exists:
             cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (perf_ex,))
         cursor.execute("SELECT id FROM exercises WHERE exercise = %s;", (perf_ex,))
-        perf_exercise_id = cursor.fetchone()[0]
+        try:
+            perf_exercise_id = cursor.fetchone()[0]
+        except TypeError:
+            st.error("Please make sure all exercises are spelled correctly.")
+            st.stop()
         perf_exercise_ids.append(perf_exercise_id)
 
     workout_number=int(workout_number)
