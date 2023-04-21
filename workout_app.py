@@ -130,7 +130,7 @@ def app():
         st.session_state.df_value = None
 
 
-
+    #st.write(st.session_state)
 
     name=None
     name=name_function()
@@ -147,7 +147,7 @@ def app():
         # Define the home page
         st.header(f'Hello {name}! Welcome to your Dashboard. Please Select an Option Below')
 
-        st.write(st.session_state)
+        
         if st.session_state.Show_Block_Progress==False:
             continued_workout=check_if_in_progress_exists(conn, name)
             # st.write(continued_workout)
