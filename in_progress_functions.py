@@ -101,9 +101,7 @@ def check_if_in_progress_exists(conn, name):
             df=df.iloc[:, 2:6]
             df.columns=['Exercise', 'Sets', 'Reps', 'Weight']
             df = df.assign(Exercise=df['Exercise'].map(exercises_dict))
-            if "df_value" not in st.session_state:
-                st.session_state.df_value = df 
-            st.session_state['df_value']=st.experimental_data_editor(st.session_state['df_value'], num_rows='dynamic')
+            st.session_state['df_value']=st.experimental_data_editor(df, num_rows='dynamic')
             continued_workout=st.session_state['df_value']
             try:
                 # if not continued_workout.equals(st.session_state["df_value"]):
