@@ -50,20 +50,18 @@ def test(conn, in_progress, name, workout_number, notes):
     
     conn.commit()
 
-    return perf_exercise_ids, in_progress
+    return in_progress
 
 
 #In progress==edited_df
 def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
-    #in_progress = in_progress.loc[in_progress["Done"]][["Exercise", "Sets", "Reps", "Weight"]]
     # st.write(in_progress)
     #st.write(workout_number)
-    in_progress=pd.DataFrame(in_progress)
     st.dataframe(in_progress)
 
     while True:
         if in_progress.shape[0] > 0:
-            ex_ids, in_progress=test(conn, in_progress, name, workout_number, notes)
+            in_progress=test(conn, in_progress, name, workout_number, notes)
             #st.write(ex_ids)
             break
         else:
@@ -107,7 +105,7 @@ def check_if_in_progress_exists(conn, name):
             try:
                 
                  # st.session_state['continued_workout'] = True
-                update_in_progress_workout(conn, continued_workout, name, workout_number)
+                continued_workout=update_in_progress_workout(conn, continued_workout, name, workout_number)
             except ValueError as e:
                 if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                     st.error("Make sure to hit the checkbox after entering a new exercise")
