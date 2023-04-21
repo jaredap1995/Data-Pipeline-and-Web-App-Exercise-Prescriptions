@@ -132,6 +132,7 @@ def check_if_in_progress_exists(conn, name):
             continued_workout=st.experimental_data_editor(df, num_rows='dynamic', key='continued_workout')
             try:
                 if not (continued_workout.equals(df)):
+                    st.write(st.session_state['continued_workout'])
                     # diff_rows = continued_workout[continued_workout != df_2].dropna(how='all').index
                     # diff_rows=continued_workout.loc[diff_rows]
                     update_in_progress_workout(conn, st.session_state['continued_workout'], name, workout_number)
