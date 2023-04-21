@@ -148,7 +148,7 @@ def app():
         if st.session_state.Show_Block_Progress==False:
             continued_workout=check_if_in_progress_exists(conn, name)
             if continued_workout is not None:   
-                st.session_state['continued'] = True
+                #st.session_state['continued'] = True
                 st.stop()
             
         show_progress_in_a_block = st.button('Track and Record Training Across Current Block')
