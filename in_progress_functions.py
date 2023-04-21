@@ -58,7 +58,7 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
     # st.write(in_progress)
     #st.write(workout_number)
     st.dataframe(in_progress)
-    st.write(st.session_state['df_value'])
+    st.write(st.session_state['df_value'].style.set_properties(**{'background-color': 'lightgreen'}))
 
     while True:
         if in_progress.shape[0] > 0:
@@ -104,7 +104,7 @@ def check_if_in_progress_exists(conn, name):
             if "df_value" not in st.session_state:
                 st.session_state.df_value = df 
             continued_workout=st.experimental_data_editor(df, num_rows='dynamic')
-            st.write(continued_workout)
+            st.write(continued_workout.style.set_properties(**{'background-color': 'lightgreen'}))
             try:
                 if not continued_workout.equals(st.session_state["df_value"]):
                  # st.session_state['continued_workout'] = True
