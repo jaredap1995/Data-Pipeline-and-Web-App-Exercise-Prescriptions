@@ -58,7 +58,7 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
     # st.write(in_progress)
     #st.write(workout_number)
     st.dataframe(in_progress)
-    st.write(st.session_state['df_value'].style.set_properties(**{'background-color': 'lightgreen'}))
+    #st.write(st.session_state['df_value'].style.set_properties(**{'background-color': 'lightgreen'}))
 
     while True:
         if in_progress.shape[0] > 0:
