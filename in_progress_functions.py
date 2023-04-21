@@ -72,6 +72,12 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
     
     return in_progress
 
+def set_state():
+    if 'continued_workout' not in st.session_state:
+        st.session_state['continued_workout'] = False
+    st.session_state['continued_workout'] = True
+
+
 
 def check_if_in_progress_exists(conn, name):
     cursor=conn.cursor()
@@ -102,35 +108,11 @@ def check_if_in_progress_exists(conn, name):
             df=df.iloc[:, 2:6]
             df.columns=['Exercise', 'Sets', 'Reps', 'Weight']
             df = df.assign(Exercise=df['Exercise'].map(exercises_dict))
-
-            # #Find what is left to do (original prescription)
-            # cursor.execute("""SELECT * FROM prescriptions WHERE block_id IN 
-            #                 (SELECT %s FROM in_progress) AND client_id IN 
-            #                 (SELECT %s FROM in_progress)
-            #                 AND workout_number IN (SELECT %s FROM in_progress);""", 
-            #                 (block_id, client_id,int(workout_number)))
-            
-            # df_original=pd.DataFrame(cursor.fetchall())
-            # df_original=df_original.iloc[:, 3:7]
-            # df_original.columns=['Exercise', 'Sets', 'Reps', 'Weight']
-            # df_original=df_original.assign(Exercise=df_original['Exercise'].map(exercises_dict))
-
-            # #Concatenate what has been done, with what is left to do
-
-            # df=pd.merge(df_in_progress, df_original, on=['Exercise'], how='outer', suffixes=("_in_progress", "_original"))
-            # df.index=df['Exercise']
-            # df=df.drop(columns='Exercise')
-            # original=df.iloc[:len(df_in_progress),:3]
-            # remaining=df.iloc[len(df_in_progress):,3:]
-            # original.columns=['Sets', 'Reps', 'Weight']
-            # remaining.columns=['Sets', 'Reps', 'Weight']
-            # df_2=pd.concat([original, remaining], axis=0)
-            # df_2=df_2.reset_index()
-            #df_2['Done']=[False for _ in range(len(df.index))]
-            continued_workout=st.experimental_data_editor(df, num_rows='dynamic', key='continued_workout')
+            continued_workout=st.experimental_data_editor(df, num_rows='dynamic', key='edited_workout', on_change=set_state)
             try:
                 if not (continued_workout.equals(df)):
-                    st.write(st.session_state['continued_workout'])
+                    # st.session_state['continued_workout'] = True
+                    st.write(st.session_state['edited_workout'])
                     update_in_progress_workout(conn, continued_workout, name, workout_number)
             except ValueError as e:
                 if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
