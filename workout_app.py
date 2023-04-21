@@ -46,11 +46,6 @@ def home_page():
 
     ### 👈 If you are a client select your name from the drop down menu to the left to begin!
 
-    """)
-
-    st.button('Demo')
-    
-    ("""
     ### Want to know about the features this application provides?
     - Get a custom exercise program tailored to your health and fitness goals that is updated every 4 weeks as you progress!
     - Track your workouts across your training program and stay on top of your progress with intuitive visualizations to see how far you've come.
@@ -62,6 +57,8 @@ def home_page():
 
 """
 )
+     
+    st.button('Demo')
     return home_text
 
 def name_function():
