@@ -126,6 +126,9 @@ def app():
     if 'continued' not in st.session_state:
         st.session_state['continued'] = False
 
+    if "df_value" not in st.session_state:
+        st.session_state.df_value = None
+
 
 
 
