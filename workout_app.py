@@ -53,12 +53,12 @@ def home_page():
     - Get additional supplemenatry workouts anytime, anywhere, at no extra cost. 
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
 
-    ### If you are interested in a Demo of the application, click the Demo button below! 👇
+   
 
 """
 )
      
-    st.button('Demo')
+   # st.button('Demo')
     return home_text
 
 def name_function():
