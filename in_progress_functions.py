@@ -40,11 +40,6 @@ def test(conn, in_progress, name, workout_number, notes):
 
     workout_number=int(workout_number)
 
-    # cursor.execute("""
-    #     CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight 
-    #     ON in_progress (exercise_id, sets, reps, weight);
-    # """)
-
     if 227 in perf_exercise_ids:
         st.error("Please make sure the name of all exercises are filled in completely and spelled correctly.")
         st.stop()
