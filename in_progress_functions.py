@@ -72,11 +72,6 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
     
     return in_progress
 
-def set_state():
-    if 'continued_workout' not in st.session_state:
-        st.session_state['continued_workout'] = False
-    st.session_state['continued_workout'] = True
-
 
 
 def check_if_in_progress_exists(conn, name):
@@ -108,7 +103,7 @@ def check_if_in_progress_exists(conn, name):
             df=df.iloc[:, 2:6]
             df.columns=['Exercise', 'Sets', 'Reps', 'Weight']
             df = df.assign(Exercise=df['Exercise'].map(exercises_dict))
-            continued_workout=st.experimental_data_editor(df, num_rows='dynamic', key='edited_workout', on_change=set_state)
+            continued_workout=st.experimental_data_editor(df, num_rows='dynamic', key='edited_workout')
             try:
                 if not (continued_workout.equals(df)):
                     # st.session_state['continued_workout'] = True
