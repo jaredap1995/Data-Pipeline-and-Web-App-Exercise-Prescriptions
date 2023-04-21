@@ -180,6 +180,7 @@ def coach(conn, name):
                             week_num += 1
                             st.write(f"Week {week_num}")
                         st.dataframe(block[i])
+                st.session_state['prescriptions']=[]
 
     
     return block, name, length_of_block

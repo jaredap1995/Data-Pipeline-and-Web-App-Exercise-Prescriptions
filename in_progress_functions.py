@@ -31,18 +31,26 @@ def test(conn, in_progress, name, workout_number, notes):
         if not exists:
             cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (perf_ex,))
         cursor.execute("SELECT id FROM exercises WHERE exercise = %s;", (perf_ex,))
-        perf_exercise_id = cursor.fetchone()[0]
+        try:
+            perf_exercise_id = cursor.fetchone()[0]
+        except TypeError:
+            st.error("Please make sure the name of all exercises are filled in completely and spelled correctly.")
+            st.stop()
         perf_exercise_ids.append(perf_exercise_id)
 
     workout_number=int(workout_number)
 
-    
+    if 227 in perf_exercise_ids:
+        st.error("Please make sure the name of all exercises are filled in completely and spelled correctly.")
+        st.stop()
+
+    cursor.execute("""DELETE FROM in_progress WHERE workout_number=%s AND client_id=%s""", (workout_number, client_id))
+
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
         try:
             cursor.execute("""
             INSERT INTO in_progress (workout_number, exercise_id, sets, reps, weight, block_id, client_id) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT 
-            (workout_number, exercise_id, sets, reps, weight, block_id, client_id) DO NOTHING;""", 
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
             (workout_number, ex_id, sets, reps, weight, block_id, client_id))
         except psycopg2.errors.NumericValueOutOfRange:
             st.error("""Please make sure all values are integers before you store workout.""")
@@ -50,21 +58,20 @@ def test(conn, in_progress, name, workout_number, notes):
     
     conn.commit()
 
-    return perf_exercise_ids, in_progress
-
-def set_state():
-    st.session_state.continued = True
+    return in_progress
 
 
 #In progress==edited_df
 def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
-    in_progress = in_progress.loc[in_progress["Done"]][["Exercise", "Sets", "Reps", "Weight"]]
     # st.write(in_progress)
-    # st.write(workout_number)
+    #st.write(workout_number)
+    # st.dataframe(in_progress)
+    st.session_state['df_value']=in_progress
+    #st.write(st.session_state['df_value'].style.set_properties(**{'background-color': 'lightgreen'}))
 
     while True:
         if in_progress.shape[0] > 0:
-            ex_ids, in_progress=test(conn, in_progress, name, workout_number, notes)
+            in_progress=test(conn, in_progress, name, workout_number, notes)
             #st.write(ex_ids)
             break
         else:
@@ -72,6 +79,9 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
             break
     
     return in_progress
+
+def update_df_value(continued_workout):
+    st.session_state['df_value']=continued_workout
 
 
 def check_if_in_progress_exists(conn, name):
@@ -97,45 +107,25 @@ def check_if_in_progress_exists(conn, name):
             block_ids=cursor.fetchall()
             block_id=[i[0] for i in block_ids][-1]
 
-
             df=pd.DataFrame(rows)
             workout_number=df.iloc[0,1]
             df=df.iloc[:, 2:6]
             df.columns=['Exercise', 'Sets', 'Reps', 'Weight']
-            df_in_progress = df.assign(Exercise=df['Exercise'].map(exercises_dict))
-
-            #Find what is left to do (original prescription)
-            cursor.execute("""SELECT * FROM prescriptions WHERE block_id IN 
-                            (SELECT %s FROM in_progress) AND client_id IN 
-                            (SELECT %s FROM in_progress)
-                            AND workout_number IN (SELECT %s FROM in_progress);""", 
-                            (block_id, client_id,int(workout_number)))
-            
-            df_original=pd.DataFrame(cursor.fetchall())
-            df_original=df_original.iloc[:, 3:7]
-            df_original.columns=['Exercise', 'Sets', 'Reps', 'Weight']
-            df_original=df_original.assign(Exercise=df_original['Exercise'].map(exercises_dict))
-
-            #Concatenate what has been done, with what is left to do
-
-            df=pd.merge(df_in_progress, df_original, on=['Exercise'], how='outer', suffixes=("_in_progress", "_original"))
-            df.index=df['Exercise']
-            df=df.drop(columns='Exercise')
-            original=df.iloc[:len(df_in_progress),:3]
-            remaining=df.iloc[len(df_in_progress):,3:]
-            original.columns=['Sets', 'Reps', 'Weight']
-            remaining.columns=['Sets', 'Reps', 'Weight']
-            df_2=pd.concat([original, remaining], axis=0)
-            df_2=df_2.reset_index()
-            df_2['Done']=[False for _ in range(len(df.index))]
-            continued_workout=st.experimental_data_editor(df_2, num_rows='dynamic')
-            continued_workout['Workout Number']=workout_number
-            try:
-                update_in_progress_workout(conn, continued_workout, name, workout_number)
-            except ValueError as e:
-                            if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
-                                st.error("Make sure to hit the checkbox after entering a new exercise")
-                                st.stop()
+            df = df.assign(Exercise=df['Exercise'].map(exercises_dict))
+            if st.session_state['df_value'] is None:
+                st.session_state['df_value']=df
+            continued_workout=st.session_state['df_value']
+            continued_workout=st.experimental_data_editor(continued_workout, num_rows='dynamic', on_change=update_df_value, args=(continued_workout,))
+            # st.session_state['df_value']=continued_workout
+            # try:
+                # if not continued_workout.equals(st.session_state["df_value"]):
+                 # st.session_state['continued_workout'] = True
+                    
+            update_in_progress_workout(conn, continued_workout, name, workout_number)
+            # except ValueError as e:
+            #     if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
+            #         st.error("Make sure to hit the checkbox after entering a new exercise")
+            #         st.stop()
 
             
             #Grabbing dfs for submission
@@ -182,7 +172,7 @@ def check_if_in_progress_exists(conn, name):
                     st.experimental_rerun()
                 
             if reset_workout:
-                ##A function that will delete the in_progress row and start over
+                #A function that will delete the in_progress row and start over
                 cursor.execute("""DELETE FROM in_progress WHERE client_id=%s""", (client_id,))
                 conn.commit()
                 st.experimental_rerun()

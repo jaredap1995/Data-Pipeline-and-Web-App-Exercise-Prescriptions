@@ -126,7 +126,11 @@ def app():
     if 'continued' not in st.session_state:
         st.session_state['continued'] = False
 
+    if "df_value" not in st.session_state:
+        st.session_state.df_value = None
 
+
+    #st.write(st.session_state)
 
     name=None
     name=name_function()
@@ -143,10 +147,12 @@ def app():
         # Define the home page
         st.header(f'Hello {name}! Welcome to your Dashboard. Please Select an Option Below')
 
+        
         if st.session_state.Show_Block_Progress==False:
             continued_workout=check_if_in_progress_exists(conn, name)
+            # st.write(continued_workout)
             if continued_workout is not None:   
-                st.session_state['continued'] = True
+                #st.session_state['continued'] = True
                 st.stop()
             
         show_progress_in_a_block = st.button('Track and Record Training Across Current Block')
