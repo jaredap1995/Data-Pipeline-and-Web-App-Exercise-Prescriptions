@@ -39,14 +39,14 @@ def test(conn, in_progress, name, workout_number, notes):
     cursor.execute("""DELETE FROM in_progress WHERE workout_number=%s AND client_id=%s""", (workout_number, client_id))
 
     for ex_id,sets,reps,weight in zip(perf_exercise_ids,in_progress['Sets'],in_progress['Reps'],in_progress['Weight']):
-        # try:
+        try:
             cursor.execute("""
             INSERT INTO in_progress (workout_number, exercise_id, sets, reps, weight, block_id, client_id) 
             VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
             (workout_number, ex_id, sets, reps, weight, block_id, client_id))
-        # except psycopg2.errors.NumericValueOutOfRange:
-        #     st.error("""Please make sure all values are integers before you store workout.""")
-        #     st.stop()
+        except psycopg2.errors.NumericValueOutOfRange:
+            st.error("""Please make sure all values are integers before you store workout.""")
+            st.stop()
     
     conn.commit()
 
