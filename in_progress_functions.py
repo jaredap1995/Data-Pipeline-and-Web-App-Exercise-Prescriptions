@@ -63,7 +63,6 @@ def test(conn, in_progress, name, workout_number, notes):
 
 #In progress==edited_df
 def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
-    # st.write(in_progress)
     #st.write(workout_number)
     # st.dataframe(in_progress)
     st.session_state['df_value']=in_progress
