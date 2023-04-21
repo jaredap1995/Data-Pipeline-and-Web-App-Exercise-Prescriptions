@@ -34,7 +34,7 @@ def test(conn, in_progress, name, workout_number, notes):
         try:
             perf_exercise_id = cursor.fetchone()[0]
         except TypeError:
-            st.error("Please make sure all exercises are spelled correctly.")
+            st.error("Please make sure the name of all exercises are filled in completlye and spelled correctly.")
             st.stop()
         perf_exercise_ids.append(perf_exercise_id)
 
