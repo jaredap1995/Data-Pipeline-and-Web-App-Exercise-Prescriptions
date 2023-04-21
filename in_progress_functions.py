@@ -105,7 +105,6 @@ def check_if_in_progress_exists(conn, name):
                 st.session_state.df_value = df 
             st.session_state['df_value']=st.experimental_data_editor(st.session_state['df_value'], num_rows='dynamic')
             continued_workout=st.session_state['df_value']
-            st.write(continued_workout.style.set_properties(**{'background-color': 'lightgreen'}))
             try:
                 # if not continued_workout.equals(st.session_state["df_value"]):
                  # st.session_state['continued_workout'] = True
@@ -152,6 +151,8 @@ def check_if_in_progress_exists(conn, name):
             store_workout=st.button("Store Workout")
             reset_workout=st.button("Reset Workout")
 
+
+            st.write(continued_workout.style.set_properties(**{'background-color': 'red'}))
             if store_workout:
                 continued_workout['Workout Number']=workout_number
                 result=update_workout_in_block(name, conn, continued_workout, dfs)

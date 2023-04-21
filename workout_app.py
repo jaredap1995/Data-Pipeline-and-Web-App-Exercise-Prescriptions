@@ -147,6 +147,7 @@ def app():
         st.write(st.session_state)
         if st.session_state.Show_Block_Progress==False:
             continued_workout=check_if_in_progress_exists(conn, name)
+            st.write(continued_workout)
             if continued_workout is not None:   
                 #st.session_state['continued'] = True
                 st.stop()
