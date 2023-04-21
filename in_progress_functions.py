@@ -84,7 +84,7 @@ def check_if_in_progress_exists(conn, name):
             st.write("## Unfinished workout in progress! Would you like to continue?")
             # continue_workout = st.button("Continue Workout")
             # if continue_workout or st.session_state.continued:
-            #st.session_state['continued'] = True
+            st.session_state['continued'] = True
             exercises_df = pd.read_sql("SELECT * FROM exercises", conn)
             exercises_df.set_index("id", inplace=True)
             exercises_dict = exercises_df["exercise"].to_dict()
