@@ -52,9 +52,6 @@ def test(conn, in_progress, name, workout_number, notes):
 
     return perf_exercise_ids, in_progress
 
-def set_state():
-    st.session_state.continued = True
-
 
 #In progress==edited_df
 def update_in_progress_workout(conn, in_progress, name, workout_number, notes=None):
@@ -132,11 +129,9 @@ def check_if_in_progress_exists(conn, name):
             #df_2['Done']=[False for _ in range(len(df.index))]
             continued_workout=st.experimental_data_editor(df, num_rows='dynamic', key='continued_workout')
             try:
-                # if not (continued_workout.equals(df)):
-                st.write(st.session_state['continued_workout'])
-                # diff_rows = continued_workout[continued_workout != df_2].dropna(how='all').index
-                # diff_rows=continued_workout.loc[diff_rows]
-                update_in_progress_workout(conn, continued_workout, name, workout_number)
+                if not (continued_workout.equals(df)):
+                    st.write(st.session_state['continued_workout'])
+                    update_in_progress_workout(conn, continued_workout, name, workout_number)
             except ValueError as e:
                 if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                     st.error("Make sure to hit the checkbox after entering a new exercise")
