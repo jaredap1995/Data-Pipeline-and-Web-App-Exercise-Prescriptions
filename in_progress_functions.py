@@ -62,6 +62,7 @@ def update_in_progress_workout(conn, in_progress, name, workout_number, notes=No
     # st.write(in_progress)
     #st.write(workout_number)
     in_progress=pd.DataFrame(in_progress)
+    st.dataframe(in_progress)
 
     while True:
         if in_progress.shape[0] > 0:
