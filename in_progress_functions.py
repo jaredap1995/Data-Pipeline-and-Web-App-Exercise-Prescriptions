@@ -105,10 +105,10 @@ def check_if_in_progress_exists(conn, name):
             df = df.assign(Exercise=df['Exercise'].map(exercises_dict))
             continued_workout=st.experimental_data_editor(df, num_rows='dynamic', key='edited_workout')
             try:
-                if not (continued_workout.equals(df)):
-                    # st.session_state['continued_workout'] = True
-                    st.write(st.session_state['edited_workout'])
-                    update_in_progress_workout(conn, continued_workout, name, workout_number)
+                
+                 # st.session_state['continued_workout'] = True
+                st.write(st.session_state['edited_workout'])
+                update_in_progress_workout(conn, continued_workout, name, workout_number)
             except ValueError as e:
                 if str(e) == "Cannot mask with non-boolean array containing NA / NaN values":
                     st.error("Make sure to hit the checkbox after entering a new exercise")
