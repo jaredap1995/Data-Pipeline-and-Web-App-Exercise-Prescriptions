@@ -18,6 +18,7 @@ from testing_coach_and_prescriptions import prescribe_block
 from track_block_progress import check_if_workout_performed, show_progress_in_block
 from update_block import update_workout_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
+from visualization_functions import pull_visuals
 
 def show_new_workout():
     st.write("Feature coming soon! :)")
@@ -199,6 +200,16 @@ def app():
                     st.success("Data has been submitted.")
                     time.sleep(1)
                     st.experimental_rerun()
+
+
+        #Visualize Training Functionality
+        visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
+        if 'visualize_training' not in st.session_state:
+            st.session_state['visualize_training']=False
+        if visualize_training_button or st.session_state.visualize_training:
+            st.session_state['visualize_training']=True
+            pull_visuals(conn, name)
+
 
         #Track Weight Functionality
         track_progress_button = st.button("View Weight Progress", help="""Track your weightlifting progress by selecting an exercise 
