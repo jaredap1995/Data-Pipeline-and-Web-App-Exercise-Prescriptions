@@ -215,7 +215,7 @@ def pull_visuals (conn, name):
 
     merged_df=first_workout_actual_list[0]
     for df in first_workout_actual_list[1:]:
-        merged_df=pd.merge(merged_df, df, on=['Exercise', 'Weight'], how='outer')
+        merged_df=pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('_1', '_2'))
     
     st.dataframe(merged_df)
 
