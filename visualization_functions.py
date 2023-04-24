@@ -226,16 +226,17 @@ def pull_visuals (conn, name):
     first_workout_actual_list = weight_a[::num_workouts]
     second_workout_actual_list = weight_a[num_workouts-1::num_workouts]
 
-    merged_df = first_workout_actual_list[0]
-    suffixes = [f'_{i}' for i in range(len(first_workout_actual_list) - 1)]
-    for i, df in enumerate(first_workout_actual_list[1:]):
-        merged_df = pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
+    # merged_df = first_workout_actual_list[0]
+    # suffixes = [f'_{i}' for i in range(len(first_workout_actual_list) - 1)]
+    # for i, df in enumerate(first_workout_actual_list[1:]):
+    #     merged_df = pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
 
-    merged_df.index = merged_df['Exercise']
-    merged_df = merged_df.drop(columns='Exercise')
-    st.write(columns_headings)
+    # merged_df.index = merged_df['Exercise']
+    # merged_df = merged_df.drop(columns='Exercise')
+    # st.write(columns_headings)
     # merged_df.columns = columns_headings
-    st.dataframe(merged_df)
+    concat_df=pd.concat([first_workout_actual_list], axis=0)
+    st.dataframe(concat_df)
 
     st.stop()
     merged_df = second_workout_actual_list[0]
