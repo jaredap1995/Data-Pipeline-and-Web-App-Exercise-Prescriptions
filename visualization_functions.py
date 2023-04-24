@@ -216,6 +216,12 @@ def pull_visuals (conn, name):
     for df in first_workout_actual_list:
         st.dataframe(df)
 
+    merged_df=first_workout_actual_list[0]
+    for df in first_workout_actual_list[1:]:
+        merged_df=pd.merge(merged_df, df, on='Exercise', how='outer')
+    
+    st.dataframe(merged_df)
+
     #Weight Actuals Indexing
     # index_1 = ['Exercise', 'Weight'] * len(actuals)
     # index_2 = [f"Workout Number {i}" for i in range(len(actuals))]
