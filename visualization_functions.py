@@ -213,12 +213,9 @@ def pull_visuals (conn, name):
     first_workout_actual_list=weight_a[::num_workouts]
     second_workout_actual_list=weight_a[num_workouts-1::num_workouts]
 
-    for df in first_workout_actual_list:
-        st.dataframe(df)
-
     merged_df=first_workout_actual_list[0]
     for df in first_workout_actual_list[1:]:
-        merged_df=pd.merge(merged_df, df, on='Exercise', how='outer')
+        merged_df=pd.merge(merged_df, df, on=['Exercise', 'Weight'], how='outer')
     
     st.dataframe(merged_df)
 
