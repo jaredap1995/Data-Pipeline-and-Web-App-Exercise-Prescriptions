@@ -215,7 +215,7 @@ def pull_visuals (conn, name):
     weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
     st.dataframe(weight_actuals_df)
     
-    weight_actuals_df.columns=pd.MultiIndex.from_tuples([(index_1[i], f'{index_1[i]}_{i+1}') for i in range(len(index_1))])
+    weight_actuals_df.columns=pd.Index([index_1[i] for i in range(len(index_1))])
     st.dataframe(weight_actuals_df)
     st.stop()
     
