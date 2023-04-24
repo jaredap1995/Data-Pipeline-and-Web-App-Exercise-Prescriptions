@@ -222,8 +222,8 @@ def pull_visuals (conn, name):
     """Will come back and change the number one below, needs to be iteration for however many workouts per week-1::workouts_per_week"""
 
     second_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::2]
-    first_workout_of_week_actual_weight.index=dfs[0]['Exercise']
-    second_workout_of_week_actual_weight.index=dfs[1]['Exercise']
+    first_workout_of_week_actual_weight.index=actuals[0]['Exercise']
+    second_workout_of_week_actual_weight.index=actuals[1]['Exercise']
 
     #Prescribed weights
     first_workout_of_week_prescribed_weight=weight_prescribed_df.iloc[:,::2]
