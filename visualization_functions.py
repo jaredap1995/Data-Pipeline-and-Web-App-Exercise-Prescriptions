@@ -217,14 +217,11 @@ def pull_visuals (conn, name):
     col_names_p = [f"Workout Number {i}" for i in range(len(dfs))]
     weight_prescribed_df.columns=col_names_p
 
-    st.write(weight_actuals_df.index)
-    st.stop()
-
     #Actual weights
-    first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,::workkouts_per_week]
+    first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,::2]
     """Will come back and change the number one below, needs to be iteration for however many workouts per week-1::workouts_per_week"""
 
-    second_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::workkouts_per_week]
+    second_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::2]
     first_workout_of_week_actual_weight.index=dfs[0]['Exercise']
     second_workout_of_week_actual_weight.index=dfs[1]['Exercise']
 
