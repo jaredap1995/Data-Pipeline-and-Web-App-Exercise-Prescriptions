@@ -4,6 +4,6 @@ openpyxl==3.0.10
 pandas==1.5.3
 plotly==5.9.0
 protobuf==3.17.3
-psycopg2==2.9.3
+psycopg2-binary==2.9.3
 PyDrive2==1.15.1
 streamlit==1.20.0
