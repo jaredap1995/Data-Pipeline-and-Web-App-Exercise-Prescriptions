@@ -43,7 +43,7 @@ def grab_workouts_for_visualization(conn, name):
     prescriptions=np.asarray(prescriptions)
 
     cursor.execute(f"""select workouts_per_week from blocks where id ={block_id}""")
-    num_workouts=cursor.fetchone()[0]
+    workouts_per_week=cursor.fetchone()[0]
 
     block = pd.DataFrame(prescriptions[:, 2:7], columns=['Workout Number', 'Exercise', 'Sets', 'Reps', 'Weight'])
     block.set_index('Workout Number', inplace=True)
@@ -68,12 +68,12 @@ def grab_workouts_for_visualization(conn, name):
         except:
             pass
         
-    num_weeks = len(dfs) // num_workouts
+    num_weeks = len(dfs) // workouts_per_week
         
-    actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=num_workouts, dfs=dfs, actuals=actuals)
+    actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=workouts_per_week, dfs=dfs, actuals=actuals)
 
 
-    return actuals, dfs, num_weeks, num_workouts
+    return actuals, dfs, num_weeks, workouts_per_week
 
 
 def weight_charts_per_workout(prescribed_df, actual_df, columns, num_weeks, num_workouts_per_week):
@@ -209,12 +209,13 @@ def link_workout_number_to_weeks(num_workouts_per_week, num_weeks):
 
 def pull_visuals (conn, name):
 
-    actuals, dfs, num_weeks, num_workouts=grab_workouts_for_visualization(conn=conn, name=name)
+    actuals, dfs, num_weeks, workkouts_per_week=grab_workouts_for_visualization(conn=conn, name=name)
 
-    workkouts_per_week=num_workouts/num_weeks
+    num_workouts = len(dfs)
+    st.write(num_workouts)
     st.write(workkouts_per_week)
     st.write(num_weeks)
-    st.write(num_workouts)
+    st.stop()
     output=link_workout_number_to_weeks(num_workouts_per_week=workkouts_per_week, num_weeks=num_weeks)
 
     columns_headings = [f'Week {i}' for i in range(1, num_weeks+1)]
