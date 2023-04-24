@@ -233,6 +233,7 @@ def pull_visuals (conn, name):
     merged_df = merged_df.drop(columns='Exercise')
     second_column_headings=[f'Week {i}' for i in range(1, len(merged_df.columns)+1)]
     merged_df.columns = second_column_headings
+    merged_df['Week 5']=np.nan
     st.dataframe(merged_df)
     
 
