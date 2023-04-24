@@ -206,6 +206,7 @@ def pull_visuals (conn, name):
 
     workkouts_per_week=num_workouts/num_weeks
 
+    columns_headinngs=[f'Week {i}' for i in range(1, num_weeks+1)]
 
     weight_p=[i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
     weight_a=[i[['Exercise','Weight']] for i in actuals]
@@ -217,7 +218,10 @@ def pull_visuals (conn, name):
     suffixes = [f'_{i}' for i in range(len(first_workout_actual_list) - 1)]
     for i, df in enumerate(first_workout_actual_list[1:]):
         merged_df=pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
+
+    merged_df.columns=columns_headinngs
     st.dataframe(merged_df)
+    
 
     #Weight Actuals Indexing
     # index_1 = ['Exercise', 'Weight'] * len(actuals)
