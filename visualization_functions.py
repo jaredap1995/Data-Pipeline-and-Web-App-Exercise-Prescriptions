@@ -212,8 +212,10 @@ def pull_visuals (conn, name):
     actuals, dfs, num_weeks, num_workouts=grab_workouts_for_visualization(conn=conn, name=name)
 
     workkouts_per_week=num_workouts/num_weeks
-
-    link_workout_number_to_weeks(num_workouts_per_week=workkouts_per_week, num_weeks=num_weeks)
+    st.write(workkouts_per_week)
+    st.write(num_weeks)
+    st.write(num_workouts)
+    output=link_workout_number_to_weeks(num_workouts_per_week=workkouts_per_week, num_weeks=num_weeks)
 
     columns_headings = [f'Week {i}' for i in range(1, num_weeks+1)]
 
