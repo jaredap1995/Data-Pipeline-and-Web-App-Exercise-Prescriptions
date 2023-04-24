@@ -206,22 +206,22 @@ def pull_visuals (conn, name):
 
     workkouts_per_week=num_workouts/num_weeks
 
-    columns_headinngs=[f'Week {i}' for i in range(1, num_weeks+1)]
+    columns_headings = [f'Week {i}' for i in range(1, num_weeks+1)]
 
-    weight_p=[i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
-    weight_a=[i[['Exercise','Weight']] for i in actuals]
+    weight_p = [i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
+    weight_a = [i[['Exercise','Weight']] for i in actuals]
 
-    first_workout_actual_list=weight_a[::num_workouts]
-    second_workout_actual_list=weight_a[num_workouts-1::num_workouts]
+    first_workout_actual_list = weight_a[::num_workouts]
+    second_workout_actual_list = weight_a[num_workouts-1::num_workouts]
 
-    merged_df=first_workout_actual_list[0]
+    merged_df = first_workout_actual_list[0]
     suffixes = [f'_{i}' for i in range(len(first_workout_actual_list) - 1)]
     for i, df in enumerate(first_workout_actual_list[1:]):
-        merged_df=pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
+        merged_df = pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
 
-    merged_df.index=merged_df['Exercise']
-    merged_df=merged_df.drop(columns='Exercise')
-    merged_df.columns=columns_headinngs
+    merged_df.index = merged_df['Exercise']
+    merged_df = merged_df.drop(columns='Exercise')
+    merged_df.columns = columns_headings
     st.dataframe(merged_df)
 
     merged_df = second_workout_actual_list[0]
@@ -231,10 +231,16 @@ def pull_visuals (conn, name):
 
     merged_df.index = merged_df['Exercise']
     merged_df = merged_df.drop(columns='Exercise')
-    second_column_headings=[f'Week {i}' for i in range(1, len(merged_df.columns)+1)]
-    merged_df.columns = second_column_headings
-    merged_df['Week 5']=np.nan
+
+    # Add NaN column for missing weeks
+    if len(merged_df.columns) < num_weeks:
+        missing_weeks = num_weeks - len(merged_df.columns)
+        for i in range(missing_weeks):
+            merged_df[f'Week {len(merged_df.columns) + 1}'] = pd.Series([np.nan] * len(merged_df), name=f'Week {len(merged_df.columns) + 1}')
+
+    merged_df.columns = [f'Week {i}' for i in range(1, len(merged_df.columns) + 1)]
     st.dataframe(merged_df)
+
     
 
     #Weight Actuals Indexing
