@@ -219,6 +219,8 @@ def pull_visuals (conn, name):
     for i, df in enumerate(first_workout_actual_list[1:]):
         merged_df=pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
 
+    merged_df.index=merged_df['Exercise']
+    merged_df=merged_df.drop(columns='Exercise')
     merged_df.columns=columns_headinngs
     st.dataframe(merged_df)
     
