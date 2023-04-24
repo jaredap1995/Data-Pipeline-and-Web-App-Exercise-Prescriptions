@@ -206,7 +206,7 @@ def pull_visuals (conn, name):
 
     workkouts_per_week=num_workouts/num_weeks
 
-    columns_headinngs=['Exercise', f'Week {i}' for i in range(1, num_weeks+1)]
+    columns_headinngs=[f'Week {i}' for i in range(1, num_weeks+1)]
 
     weight_p=[i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
     weight_a=[i[['Exercise','Weight']] for i in actuals]
