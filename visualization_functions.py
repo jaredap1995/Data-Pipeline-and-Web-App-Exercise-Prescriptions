@@ -206,16 +206,18 @@ def pull_visuals (conn, name):
 
     workkouts_per_week=num_workouts/num_weeks
 
+
     weight_p=[i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
     weight_a=[i[['Exercise','Weight']] for i in actuals]
 
-    col_names_a = [f"Workout Number {i}" for i in range(len(actuals))]
+    index_1 = ['Exercise', 'Weight'] * 9
+    index_2 = [f"Workout Number {i}" for i in range(len(actuals))]
     weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
     st.dataframe(weight_actuals_df)
     
 
-    st.write(col_names_a)
-    weight_actuals_df.columns=col_names_a
+    weight_actuals_df.columns=index_1
+    st.dataframe(weight_actuals_df)
     st.stop()
     
     
