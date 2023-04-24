@@ -210,8 +210,8 @@ def pull_visuals (conn, name):
     weight_p=[i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
     weight_a=[i[['Exercise','Weight']] for i in actuals]
 
-    first_workout_actual_list=weight_a[::len(num_workouts)]
-    second_workout_actual_list=weight_a[len(num_workouts)-1::len(num_workouts)]
+    first_workout_actual_list=weight_a[::num_workouts]
+    second_workout_actual_list=weight_a[num_workouts-1::num_workouts]
 
     for df in first_workout_actual_list:
         st.dataframe(df)
