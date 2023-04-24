@@ -2,8 +2,6 @@ import numpy as np
 import pandas as pd
 import psycopg2
 import plotly.graph_objs as go
-import plotly.offline as pyo
-import seaborn as sns
 from plotly.subplots import make_subplots
 import itertools
 import math
