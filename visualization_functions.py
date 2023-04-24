@@ -206,19 +206,20 @@ def pull_visuals (conn, name):
 
     workkouts_per_week=num_workouts/num_weeks
 
-    weight_p=[i['Weight'].reset_index(drop=True) for i in dfs]
-    weight_a=[i['Weight'] for i in actuals]
+    weight_p=[i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
+    weight_a=[i[['Exercise','Weight']] for i in actuals]
 
     col_names_a = [f"Workout Number {i}" for i in range(len(actuals))]
-    weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
+    weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=False)
 
     weight_actuals_df.columns=col_names_a
-    weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=True)
+    weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=False)
     col_names_p = [f"Workout Number {i}" for i in range(len(dfs))]
     weight_prescribed_df.columns=col_names_p
 
     st.dataframe(weight_prescribed_df)
     st.dataframe(weight_actuals_df)
+    st.stop()
 
     #Actual weights
     first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,::2].dropna(how='all')
