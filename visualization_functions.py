@@ -225,6 +225,7 @@ def pull_visuals (conn, name):
 
     first_workout_actual_list = weight_a[::num_workouts]
     second_workout_actual_list = weight_a[num_workouts-1::num_workouts]
+    st.dataframe(weight_a)
 
     # merged_df = first_workout_actual_list[0]
     # suffixes = [f'_{i}' for i in range(len(first_workout_actual_list) - 1)]
