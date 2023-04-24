@@ -214,9 +214,9 @@ def pull_visuals (conn, name):
     second_workout_actual_list=weight_a[num_workouts-1::num_workouts]
 
     merged_df=first_workout_actual_list[0]
+    suffixes = [f'_{i}' for i in range(len(first_workout_actual_list) - 1)]
     for df in first_workout_actual_list[1:]:
-        merged_df=pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=(f'_{i}' for i in range(len(first_workout_actual_list[1:]))))
-    
+        merged_df=pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
     st.dataframe(merged_df)
 
     #Weight Actuals Indexing
