@@ -220,6 +220,8 @@ def pull_visuals (conn, name):
     columns_headings = [f'Week {i}' for i in range(1, num_weeks+1)]
 
     weight_p = [i.reset_index() for i in dfs]
+    st.write(weight_p[0])
+    st.stop()
     weight_p=[i[['Workout Number','Exercise', 'Weight']] for i in dfs]
     weight_a = [i[['Workout Number','Exercise','Weight']] for i in actuals]
 
