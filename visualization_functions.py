@@ -214,9 +214,8 @@ def pull_visuals (conn, name):
     st.dataframe(weight_actuals_df)
     
 
-
-    weight_actuals_df.columns=col_names_a
     st.write(col_names_a)
+    weight_actuals_df.columns=col_names_a
     st.stop()
     
     
