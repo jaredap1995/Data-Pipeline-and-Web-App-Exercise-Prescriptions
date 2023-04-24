@@ -224,9 +224,18 @@ def pull_visuals (conn, name):
     first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,::2]
     """Will come back and change the number one below, needs to be iteration for however many workouts per week-1::workouts_per_week"""
 
+    first_workout_of_week_indexes=actuals[::2]
+    df_with_longest_index_1 = max(first_workout_of_week_indexes, key=lambda df: len(df.index))
+    first_workout_of_week_actual_weight.index=df_with_longest_index_1['Exercise']
+
     second_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::2]
-    first_workout_of_week_actual_weight.index=actuals[0]['Exercise']
-    second_workout_of_week_actual_weight.index=actuals[1]['Exercise']
+    second_workout_of_week_indexes=actuals[1::2]
+    df_with_longest_index_2 = max(second_workout_of_week_indexes, key=lambda df: len(df.index))
+    second_workout_of_week_actual_weight.index=df_with_longest_index_2['Exercise']
+
+    st.dataframe(first_workout_of_week_actual_weight)
+    st.dataframe(second_workout_of_week_actual_weight)
+    st.stop()
 
     #Prescribed weights
     first_workout_of_week_prescribed_weight=weight_prescribed_df.iloc[:,::2]
@@ -234,11 +243,10 @@ def pull_visuals (conn, name):
     first_workout_of_week_prescribed_weight.index=dfs[0]['Exercise']
     second_workout_of_week_prescribed_weight.index=dfs[1]['Exercise']
 
-    st.dataframe(first_workout_of_week_prescribed_weight)
-    st.dataframe(second_workout_of_week_prescribed_weight)
-    st.dataframe(first_workout_of_week_actual_weight)
-    st.dataframe(second_workout_of_week_actual_weight)
-    st.stop()
+    # st.dataframe(first_workout_of_week_prescribed_weight)
+    # st.dataframe(second_workout_of_week_prescribed_weight)
+    # st.dataframe(first_workout_of_week_actual_weight)
+    # st.dataframe(second_workout_of_week_actual_weight)
 
 
     analysis_dfs=[first_workout_of_week_actual_weight, second_workout_of_week_actual_weight, first_workout_of_week_prescribed_weight, second_workout_of_week_prescribed_weight]
