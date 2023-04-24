@@ -198,6 +198,13 @@ def weight_charts_per_exercise(df, df_actual, num_weeks, num_workouts_per_week):
 
     return fig
 
+#Helper Function
+def link_workout_number_to_weeks(num_workouts_per_week, num_weeks):
+    total_workouts = num_weeks * num_workouts_per_week
+    numbers = list(range(0, total_workouts))
+    output = [(tuple(numbers[i:i+num_workouts_per_week]), i // num_workouts_per_week) for i in range(0, total_workouts, num_workouts_per_week)]
+
+    return output
 
 
 def pull_visuals (conn, name):
@@ -206,10 +213,12 @@ def pull_visuals (conn, name):
 
     workkouts_per_week=num_workouts/num_weeks
 
+    link_workout_number_to_weeks(num_workouts_per_week=workkouts_per_week, num_weeks=num_weeks)
+
     columns_headings = [f'Week {i}' for i in range(1, num_weeks+1)]
 
-    weight_p = [i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
-    weight_a = [i[['Exercise','Weight']] for i in actuals]
+    weight_p = [i[['Workout Number','Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
+    weight_a = [i[['Workout Number','Exercise','Weight']] for i in actuals]
 
     first_workout_actual_list = weight_a[::num_workouts]
     second_workout_actual_list = weight_a[num_workouts-1::num_workouts]
@@ -224,6 +233,7 @@ def pull_visuals (conn, name):
     merged_df.columns = columns_headings
     st.dataframe(merged_df)
 
+    st.stop()
     merged_df = second_workout_actual_list[0]
     suffixes = [f'_{i}' for i in range(len(second_workout_actual_list) - 1)]
     for i, df in enumerate(second_workout_actual_list[1:]):
