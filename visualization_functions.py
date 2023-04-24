@@ -231,7 +231,8 @@ def pull_visuals (conn, name):
 
     merged_df.index = merged_df['Exercise']
     merged_df = merged_df.drop(columns='Exercise')
-    # merged_df.columns = columns_headinngs
+    second_column_headings=[f'Week {i}' for i in range(len(merged_df.columns))]
+    merged_df.columns = second_column_headings
     st.dataframe(merged_df)
     
 
