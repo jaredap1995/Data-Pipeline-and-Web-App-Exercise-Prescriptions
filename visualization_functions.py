@@ -214,13 +214,13 @@ def pull_visuals (conn, name):
     index_1 = ['Exercise', 'Weight'] * len(actuals)
     index_2 = [f"Workout Number {i}" for i in range(len(actuals))]
     weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
-    weight_actuals_df.columns=pd.Index([f'{index_1[i]}_{i}' for i in range(len(index_1))])
+    weight_actuals_df.columns=pd.Index([f'actual_{index_1[i]}_{i}' for i in range(len(index_1))])
     
     #Weight Prescribed Indexing
     index_1 = ['Exercise', 'Weight'] * len(dfs)
     index_2 = [f"Workout Number {i}" for i in range(len(dfs))]
     weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=True)
-    weight_prescribed_df.columns=pd.Index([f'{index_1[i]}_{i}' for i in range(len(index_1))])
+    weight_prescribed_df.columns=pd.Index([f'prescribed_{index_1[i]}_{i}' for i in range(len(index_1))])
 
     st.dataframe(weight_prescribed_df)
     st.dataframe(weight_actuals_df)
