@@ -210,23 +210,27 @@ def pull_visuals (conn, name):
     weight_p=[i[['Exercise', 'Weight']].reset_index(drop=True) for i in dfs]
     weight_a=[i[['Exercise','Weight']] for i in actuals]
 
+    for df in weight_a:
+        st.dataframe(df)
+
     #Weight Actuals Indexing
-    index_1 = ['Exercise', 'Weight'] * len(actuals)
-    index_2 = [f"Workout Number {i}" for i in range(len(actuals))]
-    weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
-    weight_actuals_df.columns=pd.Index([f'actual_{index_1[i]}_{i}' for i in range(len(index_1))])
+    # index_1 = ['Exercise', 'Weight'] * len(actuals)
+    # index_2 = [f"Workout Number {i}" for i in range(len(actuals))]
+    # weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
+    # weight_actuals_df.columns=pd.Index([f'actual_{index_1[i]}_{i}' for i in range(len(index_1))])
     
-    #Weight Prescribed Indexing
-    index_1 = ['Exercise', 'Weight'] * len(dfs)
-    index_2 = [f"Workout Number {i}" for i in range(len(dfs))]
-    weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=True)
-    weight_prescribed_df.columns=pd.Index([f'prescribed_{index_1[i]}_{i}' for i in range(len(index_1))])
+    # #Weight Prescribed Indexing
+    # index_1 = ['Exercise', 'Weight'] * len(dfs)
+    # index_2 = [f"Workout Number {i}" for i in range(len(dfs))]
+    # weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=True)
+    # weight_prescribed_df.columns=pd.Index([f'prescribed_{index_1[i]}_{i}' for i in range(len(index_1))])
 
-    st.dataframe(weight_prescribed_df)
-    st.dataframe(weight_actuals_df)
+    # st.dataframe(weight_prescribed_df)
+    # st.dataframe(weight_actuals_df)
 
+    st.stop()
     #Actual weights
-                                    #Going to be 4 here because of increase in columns
+
     first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::4].dropna(how='all')
     """Will come back and change the number one below, needs to be iteration for however many workouts per week-1::workouts_per_week"""
 
