@@ -235,7 +235,7 @@ def pull_visuals (conn, name):
     # merged_df = merged_df.drop(columns='Exercise')
     # st.write(columns_headings)
     # merged_df.columns = columns_headings
-    concat_df=pd.concat([first_workout_actual_list], axis=0)
+    concat_df=pd.concat(first_workout_actual_list, axis=0)
     st.dataframe(concat_df)
 
     st.stop()
