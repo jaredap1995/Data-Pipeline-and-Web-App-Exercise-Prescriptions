@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import psycopg2
-import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 import plotly.offline as pyo
 import seaborn as sns
