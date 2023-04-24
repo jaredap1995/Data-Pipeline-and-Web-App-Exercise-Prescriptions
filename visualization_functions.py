@@ -212,9 +212,6 @@ def pull_visuals (conn, name):
     actuals, dfs, num_weeks, workkouts_per_week=grab_workouts_for_visualization(conn=conn, name=name)
 
     num_workouts = len(dfs)
-    st.write(num_workouts)
-    st.write(workkouts_per_week)
-    st.write(num_weeks)
     output=link_workout_number_to_weeks(num_workouts_per_week=workkouts_per_week, num_weeks=num_weeks)
 
     columns_headings = [f'Week {i}' for i in range(1, num_weeks+1)]
@@ -223,21 +220,44 @@ def pull_visuals (conn, name):
     weight_p=[i[['Workout Number','Exercise', 'Weight']] for i in dfs]
     weight_a = [i[['Workout Number','Exercise','Weight']] for i in actuals]
 
-    first_workout_actual_list = weight_a[::num_workouts]
-    second_workout_actual_list = weight_a[num_workouts-1::num_workouts]
-    st.dataframe(weight_a)
+    #Organize Actuals into Dataframes for wieght
+    concat_df=pd.concat(weight_a, axis=0)
+    concat_df[concat_df['Workout Number']%3==0]
 
-    # merged_df = first_workout_actual_list[0]
-    # suffixes = [f'_{i}' for i in range(len(first_workout_actual_list) - 1)]
-    # for i, df in enumerate(first_workout_actual_list[1:]):
-    #     merged_df = pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
 
-    # merged_df.index = merged_df['Exercise']
-    # merged_df = merged_df.drop(columns='Exercise')
-    # st.write(columns_headings)
-    # merged_df.columns = columns_headings
-    concat_df=pd.concat(first_workout_actual_list, axis=0)
-    st.dataframe(concat_df)
+    workout_specific_dfs=[]
+    #Seperate Workouts based on workouts per week
+    for i in range(workkouts_per_week):
+        workout_numbers = [i + (j * workkouts_per_week) for j in range(num_weeks)]
+        filtered_df = concat_df[concat_df['Workout Number'].isin(workout_numbers)]
+        workout_specific_dfs.append(filtered_df)
+
+    grouped=[]
+    for df in workout_specific_dfs:
+        weight=df.groupby(['Workout Number', 'Exercise']).sum()
+        weight=weight.unstack(level=0)
+        weight=weight.droplevel(0, axis=1)
+        grouped.append(weight)
+        
+    result = []
+    values_to_match = [item for tpl in output for item in tpl[0]]
+    for tpl, df in zip(output, grouped):
+        weeks=[]
+        for col in df.columns:
+            if int(col) in values_to_match:
+                result_value = [x[1] for x in output if int(col) in x[0]][0]
+                weeks.append(result_value)
+        result.append(weeks)
+
+        
+    for df,weeks in zip(grouped,result):
+        df_columns=[]
+        for week in weeks:
+            column=f'Week {week+1}'
+            df_columns.append(column)
+        df.columns=df_columns
+        st.dataframe(df)
+
 
     st.stop()
     merged_df = second_workout_actual_list[0]
