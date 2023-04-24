@@ -223,6 +223,16 @@ def pull_visuals (conn, name):
     merged_df=merged_df.drop(columns='Exercise')
     merged_df.columns=columns_headinngs
     st.dataframe(merged_df)
+
+    merged_df = second_workout_actual_list[0]
+    suffixes = [f'_{i}' for i in range(len(second_workout_actual_list) - 1)]
+    for i, df in enumerate(second_workout_actual_list[1:]):
+        merged_df = pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
+
+    merged_df.index = merged_df['Exercise']
+    merged_df = merged_df.drop(columns='Exercise')
+    merged_df.columns = columns_headinngs
+    st.dataframe(merged_df)
     
 
     #Weight Actuals Indexing
