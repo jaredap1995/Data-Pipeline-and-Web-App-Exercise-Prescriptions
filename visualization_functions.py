@@ -217,6 +217,9 @@ def pull_visuals (conn, name):
     col_names_p = [f"Workout Number {i}" for i in range(len(dfs))]
     weight_prescribed_df.columns=col_names_p
 
+    st.dataframe(weight_prescribed_df)
+    st.dataframe(weight_actuals_df)
+
     #Actual weights
     first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,::2]
     """Will come back and change the number one below, needs to be iteration for however many workouts per week-1::workouts_per_week"""
