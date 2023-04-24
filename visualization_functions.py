@@ -210,10 +210,10 @@ def pull_visuals (conn, name):
     weight_a=[i[['Exercise','Weight']] for i in actuals]
 
     col_names_a = [f"Workout Number {i}" for i in range(len(actuals))]
-    weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=False)
+    weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
 
     weight_actuals_df.columns=col_names_a
-    weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=False)
+    weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=True)
     col_names_p = [f"Workout Number {i}" for i in range(len(dfs))]
     weight_prescribed_df.columns=col_names_p
 
