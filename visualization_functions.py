@@ -214,16 +214,12 @@ def pull_visuals (conn, name):
     num_workouts = len(dfs)
     output=link_workout_number_to_weeks(num_workouts_per_week=workkouts_per_week, num_weeks=num_weeks)
 
-    columns_headings = [f'Week {i}' for i in range(1, num_weeks+1)]
-
     dfs = [i.reset_index() for i in dfs]
     weight_p=[i[['Workout Number','Exercise', 'Weight']] for i in dfs]
     weight_a = [i[['Workout Number','Exercise','Weight']] for i in actuals]
 
-    #Organize Actuals into Dataframes for wieght
+    #####Organize Actuals into Dataframes for wieght####
     concat_df=pd.concat(weight_a, axis=0)
-    concat_df[concat_df['Workout Number']%3==0]
-
 
     workout_specific_dfs=[]
     #Seperate Workouts based on workouts per week
@@ -232,16 +228,16 @@ def pull_visuals (conn, name):
         filtered_df = concat_df[concat_df['Workout Number'].isin(workout_numbers)]
         workout_specific_dfs.append(filtered_df)
 
-    grouped=[]
+    actual_dfs=[]
     for df in workout_specific_dfs:
         weight=df.groupby(['Workout Number', 'Exercise']).sum()
         weight=weight.unstack(level=0)
         weight=weight.droplevel(0, axis=1)
-        grouped.append(weight)
+        actual_dfs.append(weight)
         
     result = []
     values_to_match = [item for tpl in output for item in tpl[0]]
-    for tpl, df in zip(output, grouped):
+    for tpl, df in zip(output, actual_dfs):
         weeks=[]
         for col in df.columns:
             if int(col) in values_to_match:
@@ -250,7 +246,42 @@ def pull_visuals (conn, name):
         result.append(weeks)
 
         
-    for df,weeks in zip(grouped,result):
+    for df,weeks in zip(actual_dfs,result):
+        df_columns=[]
+        for week in weeks:
+            column=f'Week {week+1}'
+            df_columns.append(column)
+        df.columns=df_columns
+    
+    ####Organize Prescribed into Dataframes for wieght####
+    concat_df=pd.concat(weight_p, axis=0)
+
+    workout_specific_dfs=[]
+    for i in range(workkouts_per_week):
+        workout_numbers = [i + (j * workkouts_per_week) for j in range(num_weeks)]
+        filtered_df = concat_df[concat_df['Workout Number'].isin(workout_numbers)]
+        workout_specific_dfs.append(filtered_df)
+    
+    
+    prescribed_dfs=[]
+    for df in workout_specific_dfs:
+        weight=df.groupby(['Workout Number', 'Exercise']).sum()
+        weight=weight.unstack(level=0)
+        weight=weight.droplevel(0, axis=1)
+        prescribed_dfs.append(weight)
+        
+    result = []
+    values_to_match = [item for tpl in output for item in tpl[0]]
+    for tpl, df in zip(output, prescribed_dfs):
+        weeks=[]
+        for col in df.columns:
+            if int(col) in values_to_match:
+                result_value = [x[1] for x in output if int(col) in x[0]][0]
+                weeks.append(result_value)
+        result.append(weeks)
+
+        
+    for df,weeks in zip(prescribed_dfs,result):
         df_columns=[]
         for week in weeks:
             column=f'Week {week+1}'
