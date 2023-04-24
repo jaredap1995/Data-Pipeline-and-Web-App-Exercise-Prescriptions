@@ -210,6 +210,7 @@ def pull_visuals (conn, name):
     col_names = [f"Workout Number {i}" for i in range(len(dfs))]
     weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
     st.dataframe(weight_actuals_df)
+    st.write(col_names)
     st.stop()
     weight_actuals_df.columns=col_names
     weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=True)
