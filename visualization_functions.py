@@ -224,17 +224,20 @@ def pull_visuals (conn, name):
 
     st.dataframe(weight_prescribed_df)
     st.dataframe(weight_actuals_df)
-    st.stop()
 
     #Actual weights
-    first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,::2].dropna(how='all')
+                                    #Going to be 4 here because of increase in columns
+    first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::4].dropna(how='all')
     """Will come back and change the number one below, needs to be iteration for however many workouts per week-1::workouts_per_week"""
 
     first_workout_of_week_indexes=actuals[::2]
     df_with_longest_index_1 = max(first_workout_of_week_indexes, key=lambda df: len(df.index))
     first_workout_of_week_actual_weight.index=df_with_longest_index_1['Exercise']
 
-    second_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::2].dropna(how='all')
+    st.dataframe(first_workout_of_week_actual_weight)
+    st.stop()
+
+    second_workout_of_week_actual_weight=weight_actuals_df.iloc[:,2::4].dropna(how='all')
     second_workout_of_week_indexes=actuals[1::2]
     df_with_longest_index_2 = max(second_workout_of_week_indexes, key=lambda df: len(df.index))
     second_workout_of_week_actual_weight.index=df_with_longest_index_2['Exercise']
