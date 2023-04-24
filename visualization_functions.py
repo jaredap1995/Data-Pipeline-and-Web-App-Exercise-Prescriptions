@@ -231,7 +231,7 @@ def pull_visuals (conn, name):
 
     merged_df.index = merged_df['Exercise']
     merged_df = merged_df.drop(columns='Exercise')
-    merged_df.columns = columns_headinngs
+    # merged_df.columns = columns_headinngs
     st.dataframe(merged_df)
     
 
