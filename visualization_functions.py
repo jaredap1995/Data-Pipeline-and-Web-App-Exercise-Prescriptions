@@ -216,6 +216,7 @@ def pull_visuals (conn, name):
     st.write(workkouts_per_week)
     st.write(num_weeks)
     st.write(actuals[0].columns)
+    st.write(dfs[0].columns)
     st.stop()
     output=link_workout_number_to_weeks(num_workouts_per_week=workkouts_per_week, num_weeks=num_weeks)
 
