@@ -309,7 +309,7 @@ def weight_char_per_selected_exercises(name, conn, selected_exercises):
         fig.add_trace(data, row=i+1, col=1)
 
 
-    fig.update_layout(
+    fig.update_layout(height=800, width=1000,
     title=dict(
         text='Weight Progress Over Time',
         x=0,  # Center title horizontally
