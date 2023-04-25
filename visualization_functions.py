@@ -8,6 +8,7 @@ import math
 import re
 import streamlit as st
 from track_block_progress import ordering_function_for_performed_workouts, check_if_workout_performed
+import time
 
 
 def grid_numbers(rows, cols):
@@ -258,7 +259,7 @@ def weight_charts_per_exercise(df, df_actual):
         name=f'Weight Performed',)
 
 
-    return fig
+    return fig, combined_array
 
 #Helper Function
 def link_workout_number_to_weeks(num_workouts_per_week, num_weeks):
@@ -351,10 +352,20 @@ def pull_visuals (conn, name):
         df.columns=df_columns
 
 
-    fig_exercises=weight_charts_per_exercise(grouped_prescribed[0], grouped_actuals[0])
+    fig_all_exercises, exercises_list=weight_charts_per_exercise(grouped_prescribed[0], grouped_actuals[0])
     all_exercises=st.button('View Whole block')
     if all_exercises:
-        st.plotly_chart(fig_exercises)
+        st.plotly_chart(fig_all_exercises)
+    single_exercise=st.button('View Single Exercise')
+    if single_exercise:
+        with st.form(key='exercise_selector'):
+            exercise=st.selectbox('Select Exercise', exercises_list)
+            submitted=st.form_submit_button('Submit')
+            if submitted:
+                st.success('Submitted')
+                time.sleep(3)
+                st.experimental_rerun()
+
 
 
 
