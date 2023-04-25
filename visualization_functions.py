@@ -135,7 +135,7 @@ def weight_charts_per_workout(prescribed_df, actual_df, columns, num_weeks, num_
     return fig
 
 
-def weight_charts_per_exercise(df, df_actual):
+def weight_chart_per_block(df, df_actual):
 
     actual_exercises=df_actual.index.values
     prescribed_exercises=df.index.values
@@ -261,6 +261,67 @@ def weight_charts_per_exercise(df, df_actual):
 
     return fig, combined_array
 
+
+def weight_char_per_selected_exercises(name, conn, selected_exercises):
+    
+    cursor=conn.cursor()
+
+    cursor.execute(f"SELECT id from client where name ='{name}'")
+    client_id=cursor.fetchone()[0]
+
+    dfs=[]
+    bar_charts=[]
+    subplot_titles = [f"{exercise} Weight Over Time" for exercise in selected_exercises]
+    for i, exercise in enumerate(selected_exercises):
+        cursor.execute(f"""
+        SELECT s.session_date, we.weight
+        FROM sessions s
+        JOIN workout_exercises we ON s.id = we.workout_id
+        JOIN exercises e ON we.exercise_id = e.id
+        WHERE s.client_id = {client_id} AND e.exercise = '{exercise}'
+        ORDER BY s.session_date ASC;
+        """
+        )
+
+        rows = cursor.fetchall()
+        df = pd.DataFrame(rows, columns=['Date', "Weight"])
+        dfs.append(df)
+        bar_charts.append(go.Scatter(
+                name=exercise,
+                x=df['Date'],
+                y=df['Weight'],
+                text=df['Weight'], 
+                textposition='middle center',  # Set text positio,  # Set text angle to 0 degrees
+                textfont=dict(size=12),
+                showlegend=True)
+            )
+
+    num_rows=len(selected_exercises)
+    num_cols=1
+    fig = make_subplots(rows=num_rows, cols=num_cols, subplot_titles=subplot_titles)
+
+    for i, data in enumerate(bar_charts):
+        fig.add_trace(data, row=i+1, col=1)
+
+
+    fig.update_layout(
+    title=dict(
+        text='Weight Progress Over Time',
+        x=0,  # Center title horizontally
+        y=0.95   # Adjust vertical position of title
+    ),
+    barmode='group',
+    xaxis_ticktext=list(df.columns),
+    showlegend=True,
+    legend=dict(title='Exercise', groupclick='toggleitem',
+               tracegroupgap=15, font=dict(size=15)),
+    )
+
+    fig.show()
+    
+    return fig
+
+
 #Helper Function
 def link_workout_number_to_weeks(num_workouts_per_week, num_weeks):
     total_workouts = num_weeks * num_workouts_per_week
@@ -352,20 +413,21 @@ def pull_visuals (conn, name):
         df.columns=df_columns
 
 
-    fig_all_exercises, exercises_list=weight_charts_per_exercise(grouped_prescribed[0], grouped_actuals[0])
-    all_exercises=st.button('View Whole block')
+    fig_all_exercises, exercises_list=weight_chart_per_block(grouped_prescribed[0], grouped_actuals[0]) ###Need to add ability to select which workout from the block you wanna visualize###
+    all_exercises=st.button('View All Exercises For a Single Workout')
     if all_exercises:
         st.plotly_chart(fig_all_exercises)
     single_exercise=st.button('View Single Exercise')
     if single_exercise or st.session_state.single_exercise_visual:
         st.session_state['single_exercise_visual']=True
         with st.form(key='exercise_selector'):
-            exercise=st.selectbox('Select Exercise', exercises_list)
+            exercises=st.multiselect('Select Exercise', exercises_list)
             submitted=st.form_submit_button('Submit')
             if submitted:
-                st.success('Submitted')
+                ##Single exercise Function##
+                weight_char_per_selected_exercises(name, conn, exercises)
                 time.sleep(3)
-                st.experimental_rerun()
+
 
 
 
@@ -376,7 +438,7 @@ def pull_visuals (conn, name):
     if view_block:
         fig_workouts=weight_charts_per_workout(first_workout_of_week_prescribed_weight, first_workout_of_week_actual_weight, 
                                first_workout_of_week_actual_weight.columns, num_weeks, num_workouts)
-        fig_exercises=weight_charts_per_exercise(first_workout_of_week_prescribed_weight, 
+        fig_exercises=weight_chart_per_block(first_workout_of_week_prescribed_weight, 
                                                  first_workout_of_week_actual_weight, num_weeks, num_workouts)
         st.plotly_chart(fig_workouts, use_container_width=True)
         st.plotly_chart(fig_exercises, use_container_width=True)
