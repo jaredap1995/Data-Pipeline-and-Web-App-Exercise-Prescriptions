@@ -352,83 +352,13 @@ def pull_visuals (conn, name):
 
 
     fig_exercises=weight_charts_per_exercise(grouped_prescribed[0], grouped_actuals[0])
-    st.plotly_chart(fig_exercises)
+    all_exercises=st.button('View Whole block')
+    if all_exercises:
+        st.plotly_chart(fig_exercises)
 
 
 
     st.stop()
-    merged_df = second_workout_actual_list[0]
-    suffixes = [f'_{i}' for i in range(len(second_workout_actual_list) - 1)]
-    for i, df in enumerate(second_workout_actual_list[1:]):
-        merged_df = pd.merge(merged_df, df, on='Exercise', how='outer', suffixes=('', suffixes[i]))
-
-    merged_df.index = merged_df['Exercise']
-    merged_df = merged_df.drop(columns='Exercise')
-
-    # Add NaN column for missing weeks
-    if len(merged_df.columns) < num_weeks:
-        missing_weeks = num_weeks - len(merged_df.columns)
-        for i in range(missing_weeks):
-            merged_df[f'Week {len(merged_df.columns) + 1}'] = pd.Series([np.nan] * len(merged_df), name=f'Week {len(merged_df.columns) + 1}')
-
-    merged_df.columns = [f'Week {i}' for i in range(1, len(merged_df.columns) + 1)]
-    st.dataframe(merged_df)
-
-    
-
-    #Weight Actuals Indexing
-    # index_1 = ['Exercise', 'Weight'] * len(actuals)
-    # index_2 = [f"Workout Number {i}" for i in range(len(actuals))]
-    # weight_actuals_df = pd.concat(weight_a, axis=1, ignore_index=True)
-    # weight_actuals_df.columns=pd.Index([f'actual_{index_1[i]}_{i}' for i in range(len(index_1))])
-    
-    # #Weight Prescribed Indexing
-    # index_1 = ['Exercise', 'Weight'] * len(dfs)
-    # index_2 = [f"Workout Number {i}" for i in range(len(dfs))]
-    # weight_prescribed_df=pd.concat(weight_p, axis=1, ignore_index=True)
-    # weight_prescribed_df.columns=pd.Index([f'prescribed_{index_1[i]}_{i}' for i in range(len(index_1))])
-
-    # st.dataframe(weight_prescribed_df)
-    # st.dataframe(weight_actuals_df)
-
-    st.stop()
-    #Actual weights
-
-    first_workout_of_week_actual_weight=weight_actuals_df.iloc[:,1::4].dropna(how='all')
-    """Will come back and change the number one below, needs to be iteration for however many workouts per week-1::workouts_per_week"""
-
-    first_workout_of_week_indexes=actuals[::2]
-    df_with_longest_index_1 = max(first_workout_of_week_indexes, key=lambda df: len(df.index))
-    first_workout_of_week_actual_weight.index=df_with_longest_index_1['Exercise']
-
-    st.dataframe(first_workout_of_week_actual_weight)
-    st.stop()
-
-    second_workout_of_week_actual_weight=weight_actuals_df.iloc[:,2::4].dropna(how='all')
-    second_workout_of_week_indexes=actuals[1::2]
-    df_with_longest_index_2 = max(second_workout_of_week_indexes, key=lambda df: len(df.index))
-    second_workout_of_week_actual_weight.index=df_with_longest_index_2['Exercise']
-
-    st.dataframe(first_workout_of_week_actual_weight)
-    st.dataframe(second_workout_of_week_actual_weight)
-    st.stop()
-
-    #Prescribed weights
-    first_workout_of_week_prescribed_weight=weight_prescribed_df.iloc[:,::2]
-    second_workout_of_week_prescribed_weight=weight_prescribed_df.iloc[:,1::2]
-    first_workout_of_week_prescribed_weight.index=dfs[0]['Exercise']
-    second_workout_of_week_prescribed_weight.index=dfs[1]['Exercise']
-
-    # st.dataframe(first_workout_of_week_prescribed_weight)
-    # st.dataframe(second_workout_of_week_prescribed_weight)
-    # st.dataframe(first_workout_of_week_actual_weight)
-    # st.dataframe(second_workout_of_week_actual_weight)
-
-
-    analysis_dfs=[first_workout_of_week_actual_weight, second_workout_of_week_actual_weight, first_workout_of_week_prescribed_weight, second_workout_of_week_prescribed_weight]
-
-    for i in analysis_dfs:
-        i.columns=['Week 1', 'Week 2', 'Week 3', 'Week 4']
 
     view_block=st.button('View Block')
     if view_block:
