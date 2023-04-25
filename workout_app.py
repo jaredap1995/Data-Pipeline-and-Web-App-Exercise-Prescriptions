@@ -43,7 +43,7 @@ def home_page():
     """
     Thank you for visiting my application! 😃
     As this site is constantly evolving I appreciate your patience as I rapidly iterate and 
-    to provide you with the best service possible!
+    attempt to provide the best service possible!
 
     ### 👈 If you are a client select your name from the drop down menu to the left to begin!
 

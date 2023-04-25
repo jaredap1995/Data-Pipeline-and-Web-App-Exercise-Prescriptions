@@ -253,10 +253,16 @@ def weight_chart_per_block(df, df_actual):
         selector=dict(name=f'{paired[0]} prescribed'),
         name=f'Weight Prescribed',)
 
-    fig.update_traces(
-        showlegend=True,
-        selector=dict(name=f'{unpaired[0]} performed'), #Not a perfect strategy but should work for most instances
-        name=f'Weight Performed',)
+    try:
+        fig.update_traces(
+            showlegend=True,
+            selector=dict(name=f'{unpaired[0]} performed'), #Not a perfect strategy but should work for most instances
+            name=f'Weight Performed',)
+    except:
+        fig.update_traces(
+            showlegend=True,
+            selector=dict(name=f'{paired[1]} performed'), #Not a perfect strategy but should work for most instances
+            name=f'Weight Performed',)
 
 
     return fig, combined_array
