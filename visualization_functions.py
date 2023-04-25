@@ -5,6 +5,7 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 import itertools
 import math
+import re
 import streamlit as st
 from track_block_progress import ordering_function_for_performed_workouts, check_if_workout_performed
 
@@ -133,68 +134,128 @@ def weight_charts_per_workout(prescribed_df, actual_df, columns, num_weeks, num_
     return fig
 
 
-def weight_charts_per_exercise(df, df_actual, num_weeks, num_workouts_per_week):
-    # create a list of bar charts for each series in both dataframes
-    bar_charts = []
-    for exercise_1, exercise_2 in zip(df.index, df_actual.index):
-        bar_charts.append(go.Bar(
-            name=f'{exercise_1} prescribed',
-            x=df.columns,
-            y=df.loc[exercise_1],
-            text=df.loc[exercise_1], 
-            textposition='inside',  # Set text position to inside the bars
-            textangle=0,  # Set text angle to 0 degrees
-        textfont=dict(size=12),
-        legendgroup='Prescribed')
-        )
+def weight_charts_per_exercise(df, df_actual):
 
-        bar_charts.append(go.Bar(
-            name=f'{exercise_2} performed',
-            x=df_actual.columns,
-            y=df_actual.loc[exercise_2],
-            text=df_actual.loc[exercise_2], 
-            textposition='inside',  # Set text position to inside the bars
-            textangle=0,  # Set text angle to 0 degrees
-            textfont=dict(size=12),
-        legendgroup='Actual')
-        )
+    actual_exercises=df_actual.index.values
+    prescribed_exercises=df.index.values
+
+    combined_array = np.concatenate((prescribed_exercises, actual_exercises), axis=0)
+    combined_array=np.unique(combined_array)
+    combined_array
+
+    bar_charts_paired = []
+    bar_charts_unpaired=[]
+    unpaired=[]
+    paired=[]
+    for exercise_1 in combined_array:
+        if exercise_1 in df.index.values and exercise_1 in df_actual.index.values:
+            paired.append(exercise_1)
+            bar_charts_paired.append(go.Bar(
+                name=f'{exercise_1} prescribed',
+                x=df.columns,
+                y=df.loc[exercise_1],
+                text=df.loc[exercise_1], 
+                textposition='inside',  # Set text position to inside the bars
+                textangle=0,  # Set text angle to 0 degrees
+                textfont=dict(size=12),
+                showlegend=(exercise_1 == paired[0]),
+                legendgroup='Prescribed')
+            )
+
+            bar_charts_paired.append(go.Bar(
+                name=f'{exercise_1} performed',
+                x=df_actual.columns,
+                y=df_actual.loc[exercise_1],
+                text=df_actual.loc[exercise_1], 
+                textposition='inside',  # Set text position to inside the bars
+                textangle=0,  # Set text angle to 0 degrees
+                textfont=dict(size=12),
+                showlegend=False,
+                legendgroup='Actual')
+            )
+        else:
+            unpaired.append(exercise_1)
+
+    for ex in unpaired:
+        if ex not in df.index.values:
+                bar_charts_unpaired.append(go.Bar(
+                name=f'{ex} performed',
+                x=df_actual.columns,
+                y=df_actual.loc[ex],
+                text=df_actual.loc[ex], 
+                textposition='inside',  # Set text position to inside the bars
+                textangle=0,  # Set text angle to 0 degrees
+                textfont=dict(size=12),
+                showlegend=(ex == unpaired[0]),
+                legendgroup='Actual')
+            )
+        else:
+            bar_charts_unpaired.append(go.Bar(
+                name=f'{ex} prescribed',
+                x=df.columns,
+                y=df.loc[ex],
+                text=df.loc[ex], 
+                textposition='inside',  # Set text position to inside the bars
+                textangle=0,  # Set text angle to 0 degrees
+                textfont=dict(size=12),
+                showlegend=(ex == unpaired[0]),
+                legendgroup='Prescribed')
+            )
+
+    #Creating header for subplots with regex because passing index of the dataframe caused ordering issues     
+    names=[i['name'] for i in bar_charts_paired]
+    names=names[::2]
+    names_2=[i['name'] for i in bar_charts_unpaired]
+    names.extend(names_2)
+    regex_pattern = r' \b(performed|prescribed)\b.*$'
+    output_list = [re.sub(regex_pattern, '', string) for string in names]
 
     num_rows, num_cols=get_subplot_rows_cols(len(df_actual))   
-    
-    fig = make_subplots(rows=num_rows, cols=num_cols, subplot_titles=[f'{i}' for i in df.index])
+
+    fig = make_subplots(rows=num_rows, cols=num_cols, subplot_titles=output_list)
 
     grid=grid_numbers(num_rows, num_cols)
-    
-    iterations=range(1, num_weeks*num_workouts_per_week+1, 2)
-    zipped=zip(grid,iterations)
-    
-    for i,x in zipped: # Update the range to start from 1
-        data = bar_charts[x-1:x+num_workouts_per_week-1]  # Update the indexing to start from 1
-        for bar_chart in data:
-            fig.add_trace(bar_chart, row=i[0], col=i[1])
-    
-    
+
+
+    step=2
+    for i in range(0, len(bar_charts_paired), step):
+        bar_chart1 = bar_charts_paired[i]
+        bar_chart2 = bar_charts_paired[i+1] if i+1 < len(bar_charts_paired) else None
+        x = grid[i//step]  # Calculate the corresponding grid cell for the paired bar charts
+        fig.add_trace(bar_chart1, row=x[0], col=x[1])
+        if bar_chart2:
+            fig.add_trace(bar_chart2, row=x[0], col=x[1])
+
+    for i in range(len(bar_charts_unpaired)):
+        bar_chart1 = bar_charts_unpaired[i]
+        idx = grid.index(x)+1  # Calculate the corresponding grid cell for the paired bar charts
+        fig.add_trace(bar_chart1, row=grid[idx][0], col=grid[idx][1])
+        x=grid[idx]
+
+
     fig.update_layout(
     title=dict(
         text='Weight Comparison Across Block Per Exercise',
-        x=0,  # Center title horizontally
-        y=0.95,   # Adjust vertical position of title
-        font=dict(size=35)),
+        x=0.5,  # Center title horizontally
+        y=0.95   # Adjust vertical position of title
+    ),
     barmode='group',
     xaxis_ticktext=list(df.columns),
     showlegend=True,
-    legend=dict(title='Legend Title', groupclick='togglegroup'),)
+    legend=dict(title='Groups', groupclick='togglegroup',
+               tracegroupgap=15, font=dict(size=15)),
+    )
 
-    # Update legend titles
-    for i in range(num_weeks):
-        fig.update_traces(
-            selector=dict(name=f'{df.index[i]} prescribed'),  # Use legendgroup instead of name
-            name=f'Weight Prescribed')  # Convert index value to string
+    
+    fig.update_traces(showlegend=True,
+        selector=dict(name=f'{paired[0]} prescribed'),
+        name=f'Weight Prescribed',)
 
-        fig.update_traces(
-            showlegend=True,
-            selector=dict(name=f'{df_actual.index[i]} performed' ),
-            name=f'Weight Performed')  # Convert index value to string
+    fig.update_traces(
+        showlegend=True,
+        selector=dict(name=f'{unpaired[0]} performed'), #Not a perfect strategy but should work for most instances
+        name=f'Weight Performed',)
+
 
     return fig
 
@@ -228,16 +289,16 @@ def pull_visuals (conn, name):
         filtered_df = concat_df[concat_df['Workout Number'].isin(workout_numbers)]
         workout_specific_dfs.append(filtered_df)
 
-    actual_dfs=[]
+    grouped_actuals=[]
     for df in workout_specific_dfs:
         weight=df.groupby(['Workout Number', 'Exercise']).sum()
         weight=weight.unstack(level=0)
         weight=weight.droplevel(0, axis=1)
-        actual_dfs.append(weight)
+        grouped_actuals.append(weight)
         
     result = []
     values_to_match = [item for tpl in output for item in tpl[0]]
-    for tpl, df in zip(output, actual_dfs):
+    for tpl, df in zip(output, grouped_actuals):
         weeks=[]
         for col in df.columns:
             if int(col) in values_to_match:
@@ -246,7 +307,7 @@ def pull_visuals (conn, name):
         result.append(weeks)
 
         
-    for df,weeks in zip(actual_dfs,result):
+    for df,weeks in zip(grouped_actuals,result):
         df_columns=[]
         for week in weeks:
             column=f'Week {week+1}'
@@ -263,16 +324,16 @@ def pull_visuals (conn, name):
         workout_specific_dfs.append(filtered_df)
     
     
-    prescribed_dfs=[]
+    grouped_prescribed=[]
     for df in workout_specific_dfs:
         weight=df.groupby(['Workout Number', 'Exercise']).sum()
         weight=weight.unstack(level=0)
         weight=weight.droplevel(0, axis=1)
-        prescribed_dfs.append(weight)
+        grouped_prescribed.append(weight)
         
     result = []
     values_to_match = [item for tpl in output for item in tpl[0]]
-    for tpl, df in zip(output, prescribed_dfs):
+    for tpl, df in zip(output, grouped_prescribed):
         weeks=[]
         for col in df.columns:
             if int(col) in values_to_match:
@@ -281,13 +342,17 @@ def pull_visuals (conn, name):
         result.append(weeks)
 
         
-    for df,weeks in zip(prescribed_dfs,result):
+    for df,weeks in zip(grouped_prescribed,result):
         df_columns=[]
         for week in weeks:
             column=f'Week {week+1}'
             df_columns.append(column)
         df.columns=df_columns
-        st.dataframe(df)
+
+
+    fig_exercises=weight_charts_per_exercise(grouped_prescribed[0], grouped_actuals[0])
+    st.plotly_chart(fig_exercises)
+
 
 
     st.stop()
