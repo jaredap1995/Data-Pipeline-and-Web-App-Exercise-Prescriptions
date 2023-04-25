@@ -244,6 +244,7 @@ def weight_charts_per_exercise(df, df_actual):
     showlegend=True,
     legend=dict(title='Groups', groupclick='togglegroup',
                tracegroupgap=15, font=dict(size=15)),
+               clickmode='event+select'
     )
 
     
