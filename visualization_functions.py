@@ -245,7 +245,6 @@ def weight_chart_per_block(df, df_actual):
     showlegend=True,
     legend=dict(title='Groups', groupclick='togglegroup',
                tracegroupgap=15, font=dict(size=15)),
-               clickmode='event+select'
     )
 
     
@@ -422,6 +421,7 @@ def pull_visuals (conn, name):
     fig_all_exercises, exercises_list=weight_chart_per_block(grouped_prescribed[0], grouped_actuals[0]) ###Need to add ability to select which workout from the block you wanna visualize###
     all_exercises=st.button('View All Exercises For a Single Workout')
     if all_exercises:
+        st.selectbox('Select Workout', len(grouped_prescribed))
         st.plotly_chart(fig_all_exercises)
     single_exercise=st.button('View Single Exercise')
     if single_exercise or st.session_state.single_exercise_visual:
