@@ -138,6 +138,9 @@ def app():
     if 'single_exercise_visual' not in st.session_state:
         st.session_state['single_exercise_visual']=False
 
+    if 'all_exercises_visual' not in st.session_state:
+        st.session_state['all_exercises_visual']=False
+
 
     #st.write(st.session_state)
 

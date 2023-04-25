@@ -420,7 +420,8 @@ def pull_visuals (conn, name):
 
     fig_all_exercises, exercises_list=weight_chart_per_block(grouped_prescribed[0], grouped_actuals[0]) ###Need to add ability to select which workout from the block you wanna visualize###
     all_exercises = st.button('View All Exercises For a Single Workout')
-    if all_exercises:
+    if all_exercises or st.session_state.all_exercises_visual:
+        st.session_state['all_exercises_visual']=True
         workout_index = st.selectbox('Select Workout', [(i, f'Workout {i + 1}') for i in range(len(grouped_prescribed))], format_func=lambda x: x[1])
         if workout_index is not None:
             fig, not_used = weight_chart_per_block(grouped_prescribed[workout_index[0]], grouped_actuals[workout_index[0]])
