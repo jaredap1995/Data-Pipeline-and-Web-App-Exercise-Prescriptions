@@ -135,6 +135,9 @@ def app():
     if "df_value" not in st.session_state:
         st.session_state.df_value = None
 
+    if 'single_exercise_visual' not in st.session_state:
+        st.session_state['single_exercise_visual']=False
+
 
     #st.write(st.session_state)
 

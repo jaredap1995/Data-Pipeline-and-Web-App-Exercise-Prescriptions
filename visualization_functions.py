@@ -357,7 +357,8 @@ def pull_visuals (conn, name):
     if all_exercises:
         st.plotly_chart(fig_all_exercises)
     single_exercise=st.button('View Single Exercise')
-    if single_exercise:
+    if single_exercise or st.session_state.single_exercise_visual:
+        st.session_state['single_exercise_visual']=False
         with st.form(key='exercise_selector'):
             exercise=st.selectbox('Select Exercise', exercises_list)
             submitted=st.form_submit_button('Submit')
