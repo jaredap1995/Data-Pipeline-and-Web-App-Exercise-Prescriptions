@@ -425,7 +425,8 @@ def pull_visuals (conn, name):
             submitted=st.form_submit_button('Submit')
             if submitted:
                 ##Single exercise Function##
-                weight_char_per_selected_exercises(name, conn, exercises)
+                fig=weight_char_per_selected_exercises(name, conn, exercises)
+                st.plotly_chart(fig)
                 time.sleep(3)
 
 
