@@ -314,7 +314,7 @@ def pull_visuals (conn, name):
             df_columns.append(column)
         df.columns=df_columns
     
-    ####Organize Prescribed into Dataframes for wieght####
+    ####Organize Prescribed into Dataframes for wieght###
     concat_df=pd.concat(weight_p, axis=0)
 
     workout_specific_dfs=[]
