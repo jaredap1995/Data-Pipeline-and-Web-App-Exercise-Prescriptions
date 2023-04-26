@@ -295,8 +295,7 @@ def weight_char_per_selected_exercises(name, conn, selected_exercises):
                 name=exercise,
                 x=df['Date'],
                 y=df['Weight'],
-                text=df['Weight'], 
-                textposition='middle center',  # Set text positio,  # Set text angle to 0 degrees
+                text=df['Weight'],  # Set text positio,  # Set text angle to 0 degrees
                 textfont=dict(size=12),
                 showlegend=True)
             )
@@ -308,6 +307,7 @@ def weight_char_per_selected_exercises(name, conn, selected_exercises):
     for i, data in enumerate(bar_charts):
         fig.add_trace(data, row=i+1, col=1)
 
+    fig.update_traces(textposition="bottom right")
 
     fig.update_layout(height=800, width=1000,
     title=dict(
@@ -315,7 +315,6 @@ def weight_char_per_selected_exercises(name, conn, selected_exercises):
         x=0,  # Center title horizontally
         y=0.95   # Adjust vertical position of title
     ),
-    barmode='group',
     xaxis_ticktext=list(df.columns),
     showlegend=True,
     legend=dict(title='Exercise', groupclick='toggleitem',
