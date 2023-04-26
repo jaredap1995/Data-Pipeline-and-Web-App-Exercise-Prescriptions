@@ -346,9 +346,7 @@ def pull_visuals (conn, name):
         JOIN exercises AS e ON we.exercise_id = e.id
         WHERE we.client_id=%s""", (client_id,))
     exercises=cursor.fetchall()
-
-    st.write(exercises)
-    st.stop()
+    exercises=[i[0] for i in exercises]
 
     actuals, dfs, num_weeks, workkouts_per_week=grab_workouts_for_visualization(conn=conn, name=name)
 
