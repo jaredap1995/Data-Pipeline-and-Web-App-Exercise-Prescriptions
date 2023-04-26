@@ -341,7 +341,7 @@ def pull_visuals (conn, name):
     cursor.execute("SELECT id from client where name =%s", (name,))
     client_id=cursor.fetchone()[0]
 
-    cursor.execute("""SELECT DISTINCT we.exercise_id, e.exercise
+    cursor.execute("""SELECT DISTINCT e.exercise
         FROM workout_exercises AS we
         JOIN exercises AS e ON we.exercise_id = e.id
         WHERE we.client_id=%s""", (client_id,))
