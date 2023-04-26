@@ -297,7 +297,7 @@ def show_progress_in_block(conn, name):
                             # date=st.date_input('Date Performed', value=datetime.date.today())
                             if not (edited_df.equals(df)):
                                 update_in_progress_workout(conn, edited_df, name, workout_number_column[0], notes)
-                            date=st.date_input('Date Performed', value=datetime.date.today())
+                            date=st.date_input('Date Performed', value=datetime.date.today(), key=f"date_{number}") 
                             store_performed_workout=st.button(f'Submit Workout Number {number+1}')
                         except st.errors.DuplicateWidgetID:
                             pass
