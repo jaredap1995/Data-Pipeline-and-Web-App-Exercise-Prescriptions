@@ -213,7 +213,7 @@ def weight_chart_per_block(df, df_actual):
 
     num_rows, num_cols=get_subplot_rows_cols(len(df_actual))   
 
-    fig = make_subplots(rows=num_rows, cols=num_cols, subplot_titles=output_list)
+    fig = make_subplots(rows=num_rows, cols=num_cols, shared_xaxes=True, subplot_titles=output_list)
 
     grid=grid_numbers(num_rows, num_cols)
 
@@ -302,7 +302,7 @@ def weight_char_per_selected_exercises(name, conn, selected_exercises):
 
     num_rows=len(selected_exercises)
     num_cols=1
-    fig = make_subplots(rows=num_rows, cols=num_cols, shared_xaxes=True, subplot_titles=subplot_titles)
+    fig = make_subplots(rows=num_rows, cols=num_cols, subplot_titles=subplot_titles)
 
     for i, data in enumerate(bar_charts):
         fig.add_trace(data, row=i+1, col=1)
