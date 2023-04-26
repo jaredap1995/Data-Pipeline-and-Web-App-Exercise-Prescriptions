@@ -343,7 +343,8 @@ def pull_visuals (conn, name):
 
     cursor.execute("""SELECT DISTINCT we.exercise_id, e.exercise_name
         FROM workout_exercises AS we
-        JOIN exercises AS e ON we.exercise_id = e.idclient_id=%s""", (client_id,))
+        JOIN exercises AS e ON we.exercise_id = e.id
+        WHERE we.client_id=%s""", (client_id,))
     exercises=cursor.fetchall()
 
     actuals, dfs, num_weeks, workkouts_per_week=grab_workouts_for_visualization(conn=conn, name=name)
