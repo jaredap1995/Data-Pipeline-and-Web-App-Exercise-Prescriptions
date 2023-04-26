@@ -418,7 +418,16 @@ def pull_visuals (conn, name):
         df.columns=df_columns
 
 
-    fig_all_exercises, exercises_list=weight_chart_per_block(grouped_prescribed[0], grouped_actuals[0]) ###Need to add ability to select which workout from the block you wanna visualize###
+    # fig_all_exercises, exercises_list=weight_chart_per_block(grouped_prescribed[0], grouped_actuals[0]) ###Need to add ability to select which workout from the block you wanna visualize###
+
+    #Getting all Unique exercises
+    exercises_actual=np.concatenate([i.index.values for i in grouped_actuals])
+    exercises_prescribed=np.concatenate([i.index.values for i in grouped_prescribed])
+
+    exercises=[exercises_actual, exercises_prescribed]
+    exercises=np.unique(np.concatenate(exercises))
+
+
     all_exercises = st.button('View All Exercises For a Single Workout')
     if all_exercises or st.session_state.all_exercises_visual:
         st.session_state['all_exercises_visual']=True
@@ -430,13 +439,13 @@ def pull_visuals (conn, name):
     if single_exercise or st.session_state.single_exercise_visual:
         st.session_state['single_exercise_visual']=True
         with st.form(key='exercise_selector'):
-            exercises=st.multiselect('Select Exercise', exercises_list)
+            exercises=st.multiselect('Select Exercise', exercises)
             submitted=st.form_submit_button('Submit')
             if submitted:
                 ##Single exercise Function##
                 fig=weight_char_per_selected_exercises(name, conn, exercises)
                 st.plotly_chart(fig)
-                time.sleep(3)
+                
 
 
 
