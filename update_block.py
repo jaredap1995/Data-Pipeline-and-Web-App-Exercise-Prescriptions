@@ -8,7 +8,7 @@ import numpy as np
 
 
 
-def update_workout_in_block(name, conn, edited_workout, dfs, notes=None):
+def update_workout_in_block(name, conn, edited_workout, dfs, date, notes=None):
 
     exercises_per_workout=[len(i) for i in edited_workout]
 
@@ -69,7 +69,7 @@ def update_workout_in_block(name, conn, edited_workout, dfs, notes=None):
         
         cursor.execute(
             "INSERT INTO sessions (session_date, client_id, notes) VALUES (%s, %s, %s) RETURNING id",
-            (datetime.datetime.now(), client_id, notes))
+            (date, client_id, notes))
         
         session_id=cursor.fetchone()[0]
 

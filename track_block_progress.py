@@ -307,7 +307,7 @@ def show_progress_in_block(conn, name):
                                 st.stop()
                         if store_performed_workout:
                             edited_df['Workout Number']=workout_number_column
-                            result=update_workout_in_block(name, conn, edited_df, dfs, notes)
+                            result=update_workout_in_block(name, conn, edited_df, dfs, date, notes)
                             if result is not None:
                                 st.success('Workout Submitted Successfully')
                                 time.sleep(1)
