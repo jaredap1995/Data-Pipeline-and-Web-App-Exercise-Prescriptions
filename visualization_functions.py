@@ -213,7 +213,7 @@ def weight_chart_per_block(df, df_actual):
 
     num_rows, num_cols=get_subplot_rows_cols(len(df_actual))   
 
-    fig = make_subplots(rows=num_rows, cols=num_cols, shared_xaxes=True, subplot_titles=output_list)
+    fig = make_subplots(rows=num_rows, cols=num_cols, shared_xaxes=False, subplot_titles=output_list)
 
     grid=grid_numbers(num_rows, num_cols)
 
@@ -337,6 +337,15 @@ def link_workout_number_to_weeks(num_workouts_per_week, num_weeks):
 
 def pull_visuals (conn, name):
 
+    cursor=conn.cursor()
+    cursor.execute("SELECT id from client where name =%s", (name,))
+    client_id=cursor.fetchone()[0]
+
+    cursor.execute("""SELECT DISTINCT we.exercise_id, e.exercise_name
+        FROM workout_exercises AS we
+        JOIN exercises AS e ON we.exercise_id = e.idclient_id=%s""", (client_id,))
+    exercises=cursor.fetchall()
+
     actuals, dfs, num_weeks, workkouts_per_week=grab_workouts_for_visualization(conn=conn, name=name)
 
     num_workouts = len(dfs)
@@ -417,14 +426,12 @@ def pull_visuals (conn, name):
         df.columns=df_columns
 
 
-    # fig_all_exercises, exercises_list=weight_chart_per_block(grouped_prescribed[0], grouped_actuals[0]) ###Need to add ability to select which workout from the block you wanna visualize###
-
     #Getting all Unique exercises
-    exercises_actual=np.concatenate([i.index.values for i in grouped_actuals])
-    exercises_prescribed=np.concatenate([i.index.values for i in grouped_prescribed])
+    # exercises_actual=np.concatenate([i.index.values for i in grouped_actuals])
+    # exercises_prescribed=np.concatenate([i.index.values for i in grouped_prescribed])
 
-    exercises=[exercises_actual, exercises_prescribed]
-    exercises=np.unique(np.concatenate(exercises))
+    # exercises=[exercises_actual, exercises_prescribed]
+    # exercises=np.unique(np.concatenate(exercises))
 
 
     all_exercises = st.button('View All Exercises For a Single Workout')
