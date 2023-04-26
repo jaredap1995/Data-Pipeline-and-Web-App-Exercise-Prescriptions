@@ -78,63 +78,6 @@ def grab_workouts_for_visualization(conn, name):
     return actuals, dfs, num_weeks, workouts_per_week
 
 
-def weight_charts_per_workout(prescribed_df, actual_df, columns, num_weeks, num_workouts_per_week):
-    bar_charts = []
-    for col1, col2 in zip(columns, columns):
-        bar_charts.append(go.Bar(
-            name=f'{col1} prescribed',
-            x=prescribed_df.index,
-            y=prescribed_df[col1],
-            text=prescribed_df[col1], 
-        textposition='inside',  # Set text position to inside the bars
-        textangle=0,  # Set text angle to 0 degrees
-        textfont=dict(size=12))
-    )
-        
-        bar_charts.append(go.Bar(
-            name=f'{col2} actual',
-            x=actual_df.index,
-            y=actual_df[col2],
-            text=actual_df[col2], 
-        textposition='inside',  # Set text position to inside the bars
-        textangle=0,  # Set text angle to 0 degrees
-        textfont=dict(size=12))
-    )
-
-    num_rows, num_cols=get_subplot_rows_cols(len(actual_df))   
-    
-    fig = make_subplots(rows=num_rows, cols=num_cols, subplot_titles=[f'Week {i}' for i in range(1,num_weeks+1)])
-
-    grid=grid_numbers(num_rows, num_cols)
-    
-    iterations=range(1, num_weeks*num_workouts_per_week+1, 2)
-    zipped=zip(grid,iterations)
-    
-    
-    for i,x in zipped: # Update the range to start from 1
-        data = bar_charts[x-1:x+num_workouts_per_week-1]  # Update the indexing to start from 1
-        for bar_chart in data:
-            fig.add_trace(bar_chart, 
-                          row=i[0], 
-                          col=i[1])
-
-
-    fig.update_layout(
-        title=dict(
-            text='First Workout of Week Weight Comparison',
-            x=0,  
-            y=0.95,
-            font=dict(size=35)   
-        ),
-        barmode='group',
-        xaxis_ticktext=columns,
-        showlegend=True,
-        legend=dict(title='Prescribed and Actual Weight',)
-    )
-
-    return fig
-
-
 def weight_chart_per_block(df, df_actual):
 
     actual_exercises=df_actual.index.values
@@ -236,7 +179,7 @@ def weight_chart_per_block(df, df_actual):
 
     fig.update_layout(
     title=dict(
-        text='Weight Comparison Across Block Per Exercise',
+        text='Workout Weights Across Block',
         x=0.5,  # Center title horizontally
         y=0.95   # Adjust vertical position of title
     ),
@@ -276,7 +219,7 @@ def weight_char_per_selected_exercises(name, conn, selected_exercises):
 
     dfs=[]
     bar_charts=[]
-    subplot_titles = [f"{exercise} Weight Over Time" for exercise in selected_exercises]
+    subplot_titles = [f"{exercise} Weight" for exercise in selected_exercises]
     for i, exercise in enumerate(selected_exercises):
         cursor.execute(f"""
         SELECT s.session_date, we.weight
@@ -427,23 +370,14 @@ def pull_visuals (conn, name):
             df_columns.append(column)
         df.columns=df_columns
 
-
-    #Getting all Unique exercises
-    # exercises_actual=np.concatenate([i.index.values for i in grouped_actuals])
-    # exercises_prescribed=np.concatenate([i.index.values for i in grouped_prescribed])
-
-    # exercises=[exercises_actual, exercises_prescribed]
-    # exercises=np.unique(np.concatenate(exercises))
-
-
-    all_exercises = st.button('View All Exercises For a Single Workout')
+    all_exercises = st.button('View A Workout in Your Most Recent Block')
     if all_exercises or st.session_state.all_exercises_visual:
         st.session_state['all_exercises_visual']=True
         workout_index = st.selectbox('Select Workout', [(i, f'Workout {i + 1}') for i in range(len(grouped_prescribed))], format_func=lambda x: x[1])
         if workout_index is not None:
             fig, not_used = weight_chart_per_block(grouped_prescribed[workout_index[0]], grouped_actuals[workout_index[0]])
             st.plotly_chart(fig)
-    single_exercise=st.button('View Single Exercise')
+    single_exercise=st.button('View Specfic Exercises')
     if single_exercise or st.session_state.single_exercise_visual:
         st.session_state['single_exercise_visual']=True
         with st.form(key='exercise_selector'):
@@ -455,18 +389,5 @@ def pull_visuals (conn, name):
                 st.plotly_chart(fig)
                 
 
-
-
-
-
     st.stop()
-
-    view_block=st.button('View Block')
-    if view_block:
-        fig_workouts=weight_charts_per_workout(first_workout_of_week_prescribed_weight, first_workout_of_week_actual_weight, 
-                               first_workout_of_week_actual_weight.columns, num_weeks, num_workouts)
-        fig_exercises=weight_chart_per_block(first_workout_of_week_prescribed_weight, 
-                                                 first_workout_of_week_actual_weight, num_weeks, num_workouts)
-        st.plotly_chart(fig_workouts, use_container_width=True)
-        st.plotly_chart(fig_exercises, use_container_width=True)
 

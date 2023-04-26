@@ -294,6 +294,7 @@ def show_progress_in_block(conn, name):
                             notes=None
                             edited_df=st.experimental_data_editor(df, key=f"editor{number}", num_rows='dynamic') #on_change=update_in_progress_workout, args=(conn, edited_df, name, workout_number_column[0], notes))
                             notes=st.text_input('Workout Notes', key=f"notes_{number}")
+                            date=st.date_input('Date Performed', value=datetime.date.today())
                             if not (edited_df.equals(df)):
                                 # diff_rows = edited_df[edited_df != df].dropna(how='all').index
                                 # diff_rows=edited_df.loc[diff_rows]
