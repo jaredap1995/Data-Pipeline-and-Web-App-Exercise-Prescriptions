@@ -145,11 +145,13 @@ def app():
     #st.write(st.session_state)
 
     name=None
-    name=name_function()
+    st.session_state['name']=name_function()
+    name=st.session_state['name']
     if not name:
         home_page()
     else:
-        conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
+        st.session_state['conn'] = psycopg2.connect(**st.secrets.psycopg2_credentials)
+        conn = st.session_state['conn']
 
 
         cursor = conn.cursor()

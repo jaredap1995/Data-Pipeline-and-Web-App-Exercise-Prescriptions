@@ -199,6 +199,6 @@ def show(name, conn):
     
     return name
 
-show(name, conn)
+show(st.session_state['name'], conn)
 
 
