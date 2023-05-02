@@ -7,7 +7,6 @@ from track_workouts import track_workouts
 import pandas as pd
 import numpy as np
 from testing_coach_and_prescriptions import prescribe_block
-from workout_app import name, conn
 
 
 def increasing_load(workouts, operation, weeks):
@@ -199,6 +198,6 @@ def show(name, conn):
     
     return name
 
-show(st.session_state['name'], conn)
+show(st.session_state['name'], st.session_state['conn'])
 
 
