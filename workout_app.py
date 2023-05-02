@@ -12,7 +12,7 @@ from track_weight_changes import track_weight_changes
 import time
 import datetime
 from track_workouts import track_workouts
-from pages.coach_center import coach, create_a_block, deload, increasing_load
+from pages.coach_center import coach, create_a_block, deload, increasing_load, show
 from retrieve_prescriptions import retrieve_block
 from testing_coach_and_prescriptions import prescribe_block
 from track_block_progress import check_if_workout_performed, show_progress_in_block
@@ -159,6 +159,8 @@ def app():
         # Define the home page
         st.header(f'Hello {name}! Welcome to your Dashboard. Please Select an Option Below')
 
+
+        show(conn=conn, name=name)
         
         if st.session_state.Show_Block_Progress==False:
             continued_workout=check_if_in_progress_exists(conn, name)
@@ -252,17 +254,6 @@ def app():
                 range_submission=st.form_submit_button('Produce workouts over designated period')
                 if range_submission:
                     track_workouts(conn, name, start_date, end_date)
-
-        #Coach Center Functionality
-        with st.sidebar:
-            prescribe_block_button = st.button('Coach Center')
-            if 'coach_center' not in st.session_state:
-                st.session_state['coach_center']=False
-            if prescribe_block_button or st.session_state.coach_center:
-                name=name
-                st.session_state['coach_center']=True
-                prescribe_block(conn, name)
-
 
         # Produce Archived Spreadsheet Workout Functionality
         existing_workout_button = st.button('Produce Archived Workout', help="Get a random workout from legacy system")
