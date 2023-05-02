@@ -12,7 +12,7 @@ from track_weight_changes import track_weight_changes
 import time
 import datetime
 from track_workouts import track_workouts
-from coach_center import coach, create_a_block, deload, increasing_load
+from pages.coach_center import coach, create_a_block, deload, increasing_load
 from retrieve_prescriptions import retrieve_block
 from testing_coach_and_prescriptions import prescribe_block
 from track_block_progress import check_if_workout_performed, show_progress_in_block
