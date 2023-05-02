@@ -283,7 +283,7 @@ def app():
             show_new_workout()
 
             
-        conn.close()
+        # conn.close()
 # if __name__ == "main":
 app()
 
