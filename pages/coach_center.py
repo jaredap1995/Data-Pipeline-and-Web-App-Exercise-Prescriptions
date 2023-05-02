@@ -195,5 +195,7 @@ def show(name, conn):
         name=name
         st.session_state['coach_center']=True
         prescribe_block(conn, name)
+    
+    return name
 
 
