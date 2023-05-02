@@ -39,8 +39,8 @@ def record_workout(conn, name, selected_exercises, reps, sets, weights):
 
         # Insert the workout and exercise ids into the workout_exercises table
         for ex_id, s, r, w, _ in exercise_info:
-            cursor.execute(f"""INSERT INTO workout_exercises (workout_id, exercise_id, reps, sets, weight)
-            VALUES ({session_id}, {ex_id}, {r}, {s}, {w})""")
+            cursor.execute(f"""INSERT INTO workout_exercises (workout_id, exercise_id, reps, sets, weight, client_id)
+            VALUES ({session_id}, {ex_id}, {r}, {s}, {w}, {client_id})""")
 
 
         conn.commit()
