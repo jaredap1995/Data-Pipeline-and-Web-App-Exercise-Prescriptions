@@ -161,10 +161,14 @@ def check_if_in_progress_exists(conn, name):
 
             store_workout=st.button("Store Workout")
             reset_workout=st.button("Reset Workout")
+            notes=st.text_input('Workout Notes', key=f"notes")
+            date=st.date_input('Date Performed', value=datetime.date.today(), key=f"date") 
+
+
 
             if store_workout:
                 continued_workout['Workout Number']=workout_number
-                result=update_workout_in_block(name, conn, continued_workout, dfs)
+                result=update_workout_in_block(name, conn, continued_workout, dfs, date, notes)
                 if result is not None:
                     st.success('Workout Submitted Successfully')
                     time.sleep(1)

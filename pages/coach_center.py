@@ -6,6 +6,7 @@ import datetime
 from track_workouts import track_workouts
 import pandas as pd
 import numpy as np
+from testing_coach_and_prescriptions import prescribe_block
 
 
 def increasing_load(workouts, operation, weeks):
@@ -184,5 +185,19 @@ def coach(conn, name):
 
     
     return block, name, length_of_block
+
+
+def show(name, conn):
+    prescribe_block_button = st.button('Coach Center')
+    if 'coach_center' not in st.session_state:
+        st.session_state['coach_center']=False
+    if prescribe_block_button or st.session_state.coach_center:
+        name=name
+        st.session_state['coach_center']=True
+        prescribe_block(conn, name)
+    
+    return name
+
+show(st.session_state['name'], st.session_state['conn'])
 
 

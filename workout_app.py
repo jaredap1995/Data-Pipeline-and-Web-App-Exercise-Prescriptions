@@ -12,12 +12,13 @@ from track_weight_changes import track_weight_changes
 import time
 import datetime
 from track_workouts import track_workouts
-from coach_center import coach, create_a_block, deload, increasing_load
+from pages.coach_center import coach, create_a_block, deload, increasing_load
 from retrieve_prescriptions import retrieve_block
 from testing_coach_and_prescriptions import prescribe_block
 from track_block_progress import check_if_workout_performed, show_progress_in_block
 from update_block import update_workout_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
+from visualization_functions import pull_visuals
 
 def show_new_workout():
     st.write("Feature coming soon! :)")
@@ -40,20 +41,25 @@ def home_page():
     st.write("# Welcome!")
     home_text=st.markdown(
     """
-    Thank you for supporting me by using this application! 😃
-    As this site is constantly evolving I appreciate your patience as I navigate this adventure and 
-    attmept to provide you with the best service possible!
+    Thank you for visiting my application! 😃
+    As this site is constantly evolving I appreciate your patience as I rapidly iterate and 
+    attempt to provide the best service possible!
 
-    ### 👈 Select your name from the drop down menu to the left to begin!
+    ### 👈 If you are a client select your name from the drop down menu to the left to begin!
 
-    ### Want to know about the features this provides?
+    ### Want to know about the features this application provides?
     - Get a custom exercise program tailored to your health and fitness goals that is updated every 4 weeks as you progress!
     - Track your workouts across your training program and stay on top of your progress with intuitive visualizations to see how far you've come.
     - Track your Volume-Load across workouts, weeks, and months to monitor injury risk and optimize performance!
     - Get additional supplemenatry workouts anytime, anywhere, at no extra cost. 
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
+
+   
+
 """
 )
+     
+   # st.button('Demo')
     return home_text
 
 def name_function():
@@ -129,15 +135,23 @@ def app():
     if "df_value" not in st.session_state:
         st.session_state.df_value = None
 
+    if 'single_exercise_visual' not in st.session_state:
+        st.session_state['single_exercise_visual']=False
+
+    if 'all_exercises_visual' not in st.session_state:
+        st.session_state['all_exercises_visual']=False
+
 
     #st.write(st.session_state)
 
     name=None
-    name=name_function()
+    st.session_state['name']=name_function()
+    name=st.session_state['name']
     if not name:
         home_page()
     else:
-        conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
+        st.session_state['conn'] = psycopg2.connect(**st.secrets.psycopg2_credentials)
+        conn = st.session_state['conn']
 
 
         cursor = conn.cursor()
@@ -146,6 +160,7 @@ def app():
 
         # Define the home page
         st.header(f'Hello {name}! Welcome to your Dashboard. Please Select an Option Below')
+
 
         
         if st.session_state.Show_Block_Progress==False:
@@ -195,6 +210,16 @@ def app():
                     time.sleep(1)
                     st.experimental_rerun()
 
+
+        #Visualize Training Functionality
+        visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
+        if 'visualize_training' not in st.session_state:
+            st.session_state['visualize_training']=False
+        if visualize_training_button or st.session_state.visualize_training:
+            st.session_state['visualize_training']=True
+            pull_visuals(conn, name)
+
+
         #Track Weight Functionality
         track_progress_button = st.button("View Weight Progress", help="""Track your weightlifting progress by selecting an exercise 
                                                             and seeing the weights you lifted over time.
@@ -231,17 +256,6 @@ def app():
                 if range_submission:
                     track_workouts(conn, name, start_date, end_date)
 
-        #Coach Center Functionality
-        with st.sidebar:
-            prescribe_block_button = st.button('Coach Center')
-            if 'coach_center' not in st.session_state:
-                st.session_state['coach_center']=False
-            if prescribe_block_button or st.session_state.coach_center:
-                name=name
-                st.session_state['coach_center']=True
-                prescribe_block(conn, name)
-
-
         # Produce Archived Spreadsheet Workout Functionality
         existing_workout_button = st.button('Produce Archived Workout', help="Get a random workout from legacy system")
         if 'existing_workout' not in st.session_state:
@@ -269,7 +283,7 @@ def app():
             show_new_workout()
 
             
-        conn.close()
+        # conn.close()
 # if __name__ == "main":
 app()
 
