@@ -12,14 +12,10 @@ from track_weight_changes import track_weight_changes
 import time
 import datetime
 from track_workouts import track_workouts
-# from retrieve_prescriptions import retrieve_block
 from track_block_progress import show_progress_in_block
-# from update_block import update_workout_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 from visualization_functions import pull_visuals
-
-def show_new_workout():
-    st.write("Feature coming soon! :)")
+from open_AI_new_workout import GPT_Coach
 
 def load_workouts(name):
     workbook=grab_workbook_from_drive(name)
@@ -213,12 +209,17 @@ def app():
 
 
         #Visualize Training Functionality
-        visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
-        if 'visualize_training' not in st.session_state:
-            st.session_state['visualize_training']=False
-        if visualize_training_button or st.session_state.visualize_training:
-            st.session_state['visualize_training']=True
-            pull_visuals(conn, name)
+        col1,col2= st.columns([2,9])
+        new_label = '<span style="color:red; font-weight:bold">*New*</span>'
+        with col1:
+            visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
+            if 'visualize_training' not in st.session_state:
+                st.session_state['visualize_training']=False
+            if visualize_training_button or st.session_state.visualize_training:
+                st.session_state['visualize_training']=True
+                pull_visuals(conn, name)
+        with col2:
+            st.markdown(new_label, unsafe_allow_html=True)
 
 
         #Track Weight Functionality
@@ -277,12 +278,18 @@ def app():
 
 
         # Define the "New Workout" button
-        new_workout=st.button('Produce New Workout')
-        if 'new_workout' not in st.session_state:
-            st.session_state['new_workout']= False
-        if new_workout:
-            show_new_workout()
-
+        col1,col2= st.columns([2,7])
+        # Define the HTML code for the label
+        new_label = '<span style="color:red; font-weight:bold">*New*</span>'
+        with col1:
+            new_workout=st.button('Generate New Workout')
+            if 'new_workout' not in st.session_state:
+                st.session_state['new_workout']= False
+            if new_workout:
+                GPT_Coach(name)
+        with col2:
+            # Add the label to the second column
+            st.markdown(new_label, unsafe_allow_html=True)
             
         # conn.close()
 # if __name__ == "main":
