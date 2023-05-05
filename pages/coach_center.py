@@ -6,7 +6,6 @@ import datetime
 from track_workouts import track_workouts
 import pandas as pd
 import numpy as np
-from testing_coach_and_prescriptions import prescribe_block
 from record_prescriptions import record_block
 
 
