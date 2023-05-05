@@ -189,6 +189,7 @@ def coach(conn, name):
 def show(name, conn):
 
     if 'conn' not in st.session_state:
+        st.session_state['conn']=None
         st.error('No Name or Connection Found. Please select a name from the sidebar the app.')
         st.session_state['name']=name_function()
         # with st.sidebar:
