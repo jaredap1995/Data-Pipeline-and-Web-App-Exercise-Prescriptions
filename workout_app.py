@@ -204,7 +204,7 @@ def app():
 
 
         #Visualize Training Functionality
-        col1,col2= st.columns([2,7])
+        col1,col2= st.columns([2,10])
         new_label = '<span style="color:red; font-weight:bold">*New*</span>'
         with col1:
             visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
