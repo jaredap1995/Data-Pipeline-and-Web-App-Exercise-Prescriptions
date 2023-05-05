@@ -61,8 +61,6 @@ def home_page():
     return home_text
 
 def name_function():
-    #Trackign session state changes
-    #st.write(st.session_state)
 
     conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
     

@@ -225,11 +225,14 @@ def prescribe_block(conn, name):
 
 
 if 'conn' not in st.session_state or 'name' not in st.session_state:
-        st.session_state['conn']=None
-        st.session_state['name']=None
-        st.error('No Name or Connection Found. Please select a name from the sidebar the app.')
-        st.session_state['name']=name_function()
-        st.stop()
-show(st.session_state['name'], st.session_state['conn'])
+    st.session_state['conn']=None
+    st.session_state['name']=None
+st.session_state['name']=name_function()
+name=st.session_state['name']
+if not name:
+    st.write('No Name Selected. Please select a name from the sidebar the app.')
+else:
+    show(st.session_state['name'], st.session_state['conn'])
+
 
 
