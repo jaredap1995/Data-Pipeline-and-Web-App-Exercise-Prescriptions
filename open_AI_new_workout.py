@@ -93,18 +93,13 @@ def GPT_Coach(name):
     openai.organization = st.secrets.open_AI_credentials.org
     openai.api_key = st.secrets.open_AI_credentials.api_key
 
-    try:    
-        #name=st.multiselect('Select a name',names)
-        # if name is not None:
-        #     name=name[0]
-        st.write("Generating your workout from previous workouts. This may take a few seconds. Please be patient :)")
-        res = generate_text(truncate_prompt(format_prompt(find_matching_workout(name, workout_data)),2500))
-        try:
-            df=pd.read_html(res)[0]
-            st.dataframe(df)
-        except:
-            st.warning("""Hmmm, something seems to have gone wrong, if the output below does not make sense,
-            please unselect and reselect your name. If the problem persists, please contact the developer.""")
-            st.write(res)
-    except IndexError:
-        pass
+    
+    st.write("Generating your workout from previous workouts. This may take a few seconds. Please be patient :)")
+    res = generate_text(truncate_prompt(format_prompt(find_matching_workout(name, workout_data)),2500))
+    try:
+        df=pd.read_html(res)[0]
+        st.dataframe(df)
+    except:
+        st.warning("""Hmmm, something seems to have gone wrong, if the output below does not make sense,
+        please unselect and reselect your name. If the problem persists, please contact the developer.""")
+        st.write(res)
