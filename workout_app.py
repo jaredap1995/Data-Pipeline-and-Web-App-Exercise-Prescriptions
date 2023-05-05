@@ -268,7 +268,7 @@ def app():
 
 
         # Define the "New Workout" button
-        col1,col2= st.columns([2,12])
+        col1,col2= st.columns([2,9])
         # Define the HTML code for the label
         new_label = '<span style="color:red; font-weight:bold">*New*</span>'
         with col1:
