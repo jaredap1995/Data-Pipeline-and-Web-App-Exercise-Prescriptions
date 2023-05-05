@@ -188,10 +188,10 @@ def coach(conn, name):
 
 def show(name, conn):
 
-    if 'conn' not in st.session_state:
-        st.session_state['conn']=None
-        st.error('No Name or Connection Found. Please select a name from the sidebar the app.')
-        st.session_state['name']=name_function()
+    # if 'conn' not in st.session_state:
+    #     st.session_state['conn']=None
+    #     st.error('No Name or Connection Found. Please select a name from the sidebar the app.')
+    #     st.session_state['name']=name_function()
         # with st.sidebar:
         #     st.success("Please Select your Name from the Dropdown Menu. Or if you are a new client, enter your name!")
         #     name = st.multiselect('Please select your name', clients, key='client_name')
@@ -223,6 +223,12 @@ def prescribe_block(conn, name):
         st.session_state['block']=[]
         st.experimental_rerun()
 
+
+if 'conn' not in st.session_state or 'name' not in st.session_state:
+        st.session_state['conn']=None
+        st.session_state['name']=None
+        st.error('No Name or Connection Found. Please select a name from the sidebar the app.')
+        st.session_state['name']=name_function()
 show(st.session_state['name'], st.session_state['conn'])
 
 
