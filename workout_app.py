@@ -268,11 +268,12 @@ def app():
 
 
         # Define the "New Workout" button
-        new_workout=st.button('Generate New Workout')
-        if 'new_workout' not in st.session_state:
-            st.session_state['new_workout']= False
-        if new_workout:
-            GPT_Coach(name)
+        with st.columns([2,12]):
+            new_workout=st.button('Generate New Workout')
+            if 'new_workout' not in st.session_state:
+                st.session_state['new_workout']= False
+            if new_workout:
+                GPT_Coach(name)
             
         # conn.close()
 # if __name__ == "main":
