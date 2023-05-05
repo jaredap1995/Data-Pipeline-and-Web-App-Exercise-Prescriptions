@@ -204,12 +204,17 @@ def app():
 
 
         #Visualize Training Functionality
-        visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
-        if 'visualize_training' not in st.session_state:
-            st.session_state['visualize_training']=False
-        if visualize_training_button or st.session_state.visualize_training:
-            st.session_state['visualize_training']=True
-            pull_visuals(conn, name)
+        col1,col2= st.columns([2,7])
+        new_label = '<span style="color:red; font-weight:bold">*New*</span>'
+        with col1:
+            visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
+            if 'visualize_training' not in st.session_state:
+                st.session_state['visualize_training']=False
+            if visualize_training_button or st.session_state.visualize_training:
+                st.session_state['visualize_training']=True
+                pull_visuals(conn, name)
+        with col2:
+            st.markdown(new_label, unsafe_allow_html=True)
 
 
         #Track Weight Functionality
