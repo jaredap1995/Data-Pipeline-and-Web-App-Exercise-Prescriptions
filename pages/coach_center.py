@@ -188,20 +188,6 @@ def coach(conn, name):
 
 def show(name, conn):
 
-    # if 'conn' not in st.session_state:
-    #     st.session_state['conn']=None
-    #     st.error('No Name or Connection Found. Please select a name from the sidebar the app.')
-    #     st.session_state['name']=name_function()
-        # with st.sidebar:
-        #     st.success("Please Select your Name from the Dropdown Menu. Or if you are a new client, enter your name!")
-        #     name = st.multiselect('Please select your name', clients, key='client_name')
-
-
-
-    # prescribe_block_button = st.button('Coach Center')
-    # if 'coach_center' not in st.session_state:
-    #     st.session_state['coach_center']=False
-    # if prescribe_block_button or st.session_state.coach_center:
     name=name
     st.session_state['coach_center']=True
     prescribe_block(conn, name)
@@ -229,7 +215,7 @@ if 'conn' not in st.session_state or 'name' not in st.session_state:
 st.session_state['name']=name_function()
 name=st.session_state['name']
 if not name:
-    st.header('No Name Selected. Please select a name from the sidebar the app.')
+    st.header('No Name Selected. Please select a name from the sidebar.')
 else:
     st.header(f'You are in Coach Mode and prescribing for {name}. Please Select an Option Below')
     show(st.session_state['name'], st.session_state['conn'])
