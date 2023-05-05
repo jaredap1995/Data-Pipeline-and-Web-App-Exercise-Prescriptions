@@ -1,4 +1,4 @@
-from pages.coach_center import increasing_load, create_a_block, coach
+from pages.coach_center import coach
 from record_prescriptions import record_block
 import streamlit as st
 import psycopg2
