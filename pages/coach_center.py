@@ -1,12 +1,11 @@
 import streamlit as st
 import psycopg2
 import time
-from record_workout import record_workout
 import datetime
-from track_workouts import track_workouts
 import pandas as pd
 import numpy as np
 from record_prescriptions import record_block
+from workout_app import name_function
 
 
 def increasing_load(workouts, operation, weeks):
@@ -188,6 +187,16 @@ def coach(conn, name):
 
 
 def show(name, conn):
+
+    if 'conn' not in st.session_state:
+        st.error('No Name or Connection Found. Please select a name from the sidebar the app.')
+        st.session_state['name']=name_function()
+        # with st.sidebar:
+        #     st.success("Please Select your Name from the Dropdown Menu. Or if you are a new client, enter your name!")
+        #     name = st.multiselect('Please select your name', clients, key='client_name')
+
+
+
     prescribe_block_button = st.button('Coach Center')
     if 'coach_center' not in st.session_state:
         st.session_state['coach_center']=False
