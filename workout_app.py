@@ -268,12 +268,18 @@ def app():
 
 
         # Define the "New Workout" button
-        with st.columns([2,12]):
+        col1,col2= st.columns([2,12])
+        # Define the HTML code for the label
+        new_label = '<span style="color:red; font-weight:bold">*New*</span>'
+        with col1:
             new_workout=st.button('Generate New Workout')
             if 'new_workout' not in st.session_state:
                 st.session_state['new_workout']= False
             if new_workout:
                 GPT_Coach(name)
+        with col2:
+            # Add the label to the second column
+            st.markdown(new_label, unsafe_allow_html=True)
             
         # conn.close()
 # if __name__ == "main":
