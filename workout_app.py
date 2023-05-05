@@ -107,10 +107,10 @@ def name_function():
 def app():
     st.set_page_config(page_title="Exercise Tracking", layout='wide')
 
-    # Set the URL
-    url = "https://www.JaredPerezH&PC.com"
-    if url != st.get_option("base_url"):
-        st.set_option("base_url", url)
+    # # Set the URL
+    # url = "https://www.JaredPerezH&PC.com"
+    # if url != st.get_option("base_url"):
+    #     st.set_option("base_url", url)
 
     #Initialize session state
     if 'exercise_selection' not in st.session_state:
