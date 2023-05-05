@@ -232,6 +232,7 @@ name=st.session_state['name']
 if not name:
     st.write('No Name Selected. Please select a name from the sidebar the app.')
 else:
+    st.header(f'You are in Coach Mode and prescribing for {name}. Please Select an Option Below')
     show(st.session_state['name'], st.session_state['conn'])
 
 
