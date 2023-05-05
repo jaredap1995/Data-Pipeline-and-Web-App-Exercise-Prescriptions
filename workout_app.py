@@ -12,14 +12,10 @@ from track_weight_changes import track_weight_changes
 import time
 import datetime
 from track_workouts import track_workouts
-# from retrieve_prescriptions import retrieve_block
 from track_block_progress import show_progress_in_block
-# from update_block import update_workout_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 from visualization_functions import pull_visuals
-
-def show_new_workout():
-    st.write("Feature coming soon! :)")
+from open_AI_new_workout import GPT_Coach
 
 def load_workouts(name):
     workbook=grab_workbook_from_drive(name)
@@ -272,12 +268,11 @@ def app():
 
 
         # Define the "New Workout" button
-        new_workout=st.button('Produce New Workout')
+        new_workout=st.button('Generate New Workout')
         if 'new_workout' not in st.session_state:
             st.session_state['new_workout']= False
         if new_workout:
-            show_new_workout()
-
+            GPT_Coach(name)
             
         # conn.close()
 # if __name__ == "main":
