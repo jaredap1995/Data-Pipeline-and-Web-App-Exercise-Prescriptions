@@ -96,7 +96,7 @@ def GPT_Coach(name):
     
     st.write("Generating your workout from previous workouts. This may take a few seconds. Please be patient :)")
     res = generate_text(truncate_prompt(format_prompt(find_matching_workout(name, workout_data)),2500))
-    df=pd.read_html(res)[0]
+    df=pd.read_html(res, flavor='html5lib')[0]
     st.dataframe(df)
     # st.warning("""Hmmm, something seems to have gone wrong, if the output below does not make sense,
     # please unselect and reselect your name. If the problem persists, please contact the developer.""")
