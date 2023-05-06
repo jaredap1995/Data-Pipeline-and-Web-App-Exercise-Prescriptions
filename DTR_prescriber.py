@@ -142,6 +142,10 @@ def split_fit_model(input_seq_padded, outputs):
 
 
 def ai_prescription_support(exercises):
+    #set session state variable
+    if 'regressor_test_submit' not in st.session_state:
+        st.session_state['regressor_test_submit'] = False
+
     # Run the functions
     workout_data_json = load_data()
     inputs, outputs = create_inputs_outputs(workout_data_json)
@@ -151,7 +155,8 @@ def ai_prescription_support(exercises):
     regressor, X_test, y_test = split_fit_model(input_seq_padded, outputs)
     workout=st.multiselect("Select Exercises", exercises)
     submit=st.button("Submit", key='regressor_test_submit')
-    if submit:
+    if submit or st.session_state['regressor_test_submit']:
+        st.session_state['regressor_test_submit'] = True
         token_exercise=input_tokenizer.texts_to_sequences(workout)
         token_exercise=np.asarray(token_exercise)
         token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
