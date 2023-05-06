@@ -3,7 +3,7 @@
 This is a full data pipeline developed from personal excel spreadsheets created during the time as a personal trainer. The web application is designed for fitness clients to access their personally designed workouts.
 
 ## Web Application
-The web application is accessible through the following link: https://jaredap1995-data-pipeline-and-web-app-exerci-workout-app-xhbr64.streamlit.app/
+The web application is accessible through the following link: https://jaredperezhpc.streamlit.app/
 
 The application allows clients to access any one of their hundreds of personally designed workouts, record and track their progress throughout the workouts and training blocks. Previously clients had to navigate to a Google Sheet and manually fill in details for their workout, while the trainer manually tracked their progress. The Web application automates this process.
 
