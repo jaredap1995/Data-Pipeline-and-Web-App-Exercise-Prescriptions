@@ -161,6 +161,7 @@ def ai_prescription_support(exercises):
         token_exercise=np.asarray(token_exercise)
         token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
         predicted_output = regressor.predict(token_exercise)
+        predicted_output=predicted_output.astype(int)
         df=pd.DataFrame(predicted_output, columns=['Weight', 'Sets', 'Reps'])
         workout=pd.Series(workout, name='Exercise')
         df=pd.concat([workout, df], axis=1)
