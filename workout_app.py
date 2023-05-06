@@ -293,7 +293,7 @@ def app():
             st.markdown(new_label, unsafe_allow_html=True)
 
         # Define the "Regressor" button
-        beta_label = '<span style="color:orange; font-weight:bold">*New*</span>'
+        beta_label = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
         col1,col2= st.columns([2,7])
         with col1:
             ai_predictions=st.button('Test DTR')
@@ -302,6 +302,9 @@ def app():
             if ai_predictions:
                 st.session_state['regressor']=True
                 ai_prescription_support(existing_exercises)
+        with col2:
+            # Add the label to the second column
+            st.markdown(beta_label, unsafe_allow_html=True)
             
         # conn.close()
 # if __name__ == "main":
