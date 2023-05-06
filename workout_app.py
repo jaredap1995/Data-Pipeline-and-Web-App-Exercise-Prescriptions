@@ -16,6 +16,7 @@ from track_block_progress import show_progress_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 from visualization_functions import pull_visuals
 from open_AI_new_workout import GPT_Coach
+from DTR_prescriber import ai_prescription_support
 
 def load_workouts(name):
     workbook=grab_workbook_from_drive(name)
@@ -290,6 +291,17 @@ def app():
         with col2:
             # Add the label to the second column
             st.markdown(new_label, unsafe_allow_html=True)
+
+        # Define the "Regressor" button
+        beta_label = '<span style="color:orange; font-weight:bold">*New*</span>'
+        col1,col2= st.columns([2,7])
+        with col1:
+            ai_predictions=st.button('Test DTR')
+            if 'regressor' not in st.session_state:
+                st.session_state['regressor']= False
+            if ai_predictions:
+                st.session_state['regressor']=True
+                ai_prescription_support(existing_exercises)
             
         # conn.close()
 # if __name__ == "main":
