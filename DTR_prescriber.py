@@ -150,7 +150,7 @@ def ai_prescription_support(exercises):
     input_tokenizer, pad_sequences, input_seq_padded, outputs = tokenize_and_pad(unique_inputs, unique_outputs)
     regressor, X_test, y_test = split_fit_model(input_seq_padded, outputs)
     workout=st.multiselect("Select Exercises", exercises)
-    submit=st.button("Submit")
+    submit=st.button("Submit", key='regressor_test_submit')
     if submit:
         token_exercise=input_tokenizer.texts_to_sequences(workout)
         token_exercise=np.asarray(token_exercise)
