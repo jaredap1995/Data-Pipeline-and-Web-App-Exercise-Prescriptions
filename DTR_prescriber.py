@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_error
 
 
 def load_data():
-    with open('local_workout_data.json') as f:
+    with open('all_workout_data.json') as f:
         all_workout_data_json = json.load(f)
     return all_workout_data_json
 
