@@ -299,7 +299,7 @@ def app():
             ai_predictions=st.button('Test DTR')
             if 'regressor' not in st.session_state:
                 st.session_state['regressor']= False
-            if ai_predictions:
+            if ai_predictions or st.session_state.regressor:
                 st.session_state['regressor']=True
                 ai_prescription_support(existing_exercises)
         with col2:
