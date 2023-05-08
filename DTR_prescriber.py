@@ -10,7 +10,7 @@ import psycopg2
 
 def load_data(conn):
     cursor=conn.cursor()
-    cursor.execute("""cursor.execute(
+    cursor.execute("""
         SELECT 
             c.name AS client_name, 
             e.exercise AS exercise_name, 
@@ -24,7 +24,7 @@ def load_data(conn):
     all_workout_data_json = cursor.fetchall()
     # with open('all_workout_data.json') as f:
     #     all_workout_data_json = json.load(f)
-    # return all_workout_data_json
+    return all_workout_data_json
 
 def passes_filters(exercise):
 
