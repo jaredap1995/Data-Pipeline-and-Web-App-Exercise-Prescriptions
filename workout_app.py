@@ -302,7 +302,7 @@ def app():
             st.session_state['regressor']= False
         if ai_predictions or st.session_state.regressor:
             st.session_state['regressor']=True
-            ai_prescription_support(existing_exercises)
+            ai_prescription_support(existing_exercises, conn)
     # with col2:
         # Add the label to the second column
             
