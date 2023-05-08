@@ -180,8 +180,8 @@ def ai_prescription_support(exercises, conn):
             if "minimum of 1 is required" in str(e):
                 st.error("No Exercises Selected")
                 st.stop()
-        else:
-            raise e
+            else:
+                raise e
         predicted_output=predicted_output.astype(int)
         df=pd.DataFrame(predicted_output, columns=['Weight', 'Sets', 'Reps'])
         workout=pd.Series(workout, name='Exercise')
