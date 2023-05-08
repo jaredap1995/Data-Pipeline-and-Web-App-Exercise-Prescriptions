@@ -145,7 +145,7 @@ def split_fit_model(input_seq_padded, outputs):
     # Splitting data
     X=input_seq_padded
     y=outputs
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
 
     # Create and fit the model
     regressor = DecisionTreeRegressor()
