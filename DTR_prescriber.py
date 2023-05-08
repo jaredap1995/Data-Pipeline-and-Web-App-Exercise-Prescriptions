@@ -5,13 +5,26 @@ import json
 import tensorflow as tf
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
+import psycopg2
 
 
-def load_data():
-    with open('all_workout_data.json') as f:
-        all_workout_data_json = json.load(f)
-    return all_workout_data_json
+def load_data(conn):
+    cursor=conn.cursor()
+    cursor.execute("""cursor.execute(
+        SELECT 
+            c.name AS client_name, 
+            e.exercise AS exercise_name, 
+            td.weight, 
+            td.sets, 
+            td.reps
+        FROM training_data td
+        LEFT JOIN client c ON td.client_id = c.id
+        LEFT JOIN exercises e ON td.exercise_id = e.id;
+        """)
+    all_workout_data_json = cursor.fetchall()
+    # with open('all_workout_data.json') as f:
+    #     all_workout_data_json = json.load(f)
+    # return all_workout_data_json
 
 def passes_filters(exercise):
 
@@ -141,17 +154,18 @@ def split_fit_model(input_seq_padded, outputs):
     return regressor, X_test, y_test
 
 
-def ai_prescription_support(exercises):
+def ai_prescription_support(exercises, conn):
     #set session state variable
     if 'regressor_ai' not in st.session_state:
         st.session_state['regressor_ai'] = False
 
     # Run the functions
-    workout_data_json = load_data()
-    inputs, outputs = create_inputs_outputs(workout_data_json)
-    inputs, outputs = filter_data(inputs, outputs)
-    unique_inputs, unique_outputs = unique_pairs(inputs, outputs)
-    input_tokenizer, pad_sequences, input_seq_padded, outputs = tokenize_and_pad(unique_inputs, unique_outputs)
+    workout_data = load_data(conn)
+    workout_data=np.asarray(workout_data)
+    # inputs, outputs = create_inputs_outputs(workout_data_json)
+    inputs, outputs = filter_data(workout_data[:,1], workout_data[:,2:])
+    # unique_inputs, unique_outputs = unique_pairs(inputs, outputs)
+    input_tokenizer, pad_sequences, input_seq_padded, outputs = tokenize_and_pad(inputs, outputs)
     regressor, X_test, y_test = split_fit_model(input_seq_padded, outputs)
     workout=st.multiselect("Select Exercises", exercises)
     submit=st.button("Submit", key='regressor_test_submit')

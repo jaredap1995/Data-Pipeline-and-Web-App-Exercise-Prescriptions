@@ -278,3 +278,49 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_sets_reps_weight
 ON in_progress (exercise_id, sets, reps, weight, client_id, block_id, workout_number)
 WHERE exercise_id IS NOT NULL AND sets IS NOT NULL AND reps IS NOT NULL AND weight IS NOT NULL AND client_id IS NOT NULL AND block_id IS NOT NULL AND workout_number IS NOT NULL;
 
+
+---Creating a New Table for my model's training data
+CREATE TABLE training_data (
+id serial,
+client_id INTEGER REFERENCES client(id) ON DELETE CASCADE,
+exercise_id INTEGER NOT NULL REFERENCES exercises(exercise) ON DELETE CASCADE,
+sets INTEGER NOT NULL,
+reps INTEGER NOT NULL,
+weight INTEGER NOT NULL
+);
+
+SELECT 
+    c.name AS client_name, 
+    e.exercise AS exercise_name, 
+    td.weight, 
+    td.sets, 
+    td.reps
+FROM training_data td
+LEFT JOIN client c ON td.client_id = c.id
+LEFT JOIN exercises e ON td.exercise_id = e.id;
+
+
+----Create Trigger and Trigger Function to add new training data to the model everytime unique values for a client are performed
+CREATE OR REPLACE FUNCTION insert_into_training_data()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM training_data
+        WHERE client_id = NEW.client_id
+        AND exercise_id = NEW.exercise_id
+        AND weight = NEW.weight
+        AND sets = NEW.sets
+        AND reps = NEW.reps
+    ) THEN
+        INSERT INTO training_data (client_id, exercise_id, weight, sets, reps)
+        VALUES (NEW.client_id, NEW.exercise_id, NEW.weight, NEW.sets, NEW.reps);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE FUNCTION
+cabral_fitness=> CREATE TRIGGER trg_insert_into_training_data
+AFTER INSERT ON workout_exercises
+FOR EACH ROW
+EXECUTE FUNCTION insert_into_training_data();
+CREATE TRIGGER
