@@ -179,6 +179,7 @@ def ai_prescription_support(exercises, conn):
         except ValueError as e:
             if "minimum of 1 is required" in str(e):
                 st.error("No Exercises Selected")
+                st.stop()
         else:
             raise e
         predicted_output=predicted_output.astype(int)
