@@ -174,7 +174,13 @@ def ai_prescription_support(exercises, conn):
         token_exercise=input_tokenizer.texts_to_sequences(workout)
         token_exercise=np.asarray(token_exercise)
         token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
-        predicted_output = regressor.predict(token_exercise)
+        try:
+            predicted_output = regressor.predict(token_exercise)
+        except ValueError as e:
+            if "minimum of 1 is required" in str(e):
+                st.error("No Exercises Selected")
+        else:
+            raise e
         predicted_output=predicted_output.astype(int)
         df=pd.DataFrame(predicted_output, columns=['Weight', 'Sets', 'Reps'])
         workout=pd.Series(workout, name='Exercise')
