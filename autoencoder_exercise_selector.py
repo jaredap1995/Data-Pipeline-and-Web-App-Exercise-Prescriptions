@@ -52,6 +52,7 @@ def load_prepare_data(conn):
         LEFT JOIN exercises e ON td.exercise_id = e.id;
         """)
     all_workout_data = cursor.fetchall()
+    all_workout_data = np.asarray(all_workout_data)
 
     int_var=[]
     variables=all_workout_data[:,2:]
