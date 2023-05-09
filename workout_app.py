@@ -16,7 +16,8 @@ from track_block_progress import show_progress_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 from visualization_functions import pull_visuals
 from open_AI_new_workout import GPT_Coach
-from DTR_prescriber import ai_prescription_support
+from DecisionTreeRegressor_variable_prescriber import ai_prescription_support
+from autoencoder_exercise_selector import exercise_selector
 
 def load_workouts(name):
     workbook=grab_workbook_from_drive(name)
@@ -305,6 +306,17 @@ def app():
             ai_prescription_support(existing_exercises, conn)
     # with col2:
         # Add the label to the second column
+
+
+        #Autoencoder button
+        beta_label_2 = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
+        st.markdown(beta_label_2, unsafe_allow_html=True)
+        autoencoder_predictions=st.button('Test Autoencoder')
+        if 'autoencoder' not in st.session_state:
+            st.session_state['autoencoder']= False
+        if ai_predictions or st.session_state.regressor:
+            st.session_state['autoencoder']=True
+            exercise_selector(existing_exercises, conn)
             
         # conn.close()
 # if __name__ == "main":
