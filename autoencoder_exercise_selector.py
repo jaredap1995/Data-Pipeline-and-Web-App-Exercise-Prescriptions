@@ -184,7 +184,7 @@ def exercise_selector(conn):
     if provide_suggestions or st.session_state.exercise_selector:
         st.write(exercise)
         st.dataframe(df)
-        st.dataframed(df[df['Exercise']==exercise])
+        st.dataframe(df[df['Exercise']==exercise])
         st.stop()
         exercise_options=df[df['Exercise']==exercise]
         VL_range=get_intensity_range(exercise_options, intensity)
