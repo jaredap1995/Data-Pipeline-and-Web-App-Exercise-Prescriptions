@@ -182,10 +182,7 @@ def exercise_selector(conn):
     intensity=st.selectbox('Select intensity', intensities)
     provide_suggestions=st.button('Provide suggestions')
     if provide_suggestions or st.session_state.exercise_selector:
-        st.write(exercise)
-        st.dataframe(df)
-        st.dataframe(df[df['Exercise']==exercise[0]])
-        st.stop()
+        st.session_state.exercise_selector = True
         exercise_options=df[df['Exercise']==exercise]
         VL_range=get_intensity_range(exercise_options, intensity)
         exercise_index=random.choice(VL_range.index)
