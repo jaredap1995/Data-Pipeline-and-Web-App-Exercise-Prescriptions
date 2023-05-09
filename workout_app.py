@@ -314,9 +314,9 @@ def app():
         autoencoder_predictions=st.button('Test Autoencoder')
         if 'autoencoder' not in st.session_state:
             st.session_state['autoencoder']= False
-        if ai_predictions or st.session_state.regressor:
+        if autoencoder_predictions or st.session_state.autoencoder:
             st.session_state['autoencoder']=True
-            exercise_selector(existing_exercises, conn)
+            exercise_selector(conn)
             
         # conn.close()
 # if __name__ == "main":
