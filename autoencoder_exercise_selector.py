@@ -250,20 +250,17 @@ def exercise_selector(conn):
 
             # Make predictions
             predicted_output = loaded_regressor.predict(token_exercise)
-            predicted_output=predicted_output.astype(int)
-            st.write(predicted_output)
-            for idx, exercise in enumerate(semantic_vl_exercises_list):
-                st.write(exercise, predicted_output[idx,0], predicted_output[idx,1], predicted_output[idx,2])
-            st.stop()
+            predicted_output=predicted_output.astype(int)    
             cursor=conn.cursor()
             for idx, exercise in enumerate(semantic_vl_exercises_list):
-                cursor.execute('INSERT INTO predictions (exercise, weight, sets, reps) VALUES (?, ?, ?, ?)', 
-                            (exercise, predicted_output[idx,0], predicted_output[idx,1], predicted_output[idx,2]))
+                cursor.execute('INSERT INTO predictions (exercise, weight, sets, reps) VALUES (%s, %s, %s, %s)',
+               (exercise, predicted_output[idx, 0], predicted_output[idx, 1], predicted_output[idx, 2]))
+            conn.commit()
             df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
                     'Weight': predicted_output[:,0],
                     'Sets': predicted_output[:,1],
                     'Reps': predicted_output[:,2]})
-            st.experimental_data_editor(df)
+            modifications=st.experimental_data_editor(df)
         except IndexError as e:
             if "list index" in str(e):
                 st.error("Please select an exercise")
