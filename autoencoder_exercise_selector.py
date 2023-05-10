@@ -173,12 +173,14 @@ def exercise_selector(conn):
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
+    df, volume_loads, exercises, scaled_VL = load_prepare_data(conn)
+
     tokenizer=tf.keras.preprocessing.text.Tokenizer
     pad_sequences=tf.keras.preprocessing.sequence.pad_sequences
     input_tokenizer = tokenizer(char_level=False, filters='', lower=False)
+    input_tokenizer.fit_on_texts(exercises)
 
 
-    df, volume_loads, exercises, scaled_VL = load_prepare_data(conn)
     exercise_vectors = corpus_build(exercises)
     input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
     similarity_matrix = load_model_make_predictions(input_data)
@@ -198,9 +200,7 @@ def exercise_selector(conn):
             # Load the trained model from a file and tokeinze for regression
 
             loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
-            input_tokenizer.fit_on_texts(semantic_vl_exercises_list)
             token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
-            st.write(semantic_vl_exercises_list)
             token_exercise=np.asarray(token_exercise)
             token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
 
