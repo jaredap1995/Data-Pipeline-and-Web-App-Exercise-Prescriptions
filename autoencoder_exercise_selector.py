@@ -253,8 +253,16 @@ def exercise_selector(conn):
             predicted_output=predicted_output.astype(int)    
             cursor=conn.cursor()
             for idx, exercise in enumerate(semantic_vl_exercises_list):
-                cursor.execute('INSERT INTO predictions (exercise, weight, sets, reps) VALUES (%s, %s, %s, %s)',
-               (exercise, predicted_output[idx, 0], predicted_output[idx, 1], predicted_output[idx, 2]))
+                # Convert numpy int64s to Python ints
+                weight = int(predicted_output[idx, 0])
+                sets = int(predicted_output[idx, 1])
+                reps = int(predicted_output[idx, 2])
+                
+                # Insert statement with subquery for exercise id
+                cursor.execute('''
+                    INSERT INTO predictions (exercise, weight, sets, reps) 
+                    VALUES ((SELECT id FROM exercises WHERE name = %s), %s, %s, %s)
+                    ''', (exercise, weight, sets, reps))
             conn.commit()
             df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
                     'Weight': predicted_output[:,0],
