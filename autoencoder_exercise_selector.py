@@ -37,6 +37,54 @@ def get_intensity_range(exercise_options_df, intensity):
         return filtered_options['VL']
     else:
         raise ValueError("Invalid intensity value")
+    
+
+def passes_filters(exercise):
+
+    ## Preprocessing
+    char_to_remove = [str(i) for i in range(10)]
+    specials_to_remove = ['*', '/', '**', '***', '(', '[', ')', ']', '&']
+    yelenas_to_remove = ['did', 'doing', 'didnt', 'need', 'could', 'couldnt', '?']
+    emphasis_to_remove = ['emphasis', 'Emphasis', 'Focus', 'Condition', 'recon', 'recondition', 'Recondition', 'wedding']
+
+    if any(char in exercise for char in char_to_remove):
+        return False
+    if any(char in exercise for char in specials_to_remove):
+        return False
+    if any(char in exercise for char in yelenas_to_remove):
+        return False
+    if any(char in exercise for char in emphasis_to_remove):
+        return False
+    return True
+
+
+
+def filter_data(inputs, outputs):
+    #Filtering out exercises that don't pass the string filters
+    new_inputs = []
+    new_outputs = []
+    for i, exercise in enumerate(inputs):
+        if passes_filters(exercise):
+            new_inputs.append(exercise)
+            new_outputs.append(outputs[i])
+
+    inputs = new_inputs
+    outputs = new_outputs
+
+    # Making sure all values are integers
+    converted_outputs = []
+    new_inputs = []
+
+    for i, arr in enumerate(outputs):
+        converted_arr = convert_to_int(arr)
+        if converted_arr is not None:
+            converted_outputs.append(converted_arr)
+            new_inputs.append(inputs[i])
+
+    inputs = new_inputs
+    outputs = converted_outputs
+
+    return inputs, outputs
 
 
 def load_prepare_data(conn):
@@ -55,18 +103,11 @@ def load_prepare_data(conn):
     all_workout_data = cursor.fetchall()
     all_workout_data = np.asarray(all_workout_data)
     inputs=all_workout_data[:,1]
+    outputs=all_workout_data[:,2:]
+    inputs, outputs = filter_data(inputs, outputs)
 
-    new_inputs=[]
-    int_var=[]
-    variables=all_workout_data[:,2:]
-    for i, arr in enumerate(variables):
-        converted_arr = convert_to_int(arr)
-        if converted_arr is not None:
-            int_var.append(converted_arr)
-            new_inputs.append(inputs[i])
-
-    df=pd.DataFrame(new_inputs)
-    variables=pd.DataFrame(int_var)
+    df=pd.DataFrame(inputs)
+    variables=pd.DataFrame(outputs)
     variables.columns=['Weight', 'Sets', 'Reps']
     df=pd.concat([df, variables], axis=1)
 
