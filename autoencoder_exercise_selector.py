@@ -202,7 +202,7 @@ def exercise_selector(conn):
             loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
             token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
             token_exercise=np.asarray(token_exercise)
-            token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
+            token_exercise=pad_sequences(token_exercise, maxlen=8, padding='pre')
 
             # Make predictions
             predicted_output = loaded_regressor.predict(token_exercise)
