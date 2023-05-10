@@ -35,7 +35,11 @@ def record_block(conn, name, block, length_of_block):
             sel_ex=df['Exercise']
             b_ex=[]
             for ex in sel_ex:
-                cursor.execute("SELECT id FROM exercises WHERE exercise = %s", (ex,))
+                cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(ex,))
+                exists = cursor.fetchone()[0]
+                if not exists:
+                    cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (ex,))
+                cursor.execute("SELECT id FROM exercises WHERE exercise = %s;", (ex,))
                 exercise_id = cursor.fetchone()[0]
                 b_ex.append(exercise_id)
             exercise_ids.append(b_ex)
