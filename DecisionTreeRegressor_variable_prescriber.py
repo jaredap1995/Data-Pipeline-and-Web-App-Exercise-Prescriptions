@@ -1,11 +1,9 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import json
 import tensorflow as tf
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
-import psycopg2
 
 
 def load_data(conn):
