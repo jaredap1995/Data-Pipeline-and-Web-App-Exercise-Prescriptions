@@ -121,6 +121,12 @@ def sanitizie_inputs(exercise_vectors, scaled_VL):
         input_data.append(combined)
     # input_data = np.array(input_data)
 
+    non_101=[]
+    for i, arr in enumerate(input_data):
+        if arr.shape != (101,):
+            st.write(arr, i)
+            non_101.append(i)
+
     input_data=np.array(input_data, dtype=np.float32)
 
 
@@ -183,6 +189,7 @@ def exercise_selector(conn):
 
 
     exercise_vectors = corpus_build(exercises)
+
     input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
     similarity_matrix = load_model_make_predictions(input_data)
     exercise=st.multiselect('Select exercises', exercises.unique())
