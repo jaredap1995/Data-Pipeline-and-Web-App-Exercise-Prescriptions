@@ -235,46 +235,49 @@ def exercise_selector(conn):
     provide_suggestions=st.button('Provide suggestions')
     if provide_suggestions or st.session_state.exercise_selector:
         st.session_state.exercise_selector = True
-        try:
-            exercise_options=df[df['Exercise']==exercise[0]]
-            VL_range=get_intensity_range(exercise_options, intensity)
-            exercise_index=random.choice(VL_range.index)
-            similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
-            semantic_vl_exercises_list=exercises[similar_exercise_indices]
-            # Load the trained model from a file and tokeinze for regression
+        with st.form(key='ai_predictor'):
+            try:
+                exercise_options=df[df['Exercise']==exercise[0]]
+                VL_range=get_intensity_range(exercise_options, intensity)
+                exercise_index=random.choice(VL_range.index)
+                similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
+                semantic_vl_exercises_list=exercises[similar_exercise_indices]
+                # Load the trained model from a file and tokeinze for regression
 
-            loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
-            token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
-            token_exercise=np.asarray(token_exercise)
-            token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
+                loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
+                token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
+                token_exercise=np.asarray(token_exercise)
+                token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
 
-            # Make predictions
-            predicted_output = loaded_regressor.predict(token_exercise)
-            predicted_output=predicted_output.astype(int)    
-            cursor=conn.cursor()
-            for idx, exercise in enumerate(semantic_vl_exercises_list):
-                # Convert numpy int64s to Python ints
-                weight = int(predicted_output[idx, 0])
-                sets = int(predicted_output[idx, 1])
-                reps = int(predicted_output[idx, 2])
-                
-                # Insert statement with subquery for exercise id
-                cursor.execute('''
-                    INSERT INTO predictions (exercise_id, weight, sets, reps) 
-                    VALUES ((SELECT id FROM exercises WHERE exercise = %s), %s, %s, %s)
-                    ''', (exercise, weight, sets, reps))
-            conn.commit()
-            df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
-                    'Weight': predicted_output[:,0],
-                    'Sets': predicted_output[:,1],
-                    'Reps': predicted_output[:,2]})
-            modifications=st.experimental_data_editor(df)
-        except IndexError as e:
-            if "list index" in str(e):
-                st.error("Please select an exercise")
-                st.stop()
-            else:
-                raise e
+                # Make predictions
+                predicted_output = loaded_regressor.predict(token_exercise)
+                predicted_output=predicted_output.astype(int)    
+                cursor=conn.cursor()
+                for idx, exercise in enumerate(semantic_vl_exercises_list):
+                    # Convert numpy int64s to Python ints
+                    weight = int(predicted_output[idx, 0])
+                    sets = int(predicted_output[idx, 1])
+                    reps = int(predicted_output[idx, 2])
+                    
+                    # Insert statement with subquery for exercise id
+                    cursor.execute('''
+                        INSERT INTO predictions (exercise_id, weight, sets, reps) 
+                        VALUES ((SELECT id FROM exercises WHERE exercise = %s), %s, %s, %s)
+                        ''', (exercise, weight, sets, reps))
+                conn.commit()
+                df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
+                        'Weight': predicted_output[:,0],
+                        'Sets': predicted_output[:,1],
+                        'Reps': predicted_output[:,2]})
+                modifications=st.experimental_data_editor(df)
+            except IndexError as e:
+                if "list index" in str(e):
+                    st.error("Please select an exercise")
+                    st.stop()
+                else:
+                    raise e
+            if st.form_submit_button('Submit'):
+                st.write('I am very tired')
 
 
 
