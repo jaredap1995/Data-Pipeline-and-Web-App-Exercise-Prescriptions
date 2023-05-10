@@ -4,6 +4,7 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
+import joblib
 
 
 def load_data(conn):
@@ -174,6 +175,8 @@ def ai_prescription_support(exercises, conn):
         token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
         try:
             predicted_output = regressor.predict(token_exercise)
+            loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
+            loaded_output = loaded_regressor.predict(token_exercise)
         except ValueError as e:
             if "minimum of 1 is required" in str(e):
                 st.error("No Exercises Selected")
@@ -181,7 +184,11 @@ def ai_prescription_support(exercises, conn):
             else:
                 raise e
         predicted_output=predicted_output.astype(int)
+        loaded_output=loaded_output.astype(int)
         df=pd.DataFrame(predicted_output, columns=['Weight', 'Sets', 'Reps'])
+        df2=pd.DataFrame(loaded_output, columns=['Weight', 'Sets', 'Reps'])
         workout=pd.Series(workout, name='Exercise')
         df=pd.concat([workout, df], axis=1)
+        df2=pd.concat([workout, df2], axis=1)
         st.experimental_data_editor(df)
+        st.experimental_data_editor(df2)
