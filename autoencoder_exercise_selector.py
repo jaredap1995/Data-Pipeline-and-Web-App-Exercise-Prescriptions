@@ -195,6 +195,7 @@ def exercise_selector(conn):
         similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
         semantic_vl_exercises_list=exercises[similar_exercise_indices]
         # Load the trained model from a file and tokeinze for regression
+        
         loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
         input_tokenizer.fit_on_texts(semantic_vl_exercises_list)
         token_exercise=input_tokenizer.texts_to_sequence(semantic_vl_exercises_list)
