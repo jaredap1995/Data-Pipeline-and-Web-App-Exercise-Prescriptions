@@ -183,6 +183,8 @@ def exercise_selector(conn):
 
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
+    st.write(len(exercises))
+
     exercise_vectors = corpus_build(exercises)
     input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
     similarity_matrix = load_model_make_predictions(input_data)
