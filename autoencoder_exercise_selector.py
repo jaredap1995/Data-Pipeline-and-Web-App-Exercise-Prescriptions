@@ -76,12 +76,6 @@ def load_prepare_data(conn):
     exercises=df['Exercise']
     scaled_VL=MinMaxScaler().fit_transform(df['VL'].to_numpy().reshape(-1,1))
 
-    #indexes of I'Y'T's exercises that mess up embeddings later on. Found in accompanying Jupyter and manually removed
-    non_101_shape=[1401,1466,1490,1589,1608,1730,1777,1822,1846,1894,1899,1907,1992,2035,
-                    2044,2094,2101,2211]
-    
-    exercises[non_101_shape]='eyes, whys, and tees'
-
     return df, volume_loads, exercises, scaled_VL
 
 class MyCorpus:
@@ -127,9 +121,9 @@ def sanitizie_inputs(exercises, exercise_vectors, scaled_VL):
             st.write(arr, i)
             non_101.append(i)
 
-    non=exercises[non_101]
-    st.write(non)
-
+    exercises[non_101]='eyes, why, and tees'
+    st.write(exercises[non_101])
+    st.stop()
     input_data=np.array(input_data, dtype=np.float32)
 
 
