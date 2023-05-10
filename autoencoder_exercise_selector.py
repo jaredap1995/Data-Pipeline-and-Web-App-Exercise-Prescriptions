@@ -113,7 +113,7 @@ def corpus_build(exercises):
 
     return exercise_vectors
 
-def sanitizie_inputs(exercise_vectors, scaled_VL):
+def sanitizie_inputs(exercises, exercise_vectors, scaled_VL):
     # Combine exercise vectors with volume loads
     input_data = []
     for exercise_vector, volume_load_normalized in zip(exercise_vectors, scaled_VL):
@@ -126,6 +126,9 @@ def sanitizie_inputs(exercise_vectors, scaled_VL):
         if arr.shape != (101,):
             st.write(arr, i)
             non_101.append(i)
+
+    non=exercises[non_101]
+    st.write(non)
 
     input_data=np.array(input_data, dtype=np.float32)
 
