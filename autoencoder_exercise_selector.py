@@ -121,7 +121,9 @@ def sanitizie_inputs(exercise_vectors, scaled_VL):
         input_data.append(combined)
     input_data = np.array(input_data)
 
+    st.write(input_data)
     input_data=np.array(input_data, dtype=np.float32)
+
 
     return input_data
 
