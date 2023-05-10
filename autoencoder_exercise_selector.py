@@ -224,8 +224,6 @@ def exercise_selector(conn):
 
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
-    st.write(len(exercises))
-
     exercise_vectors = corpus_build(exercises)
     input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
     similarity_matrix = load_model_make_predictions(input_data)
@@ -236,43 +234,33 @@ def exercise_selector(conn):
     provide_suggestions=st.button('Provide suggestions')
     if provide_suggestions or st.session_state.exercise_selector:
         st.session_state.exercise_selector = True
-        # try:
-        exercise_options=df[df['Exercise']==exercise[0]]
-        VL_range=get_intensity_range(exercise_options, intensity)
-        exercise_index=random.choice(VL_range.index)
-        similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
-        semantic_vl_exercises_list=exercises[similar_exercise_indices]
-        # Load the trained model from a file and tokeinze for regression
+        try:
+            exercise_options=df[df['Exercise']==exercise[0]]
+            VL_range=get_intensity_range(exercise_options, intensity)
+            exercise_index=random.choice(VL_range.index)
+            similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
+            semantic_vl_exercises_list=exercises[similar_exercise_indices]
+            # Load the trained model from a file and tokeinze for regression
 
-        loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
-        token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
-        token_exercise=np.asarray(token_exercise)
-        token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
+            loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
+            token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
+            token_exercise=np.asarray(token_exercise)
+            token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
 
-        test=['SA Squat Thrusters']
-        test=input_tokenizer.texts_to_sequences(test)
-        test=np.asarray(test)
-        test=pad_sequences(test, maxlen=6, padding='pre')
-
-
-        st.write(test)
-        # Make predictions
-        predicted_output = loaded_regressor.predict(token_exercise)
-        test_output=loaded_regressor.predict(test)
-        st.write(test_output)
-
-    #     predicted_output=predicted_output.astype(int)
-    #     df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
-    #             'Weight': predicted_output[:,0],
-    #             'Sets': predicted_output[:,1],
-    #             'Reps': predicted_output[:,2]})
-    #     st.experimental_data_editor(df)
-    # except IndexError as e:
-    #     if "list index" in str(e):
-    #         st.error("Please select an exercise")
-    #         st.stop()
-    #     else:
-    #         raise e
+            # Make predictions
+            predicted_output = loaded_regressor.predict(token_exercise)
+            predicted_output=predicted_output.astype(int)
+            df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
+                    'Weight': predicted_output[:,0],
+                    'Sets': predicted_output[:,1],
+                    'Reps': predicted_output[:,2]})
+            st.experimental_data_editor(df)
+        except IndexError as e:
+            if "list index" in str(e):
+                st.error("Please select an exercise")
+                st.stop()
+            else:
+                raise e
 
 
 
