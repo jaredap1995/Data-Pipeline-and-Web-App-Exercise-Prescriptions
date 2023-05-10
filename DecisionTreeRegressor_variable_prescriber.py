@@ -184,7 +184,6 @@ def ai_prescription_support(exercises, conn):
             else:
                 raise e
         predicted_output=predicted_output.astype(int)
-        loaded_output=loaded_output.astype(int)
         df=pd.DataFrame(predicted_output, columns=['Weight', 'Sets', 'Reps'])
         workout=pd.Series(workout, name='Exercise')
         df=pd.concat([workout, df], axis=1)
