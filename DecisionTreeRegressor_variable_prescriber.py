@@ -163,6 +163,7 @@ def ai_prescription_support(exercises, conn):
     workout_data=np.asarray(workout_data)
     # inputs, outputs = create_inputs_outputs(workout_data_json)
     inputs, outputs = filter_data(workout_data[:,1], workout_data[:,2:])
+    st.write(len(inputs))
     # unique_inputs, unique_outputs = unique_pairs(inputs, outputs)
     input_tokenizer, pad_sequences, input_seq_padded, outputs = tokenize_and_pad(inputs, outputs)
     regressor, X_test, y_test = split_fit_model(input_seq_padded, outputs)

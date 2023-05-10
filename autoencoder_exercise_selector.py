@@ -54,23 +54,24 @@ def load_prepare_data(conn):
         """)
     all_workout_data = cursor.fetchall()
     all_workout_data = np.asarray(all_workout_data)
+    inputs=all_workout_data[:,1]
 
+    new_inputs=[]
     int_var=[]
     variables=all_workout_data[:,2:]
     for i, arr in enumerate(variables):
         converted_arr = convert_to_int(arr)
         if converted_arr is not None:
             int_var.append(converted_arr)
+            new_inputs.append(inputs[i])
 
-    df=pd.DataFrame(all_workout_data)
-    df=df.drop(columns=[2,3,4])
-
+    df=pd.DataFrame(new_inputs)
     variables=pd.DataFrame(int_var)
     variables.columns=['Weight', 'Sets', 'Reps']
     df=pd.concat([df, variables], axis=1)
 
     df['VL'] = df['Weight'].mul(df['Sets']).mul(df['Reps'])
-    df.columns=['Name', 'Exercise', 'Weight', 'Sets', 'Reps', 'VL']
+    df.columns=['Exercise', 'Weight', 'Sets', 'Reps', 'VL']
 
     volume_loads=df['VL']
     exercises=df['Exercise']
