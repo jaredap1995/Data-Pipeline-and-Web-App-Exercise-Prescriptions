@@ -193,7 +193,7 @@ def exercise_selector(conn):
 
     exercise_vectors = corpus_build(exercises)
 
-    input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
+    input_data = sanitizie_inputs(exercises, exercise_vectors, scaled_VL)
     similarity_matrix = load_model_make_predictions(input_data)
     exercise=st.multiselect('Select exercises', exercises.unique())
     workout_length=st.slider('Select number of exercises', 1, 15)
