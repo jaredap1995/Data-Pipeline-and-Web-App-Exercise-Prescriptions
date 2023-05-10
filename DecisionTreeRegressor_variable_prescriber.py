@@ -191,4 +191,4 @@ def ai_prescription_support(exercises, conn):
         df=pd.concat([workout, df], axis=1)
         df2=pd.concat([workout, df2], axis=1)
         st.experimental_data_editor(df)
-        st.experimental_data_editor(df2)
+        st.experimental_data_editor(df2, key='loaded_regressor')
