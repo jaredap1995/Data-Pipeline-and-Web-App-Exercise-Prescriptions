@@ -86,6 +86,7 @@ def load_prepare_data(conn):
     pad_sequences=tf.keras.preprocessing.sequence.pad_sequences
     input_tokenizer = tokenizer(char_level=False, filters='', lower=False)
     input_tokenizer.fit_on_texts(exercises)
+
     exercises[non_101]='eyes, whys, and tees'
 
     return df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences
@@ -175,11 +176,11 @@ def find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n):
 
     return top_n_indices
 
-def exercise_selector(conn, input_tokenizer, pad_sequences):
+def exercise_selector(conn):
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
-    df, volume_loads, exercises, scaled_VL = load_prepare_data(conn)
+    df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
     exercise_vectors = corpus_build(exercises)
     input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
