@@ -76,6 +76,13 @@ def load_prepare_data(conn):
     exercises=df['Exercise']
     scaled_VL=MinMaxScaler().fit_transform(df['VL'].to_numpy().reshape(-1,1))
 
+    non_101=[]
+    for idx, ex in enumerate(exercises):
+        if ex.startswith("I'") or ex.startswith("I,"):
+            non_101.append(idx)
+
+    exercises[non_101]='eyes, whys, and tees'
+
     return df, volume_loads, exercises, scaled_VL
 
 class MyCorpus:
@@ -114,13 +121,6 @@ def sanitizie_inputs(exercises, exercise_vectors, scaled_VL):
         combined = np.hstack((exercise_vector, volume_load_normalized))
         input_data.append(combined)
     # input_data = np.array(input_data)
-
-    #I, Y, T's does not get to neccesary embedding length so I replace them with different text and replace back later
-    non_101=[]
-    for i, arr in enumerate(input_data):
-        if arr.shape != (101,):
-            non_101.append(i)
-    exercises[non_101]='eyes, why, and tees'
 
     input_data=np.array(input_data, dtype=np.float32)
 
@@ -181,9 +181,7 @@ def exercise_selector(conn):
     input_tokenizer = tokenizer(char_level=False, filters='', lower=False)
     input_tokenizer.fit_on_texts(exercises)
 
-
     exercise_vectors = corpus_build(exercises)
-
     input_data = sanitizie_inputs(exercises, exercise_vectors, scaled_VL)
     similarity_matrix = load_model_make_predictions(input_data)
     exercise=st.multiselect('Select exercises', exercises.unique())
