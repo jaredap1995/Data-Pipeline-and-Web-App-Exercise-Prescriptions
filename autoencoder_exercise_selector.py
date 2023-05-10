@@ -81,9 +81,14 @@ def load_prepare_data(conn):
         if ex.startswith("I'") or ex.startswith("I,"):
             non_101.append(idx)
 
+
+    tokenizer=tf.keras.preprocessing.text.Tokenizer
+    pad_sequences=tf.keras.preprocessing.sequence.pad_sequences
+    input_tokenizer = tokenizer(char_level=False, filters='', lower=False)
+    input_tokenizer.fit_on_texts(exercises)
     exercises[non_101]='eyes, whys, and tees'
 
-    return df, volume_loads, exercises, scaled_VL
+    return df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences
 
 class MyCorpus:
     """An iterator that yields sentences (lists of str)."""
@@ -170,16 +175,11 @@ def find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n):
 
     return top_n_indices
 
-def exercise_selector(conn):
+def exercise_selector(conn, input_tokenizer, pad_sequences):
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
     df, volume_loads, exercises, scaled_VL = load_prepare_data(conn)
-
-    tokenizer=tf.keras.preprocessing.text.Tokenizer
-    pad_sequences=tf.keras.preprocessing.sequence.pad_sequences
-    input_tokenizer = tokenizer(char_level=False, filters='', lower=False)
-    input_tokenizer.fit_on_texts(exercises)
 
     exercise_vectors = corpus_build(exercises)
     input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
