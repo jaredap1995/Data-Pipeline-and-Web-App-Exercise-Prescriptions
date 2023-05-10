@@ -115,15 +115,13 @@ def sanitizie_inputs(exercises, exercise_vectors, scaled_VL):
         input_data.append(combined)
     # input_data = np.array(input_data)
 
+    #I, Y, T's does not get to neccesary embedding length so I replace them with different text and replace back later
     non_101=[]
     for i, arr in enumerate(input_data):
         if arr.shape != (101,):
-            st.write(arr, i)
             non_101.append(i)
-
     exercises[non_101]='eyes, why, and tees'
-    st.write(exercises[non_101])
-    st.stop()
+
     input_data=np.array(input_data, dtype=np.float32)
 
 
@@ -170,7 +168,6 @@ def find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n):
             if len(top_n_indices) >= top_n:
                 break
 
-    # Return the indices of the top n most similar unique exercises
     return top_n_indices
 
 def exercise_selector(conn):
