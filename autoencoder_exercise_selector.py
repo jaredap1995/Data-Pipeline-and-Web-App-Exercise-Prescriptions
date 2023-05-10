@@ -188,10 +188,12 @@ def exercise_selector(conn):
         exercise_index=random.choice(VL_range.index)
         similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
         # Print the original exercise and the most similar exercises
-        st.write("Original exercise:", exercises[exercise_index])
-        st.write("Most similar exercises:")
-        for index in similar_exercise_indices:
-            st.write(exercises[index], volume_loads[index])
+        semantic_vl_exercises_list=exercises[exercise_index]
+        df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
+                'Sets': np.zeros(len(semantic_vl_exercises_list)),
+                'Reps': np.zeros(len(semantic_vl_exercises_list)),
+                'Weight': np.zeros(len(semantic_vl_exercises_list))})
+        st.dataframe(df)
 
 
 
