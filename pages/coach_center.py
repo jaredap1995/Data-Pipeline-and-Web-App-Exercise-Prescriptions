@@ -144,7 +144,7 @@ def coach(conn, name):
                                 'Sets': np.zeros(len(selected_exercises)),
                                 'Reps': np.zeros(len(selected_exercises)),
                                 'Weight': np.zeros(len(selected_exercises))})
-                edited_df = st.experimental_data_editor(df)
+                edited_df = st.experimental_data_editor(df, num_rows='dynamic')
                 rep_submit_button_2 = st.form_submit_button(label='Record Workout')
                 if rep_submit_button_2 or st.session_state.prescription_recording:
                     st.session_state['prescription_recording']=True
