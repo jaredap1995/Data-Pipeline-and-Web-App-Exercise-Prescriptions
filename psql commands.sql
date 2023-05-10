@@ -283,7 +283,7 @@ WHERE exercise_id IS NOT NULL AND sets IS NOT NULL AND reps IS NOT NULL AND weig
 CREATE TABLE training_data (
 id serial,
 client_id INTEGER REFERENCES client(id) ON DELETE CASCADE,
-exercise_id INTEGER NOT NULL REFERENCES exercises(exercise) ON DELETE CASCADE,
+exercise_id INTEGER NOT NULL REFERENCES exercises(id) ON DELETE CASCADE,
 sets INTEGER NOT NULL,
 reps INTEGER NOT NULL,
 weight INTEGER NOT NULL
@@ -325,3 +325,16 @@ AFTER INSERT ON workout_exercises
 FOR EACH ROW
 EXECUTE FUNCTION insert_into_training_data();
 CREATE TRIGGER
+
+
+---Create a new table for the model's predictions
+CREATE TABLE predictions (
+id serial,
+client_id INTEGER REFERENCES client(id) ON DELETE CASCADE,
+exercise_id INTEGER NOT NULL REFERENCES exercises(exercise) ON DELETE CASCADE,
+sets INTEGER NOT NULL,
+reps INTEGER NOT NULL,
+weight INTEGER NOT NULL,
+PRIMARY KEY (id)
+);
+

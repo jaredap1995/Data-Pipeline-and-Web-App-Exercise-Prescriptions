@@ -12,6 +12,7 @@ from gensim import utils
 import gensim
 from sklearn.metrics.pairwise import cosine_similarity
 import joblib
+import psycopg2
 
 
 def convert_to_int(arr):
@@ -250,6 +251,12 @@ def exercise_selector(conn):
             # Make predictions
             predicted_output = loaded_regressor.predict(token_exercise)
             predicted_output=predicted_output.astype(int)
+            st.write(predicted_output)
+            st.stop()
+            cursor=conn.cursor()
+            for idx, exercise in enumerate(semantic_vl_exercises_list):
+                cursor.execute('INSERT INTO predictions (exercise, weight, sets, reps) VALUES (?, ?, ?, ?)', 
+                            (exercise, predicted_output[idx,idx], predicted_output[0][1], predicted_output[0][2]))
             df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
                     'Weight': predicted_output[:,0],
                     'Sets': predicted_output[:,1],
