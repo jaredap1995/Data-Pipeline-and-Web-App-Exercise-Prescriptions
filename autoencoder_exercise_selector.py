@@ -119,9 +119,8 @@ def sanitizie_inputs(exercise_vectors, scaled_VL):
     for exercise_vector, volume_load_normalized in zip(exercise_vectors, scaled_VL):
         combined = np.hstack((exercise_vector, volume_load_normalized))
         input_data.append(combined)
-    input_data = np.array(input_data)
+    # input_data = np.array(input_data)
 
-    st.write(input_data)
     input_data=np.array(input_data, dtype=np.float32)
 
 
