@@ -252,11 +252,13 @@ def exercise_selector(conn):
             predicted_output = loaded_regressor.predict(token_exercise)
             predicted_output=predicted_output.astype(int)
             st.write(predicted_output)
+            for idx, exercise in enumerate(semantic_vl_exercises_list):
+                st.write(exercise, predicted_output[idx,0], predicted_output[idx,1], predicted_output[idx,2])
             st.stop()
             cursor=conn.cursor()
             for idx, exercise in enumerate(semantic_vl_exercises_list):
                 cursor.execute('INSERT INTO predictions (exercise, weight, sets, reps) VALUES (?, ?, ?, ?)', 
-                            (exercise, predicted_output[idx,idx], predicted_output[0][1], predicted_output[0][2]))
+                            (exercise, predicted_output[idx,0], predicted_output[idx,1], predicted_output[idx,2]))
             df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
                     'Weight': predicted_output[:,0],
                     'Sets': predicted_output[:,1],
