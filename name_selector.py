@@ -19,7 +19,7 @@ def name_function():
 
         # Set up the sidebar for user input
         with st.sidebar:
-            st.success("Please Select your Name from the Dropdown Menu. Or if you are a new client, enter your name!")
+            st.success("Please Select a Name from the Dropdown Menu. To enter a new name, select new below.")
             name = st.multiselect('Please select your name', clients, key='client_name')
             if name:
                 name=name[0]
