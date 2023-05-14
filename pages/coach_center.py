@@ -257,7 +257,7 @@ def app_2():
 
         # Define the "Regressor" button
         beta_label = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
-        col1,col2= st.columns([1,10,1])
+        col1,col2, col3= st.columns([1,10,1])
         with col1:
             st.markdown(beta_label, unsafe_allow_html=True)
             # ai_predictions=st.button('Test DTR')
