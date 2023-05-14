@@ -61,8 +61,8 @@ def home_page():
 
 def name_function():
 
-    if 'name' in st.session_state and st.session_state['name'] is not None:
-            return st.session_state['name']
+    if st.session_state['name'] is not None:
+        return st.session_state['name']
 
     conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
     
