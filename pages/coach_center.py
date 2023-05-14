@@ -214,6 +214,8 @@ if 'conn' not in st.session_state or 'name' not in st.session_state:
     st.session_state['name']=None
 st.session_state['name']=name_function()
 name=st.session_state['name']
+st.write(st.session_state['name'])
+
 if not name:
     st.header('No Name Selected. Please select a name from the sidebar.')
 else:

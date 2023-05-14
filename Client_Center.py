@@ -46,6 +46,7 @@ def home_page():
     ### Want to know about the features this application provides?
     - Get a custom exercise program tailored to your health and fitness goals that is updated every 4 weeks as you progress!
     - Track your workouts across your training program and stay on top of your progress with intuitive visualizations to see how far you've come.
+    - Expedite Training Prescriptions with a custom built encoder-decoder AI model configured with Attention Mechanism to suggest new exercises based on your previous workouts.
     - Track your Volume-Load across workouts, weeks, and months to monitor injury risk and optimize performance!
     - Get additional supplemenatry workouts anytime, anywhere, at no extra cost. 
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
@@ -105,11 +106,6 @@ def name_function():
 def app():
     st.set_page_config(page_title="Exercise Tracking", layout='wide')
 
-    # # Set the URL
-    # url = "https://www.JaredPerezH&PC.com"
-    # if url != st.get_option("base_url"):
-    #     st.set_option("base_url", url)
-
     #Initialize session state
     if 'exercise_selection' not in st.session_state:
             st.session_state['exercise_selection']=False
@@ -141,11 +137,11 @@ def app():
         st.session_state['all_exercises_visual']=False
 
 
-    #st.write(st.session_state)
+    if 'name' not in st.session_state:
+        st.session_state['name'] = name_function()
 
-    name=None
-    st.session_state['name']=name_function()
-    name=st.session_state['name']
+    name = st.session_state['name']
+    st.write(st.session_state['name'])
     if not name:
         home_page()
     else:
