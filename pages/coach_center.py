@@ -228,6 +228,10 @@ def app_2():
     else:
         st.header(f'You are in Coach Mode and prescribing for {name}. Please Select an Option Below')
         show(st.session_state['name'], st.session_state['conn'])
+        with st.sidebar:
+            if st.button('Change name'):
+                st.session_state['change_name'] = True
+                st.experimental_rerun()
 
 
 
