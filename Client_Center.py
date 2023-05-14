@@ -174,6 +174,7 @@ def app():
                         st.success("Data has been submitted.")
                         time.sleep(1)
                         st.experimental_rerun()
+                st.stop()
 
 
             #Visualize Training Functionality
@@ -186,6 +187,7 @@ def app():
                 if visualize_training_button or st.session_state.visualize_training:
                     st.session_state['visualize_training']=True
                     pull_visuals(conn, name)
+                    st.stop()
             with col2:
                 st.markdown(new_label, unsafe_allow_html=True)
 
@@ -216,8 +218,6 @@ def app():
                     name= name
                     start_date = st.date_input('Start date', value=datetime.date.today() - datetime.timedelta(days=7))
                     end_date = st.date_input('End date', value=datetime.date.today())
-
-                    
                     if start_date <= end_date:
                         st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
                     else:
@@ -225,6 +225,7 @@ def app():
                     range_submission=st.form_submit_button('Produce workouts over designated period')
                     if range_submission:
                         track_workouts(conn, name, start_date, end_date)
+                st.stop()
 
             # Produce Archived Spreadsheet Workout Functionality
             existing_workout_button = st.button('Produce Archived Workout', help="Get a random workout from legacy system")
@@ -243,6 +244,7 @@ def app():
                         workout=show_existing_workout(files, intensity)        
                         st.text("Don't like the workout? Just hit the button again!")
                         st.dataframe(workout)
+                st.stop()
 
                 
             # conn.close()
