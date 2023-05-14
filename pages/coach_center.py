@@ -242,7 +242,7 @@ def app_2():
 
 
      # Define the "New Workout" button
-        col1,col2= st.columns([1,10])
+        col1,col2= st.columns([1,12])
         # Define the HTML code for the label
         new_label = '<span style="color:red; font-weight:bold">*New*</span>'
         with col2:
@@ -260,12 +260,6 @@ def app_2():
         col1,col2= st.columns([1,10])
         with col1:
             st.markdown(beta_label, unsafe_allow_html=True)
-            # ai_predictions=st.button('Test DTR')
-            # if 'regressor' not in st.session_state:
-            #     st.session_state['regressor']= False
-            # if ai_predictions or st.session_state.regressor:
-            #     st.session_state['regressor']=True
-            #     ai_prescription_support(existing_exercises, conn)
         with col2:
             ai_predictions=st.button('Test DTR')
             if 'regressor' not in st.session_state:
@@ -276,13 +270,16 @@ def app_2():
 
         #Autoencoder button
         beta_label_2 = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
-        st.markdown(beta_label_2, unsafe_allow_html=True)
-        autoencoder_predictions=st.button('Test Autoencoder')
-        if 'autoencoder' not in st.session_state:
-            st.session_state['autoencoder']= False
-        if autoencoder_predictions or st.session_state.autoencoder:
-            st.session_state['autoencoder']=True
-            exercise_selector(conn)
+        col1,col2= st.columns([1,10])
+        with col1:
+            st.markdown(beta_label_2, unsafe_allow_html=True)
+        with col2:    
+            autoencoder_predictions=st.button('Test Autoencoder')
+            if 'autoencoder' not in st.session_state:
+                st.session_state['autoencoder']= False
+            if autoencoder_predictions or st.session_state.autoencoder:
+                st.session_state['autoencoder']=True
+                exercise_selector(conn)
 
 
 
