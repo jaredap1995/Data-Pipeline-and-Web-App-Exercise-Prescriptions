@@ -5,7 +5,7 @@ import datetime
 import pandas as pd
 import numpy as np
 from record_prescriptions import record_block
-from Client_Center import name_function
+from name_selector import name_function
 
 
 def increasing_load(workouts, operation, weeks):
