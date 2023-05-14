@@ -242,22 +242,22 @@ def app_2():
 
 
      # Define the "New Workout" button
-        col1,col2= st.columns([2,7])
+        col1,col2= st.columns([1,10])
         # Define the HTML code for the label
         new_label = '<span style="color:red; font-weight:bold">*New*</span>'
-        with col1:
+        with col2:
             new_workout=st.button('Generate New Workout')
             if 'new_workout' not in st.session_state:
                 st.session_state['new_workout']= False
             if new_workout:
                 GPT_Coach(name)
-        with col2:
+        with col1:
             # Add the label to the second column
             st.markdown(new_label, unsafe_allow_html=True)
 
         # Define the "Regressor" button
         beta_label = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
-        col1,col2, col3= st.columns([1,10,1])
+        col1,col2= st.columns([1,10])
         with col1:
             st.markdown(beta_label, unsafe_allow_html=True)
             # ai_predictions=st.button('Test DTR')
