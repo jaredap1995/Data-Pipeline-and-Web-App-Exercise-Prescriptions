@@ -115,6 +115,10 @@ def app():
                 st.session_state['change_name'] = True
                 st.experimental_rerun()
 
+        with st.sidebar:
+            if st.button('Home'):
+                st.experimental_rerun()
+
 
         cursor = conn.cursor()
         cursor.execute("SELECT exercise FROM exercises")
