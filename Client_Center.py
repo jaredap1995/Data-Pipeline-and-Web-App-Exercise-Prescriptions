@@ -15,9 +15,6 @@ from track_workouts import track_workouts
 from track_block_progress import show_progress_in_block
 from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 from visualization_functions import pull_visuals
-from open_AI_new_workout import GPT_Coach
-from DecisionTreeRegressor_variable_prescriber import ai_prescription_support
-from autoencoder_exercise_selector import exercise_selector
 from name_selector import name_function
 
 def load_workouts(name):
@@ -128,8 +125,6 @@ def app():
         existing_exercises = [row[0] for row in cursor.fetchall()]
 
         # Define the home page
-        st.text(f"{name}'s Client Center")
-
         st.header(f'Hello {name}! Welcome to your Dashboard. Please Select an Option Below')
 
 
@@ -250,45 +245,6 @@ def app():
                     st.text("Don't like the workout? Just hit the button again!")
                     st.dataframe(workout)
 
-
-        # Define the "New Workout" button
-        col1,col2= st.columns([2,7])
-        # Define the HTML code for the label
-        new_label = '<span style="color:red; font-weight:bold">*New*</span>'
-        with col1:
-            new_workout=st.button('Generate New Workout')
-            if 'new_workout' not in st.session_state:
-                st.session_state['new_workout']= False
-            if new_workout:
-                GPT_Coach(name)
-        with col2:
-            # Add the label to the second column
-            st.markdown(new_label, unsafe_allow_html=True)
-
-        # Define the "Regressor" button
-        beta_label = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
-        # col1,col2= st.columns([2,7])
-        # with col1:
-        st.markdown(beta_label, unsafe_allow_html=True)
-        ai_predictions=st.button('Test DTR')
-        if 'regressor' not in st.session_state:
-            st.session_state['regressor']= False
-        if ai_predictions or st.session_state.regressor:
-            st.session_state['regressor']=True
-            ai_prescription_support(existing_exercises, conn)
-    # with col2:
-        # Add the label to the second column
-
-
-        #Autoencoder button
-        beta_label_2 = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
-        st.markdown(beta_label_2, unsafe_allow_html=True)
-        autoencoder_predictions=st.button('Test Autoencoder')
-        if 'autoencoder' not in st.session_state:
-            st.session_state['autoencoder']= False
-        if autoencoder_predictions or st.session_state.autoencoder:
-            st.session_state['autoencoder']=True
-            exercise_selector(conn)
             
         # conn.close()
 # if __name__ == "main":
