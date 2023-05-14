@@ -263,6 +263,13 @@ def app_2():
                 st.session_state['change_name'] = True
                 st.experimental_rerun()
 
+        with st.sidebar:
+            if st.button('Home'):
+                for key in list(st.session_state.keys()):
+                    if key != 'name':
+                        del st.session_state[key]
+                st.experimental_rerun()
+
         cursor = conn.cursor()
         cursor.execute("SELECT exercise FROM exercises")
         existing_exercises = [row[0] for row in cursor.fetchall()]
