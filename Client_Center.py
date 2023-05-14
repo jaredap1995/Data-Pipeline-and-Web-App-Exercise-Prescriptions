@@ -60,7 +60,7 @@ def home_page():
     return home_text
 
 def name_function():
-    if st.session_state['name'] is not None:
+    if 'name' in st.session_state and st.session_state['name'] is not None:
         return st.session_state['name']
     else:
 
