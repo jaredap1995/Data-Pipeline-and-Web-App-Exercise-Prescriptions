@@ -61,6 +61,9 @@ def home_page():
 
 def name_function():
 
+    if 'name' in st.session_state and st.session_state['name'] is not None:
+            return st.session_state['name']
+
     conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
     
     cursor = conn.cursor()
@@ -74,8 +77,6 @@ def name_function():
 
     # Set up the sidebar for user input
     with st.sidebar:
-        if 'name' in st.session_state and st.session_state['name'] is not None:
-            return st.session_state['name']
         st.success("Please Select your Name from the Dropdown Menu. Or if you are a new client, enter your name!")
         name = st.multiselect('Please select your name', clients, key='client_name')
         if name:
