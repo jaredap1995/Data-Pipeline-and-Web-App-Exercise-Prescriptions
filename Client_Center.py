@@ -112,7 +112,7 @@ def app():
 
         with st.sidebar:
             if st.button('Change name'):
-                # st.session_state['change_name'] = True
+                st.session_state['change_name'] = True
                 st.experimental_rerun()
 
 
