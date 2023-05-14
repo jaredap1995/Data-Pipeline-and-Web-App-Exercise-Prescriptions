@@ -212,6 +212,7 @@ def prescribe_block(conn, name):
         st.experimental_rerun()
 
 def coach_page():
+    st.set_page_config(layout="wide")  
     home_text=st.markdown(
     """
     # Welcome to the Coaching Webpage!
