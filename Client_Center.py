@@ -95,6 +95,9 @@ def app():
     if 'all_exercises_visual' not in st.session_state:
         st.session_state['all_exercises_visual']=False
 
+    if 'change_name' not in st.session_state:
+        st.session_state['change_name']=False
+
     if 'name' not in st.session_state:
         st.session_state['name']=None
     
@@ -106,6 +109,11 @@ def app():
     else:
         st.session_state['conn'] = psycopg2.connect(**st.secrets.psycopg2_credentials)
         conn = st.session_state['conn']
+
+        with st.sidebar:
+            if st.button('Change name'):
+                st.session_state['change_name'] = True
+                st.experimental_rerun()
 
 
         cursor = conn.cursor()

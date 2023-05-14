@@ -5,7 +5,7 @@ import psycopg2
 def name_function():
 
     name=st.session_state.get('name', None)
-    if not name:
+    if not name or st.session_state.change_name:
         conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
         
         cursor = conn.cursor()
