@@ -117,6 +117,9 @@ def app():
 
         with st.sidebar:
             if st.button('Home'):
+                for key in list(st.session_state.keys()):
+                    if key != 'name':
+                        del st.session_state[key]
                 st.experimental_rerun()
 
 
