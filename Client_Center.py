@@ -178,24 +178,19 @@ def app():
 
 
             #Visualize Training Functionality
-            col1,col2= st.columns([2,9])
-            new_label = '<span style="color:red; font-weight:bold">*New*</span>'
-            with col1:
-                visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
-                if 'visualize_training' not in st.session_state:
-                    st.session_state['visualize_training']=False
-                if visualize_training_button or st.session_state.visualize_training:
-                    st.session_state['visualize_training']=True
-                    pull_visuals(conn, name)
-                    st.stop()
-            with col2:
-                st.markdown(new_label, unsafe_allow_html=True)
+            visualize_training_button = st.button('Visualize Training', help="""Visualize your training over the previous trianing block""")
+            if 'visualize_training' not in st.session_state:
+                st.session_state['visualize_training']=False
+            if visualize_training_button or st.session_state.visualize_training:
+                st.session_state['visualize_training']=True
+                pull_visuals(conn, name)
+                st.stop()
 
 
             #Track Weight Functionality
-            track_progress_button = st.button("View Weight Progress", help="""Track your weightlifting progress by selecting an exercise 
-                                                                and seeing the weights you lifted over time.
-                                                                """)
+            track_progress_button = st.button("View Weight Progress", 
+                help="""Track your weightlifting progress by selecting an exercise 
+                and seeing the weights you lifted over time.""")
             if 'track_progress' not in st.session_state:
                 st.session_state['track_progress']=False
             if track_progress_button or st.session_state.track_progress:
@@ -206,6 +201,7 @@ def app():
                     submit_button=st.form_submit_button(label='Track Progress in Selected Exercises')
                     if submit_button:
                         track_weight_changes(conn, name, selected_exercises)
+                st.stop()
 
 
             #Track workouts over period of time functionality
