@@ -128,6 +128,8 @@ def app():
         existing_exercises = [row[0] for row in cursor.fetchall()]
 
         # Define the home page
+        st.text(f"{name}'s Client Center")
+
         st.header(f'Hello {name}! Welcome to your Dashboard. Please Select an Option Below')
 
 
