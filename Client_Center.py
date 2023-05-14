@@ -100,6 +100,8 @@ def name_function():
     
     if 'name' not in st.session_state or st.session_state['name'] is None:
         st.session_state['name'] = name
+    else:
+        name = st.session_state['name']
 
     return name
         
