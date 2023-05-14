@@ -223,6 +223,8 @@ name=st.session_state['name']
 if not name:
     st.header('No Name Selected. Please select a name from the sidebar.')
     st.session_state['name']=name_function()
+    name=st.session_state['name']
+    show(name, st.session_state['conn'])
 else:
     st.header(f'You are in Coach Mode and prescribing for {name}. Please Select an Option Below')
     show(st.session_state['name'], st.session_state['conn'])
