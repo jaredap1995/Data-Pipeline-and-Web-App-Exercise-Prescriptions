@@ -228,7 +228,7 @@ def exercise_selector(conn):
     exercise_vectors = corpus_build(exercises)
     input_data = sanitizie_inputs(exercise_vectors, scaled_VL)
     similarity_matrix = load_model_make_predictions(input_data)
-    exercise=st.multiselect('Select exercises', exercises.unique())
+    original_exercise=st.multiselect('Select exercises', exercises.unique())
     workout_length=st.slider('Select number of exercises', 1, 15)
     intensities=['Light', 'Moderate', 'Heavy']
     intensity=st.selectbox('Select intensity', intensities)
@@ -237,7 +237,7 @@ def exercise_selector(conn):
         st.session_state.exercise_selector = True
         with st.form(key='ai_predictor'):
             try:
-                exercise_options=df[df['Exercise']==exercise[0]]
+                exercise_options=df[df['Exercise']==original_exercise[0]]
                 VL_range=get_intensity_range(exercise_options, intensity)
                 exercise_index=random.choice(VL_range.index)
                 similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
@@ -261,10 +261,10 @@ def exercise_selector(conn):
                     
                     # Insert statement with subquery for exercise id
                     cursor.execute('''
-                        INSERT INTO predictions (exercise_id, client_id, weight, sets, reps) 
+                        INSERT INTO predictions (exercise_id, client_id, weight, sets, reps, original_exercise_for_predictions) 
                         VALUES ((SELECT id FROM exercises WHERE exercise = %s), 
                         (SELECT id FROM client WHERE name = %s), %s, %s, %s)
-                        ''', (exercise, st.session_state['name'], weight, sets, reps))
+                        ''', (exercise, st.session_state['name'], weight, sets, reps, exercise))
                 conn.commit()
                 df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
                         'Weight': predicted_output[:,0],
