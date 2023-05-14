@@ -211,6 +211,37 @@ def prescribe_block(conn, name):
         st.session_state['block']=[]
         st.experimental_rerun()
 
+def coach_page():
+    st.write("# Welcome!")
+    home_text=st.markdown(
+    """
+    # Welcome to the Coaching Webpage!
+    As a coach, we understand your need for a platform that facilitates seamless and efficient management of your clients' training data. 
+    
+    ### 👈 Select your client's name from the drop down menu to the left to begin!
+
+    Our webpage is designed to assist coaches in various aspects of their job, providing you with advanced tools and features. Here's what you can do:
+
+    ## 1. Upload Your Clients' Training Data
+    Say goodbye to misplaced files and disorganized data. Our platform allows you to upload your clients' training data, making it easily accessible at any time. This ensures that important information is always at your fingertips, ready to be utilized when needed.
+
+    ## 2. Leverage OpenAI API for Generated Workouts
+    This platform is integrated with OpenAI API, enabling you to make API calls to generate workouts based on your clients' data. This feature allows you to provide personalized workout routines, tailored to meet each client's unique needs and fitness levels.
+
+    ## 3. Utilize a dedicated Transformer AI Model for Exercise Suggestions
+    Designing exercise programs can be cumbersome and repetitive. Our platform is equipped with a Transformer AI model, trained on thousands of exercises. This cutting-edge AI suggests similar exercises and programs, making exercise prescription easier and clients happier.
+
+    ## 4. Get Personalized Exercise Variable Recommendations
+    This platform provides personalized exercise variable recommendations, developed from your clients' training data. This means each workout, each exercise, and each set is optimized to your client's specific requirements, enhancing workout efficacy and coaching success.
+
+    - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
+
+   
+
+"""
+)
+
+
 
 def app_2():
     st.session_state['conn'] = psycopg2.connect(**st.secrets.psycopg2_credentials)
@@ -224,10 +255,7 @@ def app_2():
     # st.write(st.session_state['name'])
 
     if not name:
-        st.header('No Name Selected. Please select a name from the sidebar.')
-        # st.session_state['name']=name_function()
-        # name=st.session_state['name']
-        # show(name, st.session_state['conn'])
+        coach_page()
     else:
         st.header(f'You are in Coach Mode for {name}. Please Select an Option Below')
         show(st.session_state['name'], st.session_state['conn'])
