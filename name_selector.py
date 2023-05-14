@@ -3,6 +3,9 @@ import psycopg2
 
 
 def name_function():
+
+    name=st.session_state.get('name', None)
+    
     conn = psycopg2.connect(**st.secrets.psycopg2_credentials)
     
     cursor = conn.cursor()
@@ -20,6 +23,7 @@ def name_function():
         name = st.multiselect('Please select your name', clients, key='client_name')
         if name:
             name=name[0]
+            st.session_state['name'] = name
         new_client = st.button('New client?')
         if new_client or st.session_state.new_name:
             st.session_state['new_name']=True
@@ -32,6 +36,8 @@ def name_function():
                     cursor.execute("INSERT INTO client(name) VALUES (%s)", (new_name,))
                     conn.commit()
                     name=new_name
+                    st.session_state['name'] = name
+
                 else: 
                     st.warning('Please Enter Your Name')
         else:
