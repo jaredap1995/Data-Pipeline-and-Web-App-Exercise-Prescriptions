@@ -209,24 +209,26 @@ def prescribe_block(conn, name):
         st.experimental_rerun()
 
 
-if 'conn' not in st.session_state:
-    st.session_state['conn'] = None
+def app_2():
+    if 'conn' not in st.session_state:
+        st.session_state['conn'] = None
 
-if 'name' not in st.session_state:
-    st.session_state['name'] = None
+    if 'name' not in st.session_state:
+        st.session_state['name'] = None
 
-st.session_state['name']=name_function()
-name=st.session_state['name']
-# st.write(st.session_state['name'])
+    st.session_state['name']=name_function()
+    name=st.session_state['name']
+    # st.write(st.session_state['name'])
 
-if not name:
-    st.header('No Name Selected. Please select a name from the sidebar.')
-    # st.session_state['name']=name_function()
-    # name=st.session_state['name']
-    # show(name, st.session_state['conn'])
-else:
-    st.header(f'You are in Coach Mode and prescribing for {name}. Please Select an Option Below')
-    show(st.session_state['name'], st.session_state['conn'])
+    if not name:
+        st.header('No Name Selected. Please select a name from the sidebar.')
+        # st.session_state['name']=name_function()
+        # name=st.session_state['name']
+        # show(name, st.session_state['conn'])
+    else:
+        st.header(f'You are in Coach Mode and prescribing for {name}. Please Select an Option Below')
+        show(st.session_state['name'], st.session_state['conn'])
 
 
 
+app_2()
