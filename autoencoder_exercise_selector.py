@@ -263,8 +263,8 @@ def exercise_selector(conn):
                     cursor.execute('''
                         INSERT INTO predictions (exercise_id, client_id, weight, sets, reps, original_exercise_for_predictions) 
                         VALUES ((SELECT id FROM exercises WHERE exercise = %s), 
-                        (SELECT id FROM client WHERE name = %s), %s, %s, %s)
-                        ''', (exercise, st.session_state['name'], weight, sets, reps, exercise))
+                        (SELECT id FROM client WHERE name = %s), %s, %s, %s, %s)
+                        ''', (exercise, st.session_state['name'], weight, sets, reps, original_exercise))
                 conn.commit()
                 df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
                         'Weight': predicted_output[:,0],
