@@ -136,8 +136,9 @@ def app():
     if 'all_exercises_visual' not in st.session_state:
         st.session_state['all_exercises_visual']=False
 
-
-    name=None
+    if 'name' not in st.session_state:
+        st.session_state['name']=None
+        
     st.session_state['name']=name_function()
     name = st.session_state['name']
     st.write(st.session_state['name'])
