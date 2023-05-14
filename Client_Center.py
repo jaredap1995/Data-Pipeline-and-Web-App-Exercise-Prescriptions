@@ -138,7 +138,7 @@ def app():
 
     if 'name' not in st.session_state:
         st.session_state['name']=None
-        
+    
     st.session_state['name']=name_function()
     name = st.session_state['name']
     st.write(st.session_state['name'])
