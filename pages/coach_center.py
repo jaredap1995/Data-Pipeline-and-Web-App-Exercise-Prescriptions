@@ -209,12 +209,14 @@ def prescribe_block(conn, name):
         st.experimental_rerun()
 
 
-if 'conn' not in st.session_state or 'name' not in st.session_state:
-    st.session_state['conn']=None
-    st.session_state['name']=None
-st.session_state['name']=name_function()
+if 'conn' not in st.session_state:
+    st.session_state['conn'] = None
+
+if 'name' not in st.session_state:
+    st.session_state['name'] = name_function()
+
 name=st.session_state['name']
-st.write(st.session_state['name'])
+# st.write(st.session_state['name'])
 
 if not name:
     st.header('No Name Selected. Please select a name from the sidebar.')
