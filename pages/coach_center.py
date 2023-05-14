@@ -229,7 +229,7 @@ def app_2():
         # name=st.session_state['name']
         # show(name, st.session_state['conn'])
     else:
-        st.header(f'You are in Coach for {name}. Please Select an Option Below')
+        st.header(f'You are in Coach Mode for {name}. Please Select an Option Below')
         show(st.session_state['name'], st.session_state['conn'])
         with st.sidebar:
             if st.button('Change name'):
