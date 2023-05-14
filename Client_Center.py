@@ -112,7 +112,7 @@ def app():
 
     #Initialize session state
     if 'exercise_selection' not in st.session_state:
-            st.session_state['exercise_selection']=False
+        st.session_state['exercise_selection']=False
 
     if 'actual_workouts_2' not in st.session_state: 
         st.session_state['actual_workouts_2']=False
