@@ -99,10 +99,7 @@ def name_function():
 
         conn.close()
 
-        if st.session_state['name'] is not None:
-            return st.session_state['name']
-
-        return name
+    return name
         
     
 
