@@ -283,17 +283,17 @@ def app_2():
             st.markdown(new_label, unsafe_allow_html=True)
 
         # Define the "Regressor" button
-        beta_label = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
-        col1,col2= st.columns([1,10])
-        with col1:
-            st.markdown(beta_label, unsafe_allow_html=True)
-        with col2:
-            ai_predictions=st.button('Test DTR')
-            if 'regressor' not in st.session_state:
-                st.session_state['regressor']= False
-            if ai_predictions or st.session_state.regressor:
-                st.session_state['regressor']=True
-                ai_prescription_support(existing_exercises, conn)
+        # beta_label = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
+        # col1,col2= st.columns([1,10])
+        # with col1:
+        #     st.markdown(beta_label, unsafe_allow_html=True)
+        # with col2:
+        #     ai_predictions=st.button('Test DTR')
+        #     if 'regressor' not in st.session_state:
+        #         st.session_state['regressor']= False
+        #     if ai_predictions or st.session_state.regressor:
+        #         st.session_state['regressor']=True
+        #         ai_prescription_support(existing_exercises, conn)
 
         #Autoencoder button
         beta_label_2 = '<span style="color:orange; font-weight:bold">*In Testing*</span>'
