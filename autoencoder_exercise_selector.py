@@ -297,8 +297,6 @@ def exercise_selector(conn):
                     st.stop()
                 else:
                     raise e
-            if st.button('yes'):
-                st.write('yes')
     
     modifications=st.session_state['modifications']
     if modifications is not None or st.session_state.modified_df:
