@@ -305,7 +305,7 @@ def exercise_selector(conn):
         if st.button('Submit Modifications'):
             cursor=conn.cursor()
             for idx, row in modifications.iterrows():
-                st.write(row)
+                st.write(row['Exercise'], row['Weight'], row['Sets'], row['Reps'])
                 st.stop()
                 cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(row['Exercise'],))
                 exists = cursor.fetchone()[0]
