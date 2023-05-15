@@ -249,7 +249,7 @@ def exercise_selector(conn):
                 workout_dfs=[]
                 for ex in original_exercise:
                     exercise_options=df[df['Exercise']==ex]
-                    st.write(ex)
+                    st.write(exercise_options)
                     VL_range=get_intensity_range(exercise_options, intensity)
                     exercise_index=random.choice(VL_range.index)
                     similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
