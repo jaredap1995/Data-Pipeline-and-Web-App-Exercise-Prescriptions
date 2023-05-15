@@ -220,6 +220,9 @@ def find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n):
     return top_n_indices
 
 def exercise_selector(conn):
+
+    st.write(st.session_state)
+
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
