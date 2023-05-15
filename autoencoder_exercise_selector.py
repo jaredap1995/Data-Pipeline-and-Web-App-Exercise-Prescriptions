@@ -230,8 +230,6 @@ def exercise_selector(conn):
     if ['modified_df'] not in st.session_state:
         st.session_state.modified_df = False
 
-    st.write(st.session_state['modifications'])
-
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
     exercise_vectors = corpus_build(exercises)
@@ -306,8 +304,8 @@ def exercise_selector(conn):
     if modifications is not None or st.session_state.modified_df:
         st.session_state.modified_df = True
         st.experimental_data_editor(modifications)
-    else:
-        st.warning('Fill out the form to get suggestions!') 
+        if st.button('Submit Modifications'):
+            st.write('hello')
 
 
 
