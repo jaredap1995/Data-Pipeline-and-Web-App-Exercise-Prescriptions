@@ -306,6 +306,8 @@ def exercise_selector(conn):
     if modifications is not None or st.session_state.modified_df:
         st.session_state.modified_df = True
         st.experimental_data_editor(modifications)
+    else:
+        st.warning('Fill out the form to get suggestions!') 
 
 
 
