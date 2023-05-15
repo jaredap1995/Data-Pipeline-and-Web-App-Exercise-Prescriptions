@@ -12,7 +12,7 @@ from gensim import utils
 import gensim
 from sklearn.metrics.pairwise import cosine_similarity
 import joblib
-import psycopg2
+from pages.coach_center import create_a_block
 
 
 def convert_to_int(arr):
@@ -232,8 +232,10 @@ def exercise_selector(conn):
 
     if 'workout_dfs' not in st.session_state:
         st.session_state.workout_dfs = []
-    
     workout_dfs = st.session_state.workout_dfs
+
+    if 'prescribe' not in st.session_state:
+        st.session_state.prescribe = False
 
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
@@ -331,6 +333,15 @@ def exercise_selector(conn):
                         ''', (row['Exercise'], st.session_state['name'], row['Weight'], row['Sets'], row['Reps']))
             conn.commit()
             st.success('Training Data Updated')
+        if st.button('Prescribe') or st.session_state.prescribe:
+            st.session_state.prescribe = True
+            operations=['Hypertrophy', 'Strength', 'Endurance']
+            operation=st.multiselect('Select operation', operations)
+            num_weeks=st.slider('Select number of weeks', 1, 8)
+            prescriptions=create_a_block(modifications_list, operation, num_weeks)
+            for w in prescriptions:
+                st.dataframe(w) 
+
 
 
 
