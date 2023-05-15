@@ -297,7 +297,7 @@ def exercise_selector(conn):
             if st.button('yes'):
                 st.write('yes')
         else:
-            pass
+            st.experimental_data_editor(modifications)
 
 
 
