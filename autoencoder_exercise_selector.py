@@ -237,36 +237,41 @@ def exercise_selector(conn):
     similarity_matrix = load_model_make_predictions(input_data)
     with st.form(key='ai_predictor'):
         original_exercise=st.multiselect('Select exercises', exercises.unique())
-        workout_length=st.slider('Select number of exercises', 1, 15)
+        workout_length=st.slider('Select number of exercises per workout', 1, 15)
+        num_workouts=st.slider('Select number of workouts', 1, 5)
         intensities=['Light', 'Moderate', 'Heavy']
         intensity=st.selectbox('Select intensity', intensities)
         provide_suggestions=st.form_submit_button('Provide suggestions')
-        if provide_suggestions:  #or st.session_state.exercise_selector:
-            # st.session_state.exercise_selector = True
-            # if st.session_state['modifications'] is None:
+        if provide_suggestions: 
+            if num_workouts != original_exercise:
+                st.error('Number of workouts must equal number of exercises')
             try:
-                exercise_options=df[df['Exercise']==original_exercise[0]]
-                VL_range=get_intensity_range(exercise_options, intensity)
-                exercise_index=random.choice(VL_range.index)
-                similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
-                semantic_vl_exercises_list=exercises[similar_exercise_indices]
+                for ex in original_exercise:
+                    exercise_options=df[df['Exercise']==ex]
+                    VL_range=get_intensity_range(exercise_options, intensity)
+                    exercise_index=random.choice(VL_range.index)
+                    similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
+                    semantic_vl_exercises_list=exercises[similar_exercise_indices]
                 # Load the trained model from a file and tokeinze for regression
 
-                loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
-                token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
-                token_exercise=np.asarray(token_exercise)
-                token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
+                    loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
+                    token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
+                    token_exercise=np.asarray(token_exercise)
+                    token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
 
-                # Make predictions
-                predicted_output = loaded_regressor.predict(token_exercise)
-                predicted_output=predicted_output.astype(int)    
-                cursor=conn.cursor()
+                    # Make predictions
+                    predicted_output = loaded_regressor.predict(token_exercise)
+                    predicted_output=predicted_output.astype(int)    
+                    cursor=conn.cursor()
 
-                #Quick sanitization
-                old_string = 'eyes, whys, and tees'
-                new_string = 'IYTs'
-                semantic_vl_exercises_list = [new_string if x == old_string else x for x in semantic_vl_exercises_list]
+                    #Quick sanitization
+                    old_string = 'eyes, whys, and tees'
+                    new_string = 'IYTs'
+                    semantic_vl_exercises_list = [new_string if x == old_string else x for x in semantic_vl_exercises_list]
+                    st.write(semantic_vl_exercises_list)
+                    
 
+                st.stop()
                 for idx, exercise in enumerate(semantic_vl_exercises_list):
                     # Convert numpy int64s to Python ints
                     weight = int(predicted_output[idx, 0])
