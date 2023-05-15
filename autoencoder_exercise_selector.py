@@ -301,11 +301,11 @@ def exercise_selector(conn):
                     raise e
             if st.button('yes'):
                 st.write('yes')
-        else:
-            modifications=st.session_state['modifications']
-            if modifications is not None or st.session_state.modified_df:
-                st.session_state.modified_df = True
-                st.experimental_data_editor(modifications)
+    
+    modifications=st.session_state['modifications']
+    if modifications is not None or st.session_state.modified_df:
+        st.session_state.modified_df = True
+        st.experimental_data_editor(modifications)
 
 
 
