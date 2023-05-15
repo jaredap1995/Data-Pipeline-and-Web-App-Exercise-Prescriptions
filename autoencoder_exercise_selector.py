@@ -250,9 +250,10 @@ def exercise_selector(conn):
         if provide_suggestions: 
             if num_workouts != len(original_exercise):
                 st.error('Number of workouts must equal number of exercises')
+                st.stop()
             try:
-                # st.session_state['workout_dfs']=[]
-                # workout_dfs=st.session_state.workout_dfs
+                st.session_state['workout_dfs']=[]
+                workout_dfs=st.session_state.workout_dfs
                 for ex in original_exercise:
                     exercise_options=df[df['Exercise']==ex]
                     VL_range=get_intensity_range(exercise_options, intensity)
