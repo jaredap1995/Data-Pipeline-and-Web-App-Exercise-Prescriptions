@@ -221,7 +221,7 @@ def find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n):
 
 def exercise_selector(conn):
 
-    st.write(st.session_state)
+    st.write(st.session_state['modifications'])
 
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
