@@ -227,6 +227,9 @@ def exercise_selector(conn):
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
+    if ['modified_df'] not in st.session_state:
+        st.session_state.modified_df = False
+
     st.write(st.session_state['modifications'])
 
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
@@ -300,7 +303,8 @@ def exercise_selector(conn):
                 st.write('yes')
         else:
             modifications=st.session_state['modifications']
-            st.experimental_data_editor(modifications)
+            if modifications or st.session_state.modified_df:
+                st.experimental_data_editor(modifications)
 
 
 
