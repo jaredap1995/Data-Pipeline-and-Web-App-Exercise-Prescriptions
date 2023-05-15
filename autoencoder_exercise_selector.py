@@ -248,6 +248,7 @@ def exercise_selector(conn):
             try:
                 workout_dfs=[]
                 for ex in original_exercise:
+                    st.write(original_exercise)
                     exercise_options=df[df['Exercise']==ex]
                     st.write(exercise_options)
                     VL_range=get_intensity_range(exercise_options, intensity)
