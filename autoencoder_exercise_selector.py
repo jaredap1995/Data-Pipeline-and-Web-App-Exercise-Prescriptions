@@ -271,7 +271,7 @@ def exercise_selector(conn):
                         'Weight': predicted_output[:,0],
                         'Sets': predicted_output[:,1],
                         'Reps': predicted_output[:,2]})
-                modifications=st.experimental_data_editor(df)
+                modifications=st.experimental_data_editor(df, key='modifications')
             except IndexError as e:
                 if "list index" in str(e):
                     st.error("Please select an exercise")
@@ -279,7 +279,7 @@ def exercise_selector(conn):
                 else:
                     raise e
             if st.form_submit_button('Submit'):
-                st.write(modifications)
+                st.write(st.session_state['modifications'])
 
 
 
