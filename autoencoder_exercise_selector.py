@@ -12,7 +12,7 @@ from gensim import utils
 import gensim
 from sklearn.metrics.pairwise import cosine_similarity
 import joblib
-from pages.coach_center import create_a_block
+from pages.coach_functions import create_a_block
 
 
 def convert_to_int(arr):
