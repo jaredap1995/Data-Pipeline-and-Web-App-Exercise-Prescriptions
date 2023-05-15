@@ -288,8 +288,8 @@ def exercise_selector(conn):
                 if "list index" in str(e):
                     st.error("Please select an exercise")
                     st.stop()
-            else:
-                raise e
+                else:
+                    raise e
             if st.button('yes'):
                 st.write('yes')
         else:
