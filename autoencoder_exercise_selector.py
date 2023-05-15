@@ -253,6 +253,13 @@ def exercise_selector(conn):
                 predicted_output = loaded_regressor.predict(token_exercise)
                 predicted_output=predicted_output.astype(int)    
                 cursor=conn.cursor()
+
+                #Quick sanitization
+                old_string = 'eyes, whys, and tees'
+                new_string = 'IYTs'
+                semantic_vl_exercises_list = [new_string if x == old_string else x for x in semantic_vl_exercises_list]
+
+
                 for idx, exercise in enumerate(semantic_vl_exercises_list):
                     # Convert numpy int64s to Python ints
                     weight = int(predicted_output[idx, 0])
