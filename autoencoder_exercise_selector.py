@@ -315,7 +315,8 @@ def exercise_selector(conn):
         for df in workout_dfs:
             modifications = st.experimental_data_editor(df)
             modifications_list.append(modifications)
-            st.write(modifications_list)
+        st.write(modifications_list[0])
+        st.write(modifications_list[1])
         if st.button('Submit Modifications'):
             cursor=conn.cursor()
             for modifications in modifications_list:
