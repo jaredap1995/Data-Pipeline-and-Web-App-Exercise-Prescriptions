@@ -296,6 +296,7 @@ def exercise_selector(conn):
                             'Sets': predicted_output[:,1],
                             'Reps': predicted_output[:,2]})
                     workout_dfs.append(df)
+                    st.write(df)
                 # st.session_state['modifications']=df
                 # modifications=st.session_state['modifications']
             except IndexError as e:
