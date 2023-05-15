@@ -291,12 +291,12 @@ def exercise_selector(conn):
                             (SELECT id FROM exercises WHERE exercise = %s LIMIT 1))
                             ''', (exercise, st.session_state['name'], weight, sets, reps, original_exercise[0]))
                     conn.commit()
-                    df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
+                    df_produced=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
                             'Weight': predicted_output[:,0],
                             'Sets': predicted_output[:,1],
                             'Reps': predicted_output[:,2]})
-                    workout_dfs.append(df)
-                    st.write(df)
+                    workout_dfs.append(df_produced)
+                    st.write(df_produced)
                 # st.session_state['modifications']=df
                 # modifications=st.session_state['modifications']
             except IndexError as e:
