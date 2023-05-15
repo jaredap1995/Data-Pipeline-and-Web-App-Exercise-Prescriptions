@@ -258,6 +258,10 @@ def exercise_selector(conn):
                     weight = int(predicted_output[idx, 0])
                     sets = int(predicted_output[idx, 1])
                     reps = int(predicted_output[idx, 2])
+                    cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(exercise,))
+                    exists = cursor.fetchone()[0]
+                    if not exists:
+                        cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (exercise,))
                     
                     # Insert statement with subquery for exercise id
                     cursor.execute('''
