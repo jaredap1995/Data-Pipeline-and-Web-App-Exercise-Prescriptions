@@ -221,6 +221,8 @@ def find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n):
 
 def exercise_selector(conn):
 
+    st.write(st.session_state['modifications'])
+
     if 'modifications' not in st.session_state:
         st.session_state.modifications = None
 
@@ -297,7 +299,7 @@ def exercise_selector(conn):
             if st.button('yes'):
                 st.write('yes')
         else:
-            st.experimental_data_editor(modifications)
+            st.experimental_data_editor(st.session_state['modifications'])
 
 
 
