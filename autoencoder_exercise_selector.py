@@ -246,7 +246,8 @@ def exercise_selector(conn):
             if num_workouts != len(original_exercise):
                 st.error('Number of workouts must equal number of exercises')
             try:
-                workout_dfs=[]
+                st.session_state['workout_dfs']=[]
+                workout_dfs=st.session_state.workout_dfs
                 for ex in original_exercise:
                     exercise_options=df[df['Exercise']==ex]
                     VL_range=get_intensity_range(exercise_options, intensity)
@@ -293,7 +294,6 @@ def exercise_selector(conn):
                             'Sets': predicted_output[:,1],
                             'Reps': predicted_output[:,2]})
                     workout_dfs.append(df_produced)
-                    st.write(df_produced)
                 # st.session_state['modifications']=df
                 # modifications=st.session_state['modifications']
             except IndexError as e:
@@ -303,8 +303,8 @@ def exercise_selector(conn):
                 else:
                     raise e
     
-    modifications=None
-    if modifications is not None or st.session_state.modified_df:
+
+    if st.session_state['workout_dfs'] or st.session_state.modified_df:
         st.session_state.modified_df = True
         for df in workout_dfs:
             modifications=st.experimental_data_editor(df)
