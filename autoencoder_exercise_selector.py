@@ -303,7 +303,8 @@ def exercise_selector(conn):
                 st.write('yes')
         else:
             modifications=st.session_state['modifications']
-            if modifications or st.session_state.modified_df:
+            if modifications is not None or st.session_state.modified_df:
+                st.session_state.modified_df = True
                 st.experimental_data_editor(modifications)
 
 
