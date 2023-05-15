@@ -100,7 +100,7 @@ def app_2():
                 st.session_state['autoencoder']= False
             if autoencoder_predictions or st.session_state.autoencoder:
                 st.session_state['autoencoder']=True
-                exercise_selector(conn)
+                exercise_selector(conn, name)
 
 
 

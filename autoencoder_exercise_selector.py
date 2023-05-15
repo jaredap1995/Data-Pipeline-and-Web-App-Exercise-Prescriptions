@@ -1,7 +1,6 @@
 import streamlit as st
 import tensorflow as tf
-# from tensorflow.keras.layers import Input, Dense
-# from tensorflow.keras.models import Model
+import time
 import numpy as np
 import pandas as pd
 import random
@@ -13,6 +12,7 @@ import gensim
 from sklearn.metrics.pairwise import cosine_similarity
 import joblib
 from coach_functions import create_a_block
+from record_prescriptions import record_block
 
 
 def convert_to_int(arr):
@@ -219,7 +219,7 @@ def find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n):
 
     return top_n_indices
 
-def exercise_selector(conn):
+def exercise_selector(conn, name):
 
     if 'modifications' not in st.session_state:
         st.session_state.modifications = None
@@ -236,6 +236,9 @@ def exercise_selector(conn):
 
     if 'prescribe' not in st.session_state:
         st.session_state.prescribe = False
+
+    if 'view_ai_prescriptions' not in st.session_state:
+        st.session_state.view_ai_prescriptions = False
 
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
@@ -339,9 +342,17 @@ def exercise_selector(conn):
             operation=st.selectbox('Select operation', operations)
             num_weeks=st.slider('Select number of weeks', 1, 8)
             prescriptions=create_a_block(modifications_list, operation, num_weeks)
-            if st.button('View Block'):
+            if st.button('View Block') or st.session_state.view_ai_prescriptions:
+                st.session_state.view_ai_prescriptions = True
                 for w in prescriptions:
-                    st.dataframe(w) 
+                    st.dataframe(w)
+                if st.button('Submit Block'): 
+                    record_block(conn, name, prescriptions, num_weeks)
+                    st.success('Block Uploaded to Database Successfully. Rerunning to update state.')
+                    time.sleep(4)
+                    st.experimental_rerun()
+
+
 
 
 
