@@ -336,11 +336,12 @@ def exercise_selector(conn):
         if st.button('Prescribe') or st.session_state.prescribe:
             st.session_state.prescribe = True
             operations=['Hypertrophy', 'Strength', 'Endurance']
-            operation=st.multiselect('Select operation', operations)
+            operation=st.selectbox('Select operation', operations)
             num_weeks=st.slider('Select number of weeks', 1, 8)
             prescriptions=create_a_block(modifications_list, operation, num_weeks)
-            for w in prescriptions:
-                st.dataframe(w) 
+            if st.button('View Block'):
+                for w in prescriptions:
+                    st.dataframe(w) 
 
 
 
