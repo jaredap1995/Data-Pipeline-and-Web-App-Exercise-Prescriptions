@@ -227,7 +227,7 @@ def exercise_selector(conn):
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
-    if ['modified_df'] not in st.session_state:
+    if 'modified_df' not in st.session_state:
         st.session_state.modified_df = False
 
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
@@ -243,9 +243,10 @@ def exercise_selector(conn):
         intensity=st.selectbox('Select intensity', intensities)
         provide_suggestions=st.form_submit_button('Provide suggestions')
         if provide_suggestions: 
-            if num_workouts != original_exercise:
+            if num_workouts != len(original_exercise):
                 st.error('Number of workouts must equal number of exercises')
             try:
+                workout_dfs=[]
                 for ex in original_exercise:
                     exercise_options=df[df['Exercise']==ex]
                     VL_range=get_intensity_range(exercise_options, intensity)
@@ -268,34 +269,32 @@ def exercise_selector(conn):
                     old_string = 'eyes, whys, and tees'
                     new_string = 'IYTs'
                     semantic_vl_exercises_list = [new_string if x == old_string else x for x in semantic_vl_exercises_list]
-                    st.write(semantic_vl_exercises_list)
-                    
-
-                st.stop()
-                for idx, exercise in enumerate(semantic_vl_exercises_list):
-                    # Convert numpy int64s to Python ints
-                    weight = int(predicted_output[idx, 0])
-                    sets = int(predicted_output[idx, 1])
-                    reps = int(predicted_output[idx, 2])
-                    cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(exercise,))
-                    exists = cursor.fetchone()[0]
-                    if not exists:
-                        cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (exercise,))
-                    
-                    # Insert statement with subquery for exercise id
-                    cursor.execute('''
-                        INSERT INTO predictions (exercise_id, client_id, weight, sets, reps, original_exercise_for_predictions) 
-                        VALUES ((SELECT id FROM exercises WHERE exercise = %s LIMIT 1), 
-                        (SELECT id FROM client WHERE name = %s), %s, %s, %s, 
-                        (SELECT id FROM exercises WHERE exercise = %s LIMIT 1))
-                        ''', (exercise, st.session_state['name'], weight, sets, reps, original_exercise[0]))
-                conn.commit()
-                df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
-                        'Weight': predicted_output[:,0],
-                        'Sets': predicted_output[:,1],
-                        'Reps': predicted_output[:,2]})
-                st.session_state['modifications']=df
-                modifications=st.session_state['modifications']
+                
+                    for idx, exercise in enumerate(semantic_vl_exercises_list):
+                        # Convert numpy int64s to Python ints
+                        weight = int(predicted_output[idx, 0])
+                        sets = int(predicted_output[idx, 1])
+                        reps = int(predicted_output[idx, 2])
+                        cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(exercise,))
+                        exists = cursor.fetchone()[0]
+                        if not exists:
+                            cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (exercise,))
+                        
+                        # Insert statement with subquery for exercise id
+                        cursor.execute('''
+                            INSERT INTO predictions (exercise_id, client_id, weight, sets, reps, original_exercise_for_predictions) 
+                            VALUES ((SELECT id FROM exercises WHERE exercise = %s LIMIT 1), 
+                            (SELECT id FROM client WHERE name = %s), %s, %s, %s, 
+                            (SELECT id FROM exercises WHERE exercise = %s LIMIT 1))
+                            ''', (exercise, st.session_state['name'], weight, sets, reps, original_exercise[0]))
+                    conn.commit()
+                    df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
+                            'Weight': predicted_output[:,0],
+                            'Sets': predicted_output[:,1],
+                            'Reps': predicted_output[:,2]})
+                    workout_dfs.append(df)
+                # st.session_state['modifications']=df
+                # modifications=st.session_state['modifications']
             except IndexError as e:
                 if "list index" in str(e):
                     st.error("Please select an exercise")
@@ -303,10 +302,11 @@ def exercise_selector(conn):
                 else:
                     raise e
     
-    modifications=st.session_state['modifications']
+    # modifications=st.session_state['modifications']
     if modifications is not None or st.session_state.modified_df:
         st.session_state.modified_df = True
-        modifications=st.experimental_data_editor(modifications)
+        for df in workout_dfs:
+            modifications=st.experimental_data_editor(df)
         if st.button('Submit Modifications'):
             cursor=conn.cursor()
             for idx, row in modifications.iterrows():
