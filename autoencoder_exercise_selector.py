@@ -243,8 +243,8 @@ def exercise_selector(conn):
         intensities=['Light', 'Moderate', 'Heavy']
         intensity=st.selectbox('Select intensity', intensities)
         provide_suggestions=st.form_submit_button('Provide suggestions')
-    if provide_suggestions or st.session_state.exercise_selector:
-        st.session_state.exercise_selector = True
+    if provide_suggestions:  #or st.session_state.exercise_selector:
+        # st.session_state.exercise_selector = True
         if st.session_state['modifications'] is None:
             try:
                 exercise_options=df[df['Exercise']==original_exercise[0]]
