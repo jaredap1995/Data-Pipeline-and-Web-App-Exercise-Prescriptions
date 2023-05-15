@@ -232,7 +232,8 @@ def exercise_selector(conn):
 
     if 'workout_dfs' not in st.session_state:
         st.session_state.workout_dfs = []
-        workout_dfs = st.session_state.workout_dfs
+    
+    workout_dfs = st.session_state.workout_dfs
 
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
