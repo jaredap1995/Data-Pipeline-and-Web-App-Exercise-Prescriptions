@@ -350,7 +350,12 @@ def exercise_selector(conn, name):
                     record_block(conn, name, prescriptions, num_weeks)
                     st.success('Block Uploaded to Database Successfully. Rerunning to update state.')
                     time.sleep(4)
+                    # Clearing session state to bring back to coach page
+                    for key in list(st.session_state.keys()):
+                        if key != 'name':
+                            del st.session_state[key]
                     st.experimental_rerun()
+
 
 
 
