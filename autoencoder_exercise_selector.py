@@ -223,9 +223,6 @@ def exercise_selector(conn):
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
-    if ['modifications'] not in st.session_state:
-        st.session_state.modifications = None
-
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
     exercise_vectors = corpus_build(exercises)
@@ -239,64 +236,64 @@ def exercise_selector(conn):
         provide_suggestions=st.form_submit_button('Provide suggestions')
     if provide_suggestions or st.session_state.exercise_selector:
         st.session_state.exercise_selector = True
-        try:
-            exercise_options=df[df['Exercise']==original_exercise[0]]
-            VL_range=get_intensity_range(exercise_options, intensity)
-            exercise_index=random.choice(VL_range.index)
-            similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
-            semantic_vl_exercises_list=exercises[similar_exercise_indices]
-            # Load the trained model from a file and tokeinze for regression
+        if ['modifications'] not in st.session_state:
+            try:
+                exercise_options=df[df['Exercise']==original_exercise[0]]
+                VL_range=get_intensity_range(exercise_options, intensity)
+                exercise_index=random.choice(VL_range.index)
+                similar_exercise_indices = find_similar_exercises(exercise_index, exercises, similarity_matrix, top_n=workout_length)
+                semantic_vl_exercises_list=exercises[similar_exercise_indices]
+                # Load the trained model from a file and tokeinze for regression
 
-            loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
-            token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
-            token_exercise=np.asarray(token_exercise)
-            token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
+                loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
+                token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
+                token_exercise=np.asarray(token_exercise)
+                token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
 
-            # Make predictions
-            predicted_output = loaded_regressor.predict(token_exercise)
-            predicted_output=predicted_output.astype(int)    
-            cursor=conn.cursor()
+                # Make predictions
+                predicted_output = loaded_regressor.predict(token_exercise)
+                predicted_output=predicted_output.astype(int)    
+                cursor=conn.cursor()
 
-            #Quick sanitization
-            old_string = 'eyes, whys, and tees'
-            new_string = 'IYTs'
-            semantic_vl_exercises_list = [new_string if x == old_string else x for x in semantic_vl_exercises_list]
+                #Quick sanitization
+                old_string = 'eyes, whys, and tees'
+                new_string = 'IYTs'
+                semantic_vl_exercises_list = [new_string if x == old_string else x for x in semantic_vl_exercises_list]
 
-            for idx, exercise in enumerate(semantic_vl_exercises_list):
-                # Convert numpy int64s to Python ints
-                weight = int(predicted_output[idx, 0])
-                sets = int(predicted_output[idx, 1])
-                reps = int(predicted_output[idx, 2])
-                cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(exercise,))
-                exists = cursor.fetchone()[0]
-                if not exists:
-                    cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (exercise,))
-                
-                # Insert statement with subquery for exercise id
-                cursor.execute('''
-                    INSERT INTO predictions (exercise_id, client_id, weight, sets, reps, original_exercise_for_predictions) 
-                    VALUES ((SELECT id FROM exercises WHERE exercise = %s LIMIT 1), 
-                    (SELECT id FROM client WHERE name = %s), %s, %s, %s, 
-                    (SELECT id FROM exercises WHERE exercise = %s LIMIT 1))
-                    ''', (exercise, st.session_state['name'], weight, sets, reps, original_exercise[0]))
-            conn.commit()
-            df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
-                    'Weight': predicted_output[:,0],
-                    'Sets': predicted_output[:,1],
-                    'Reps': predicted_output[:,2]})
-            if st.session_state['modifications'] is not None:
-                pass
-            else:
+                for idx, exercise in enumerate(semantic_vl_exercises_list):
+                    # Convert numpy int64s to Python ints
+                    weight = int(predicted_output[idx, 0])
+                    sets = int(predicted_output[idx, 1])
+                    reps = int(predicted_output[idx, 2])
+                    cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(exercise,))
+                    exists = cursor.fetchone()[0]
+                    if not exists:
+                        cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (exercise,))
+                    
+                    # Insert statement with subquery for exercise id
+                    cursor.execute('''
+                        INSERT INTO predictions (exercise_id, client_id, weight, sets, reps, original_exercise_for_predictions) 
+                        VALUES ((SELECT id FROM exercises WHERE exercise = %s LIMIT 1), 
+                        (SELECT id FROM client WHERE name = %s), %s, %s, %s, 
+                        (SELECT id FROM exercises WHERE exercise = %s LIMIT 1))
+                        ''', (exercise, st.session_state['name'], weight, sets, reps, original_exercise[0]))
+                conn.commit()
+                df=pd.DataFrame({'Exercise': semantic_vl_exercises_list,
+                        'Weight': predicted_output[:,0],
+                        'Sets': predicted_output[:,1],
+                        'Reps': predicted_output[:,2]})
                 st.session_state['modifications']=st.experimental_data_editor(df)
                 modifications=st.session_state['modifications']
-        except IndexError as e:
-            if "list index" in str(e):
-                st.error("Please select an exercise")
-                st.stop()
+            except IndexError as e:
+                if "list index" in str(e):
+                    st.error("Please select an exercise")
+                    st.stop()
             else:
                 raise e
-        if st.button('yes'):
-            st.write('yes')
+            if st.button('yes'):
+                st.write('yes')
+        else:
+            pass
 
 
 
