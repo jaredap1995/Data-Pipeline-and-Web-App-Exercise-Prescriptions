@@ -8,7 +8,7 @@ from name_selector import name_function
 from open_AI_new_workout import GPT_Coach
 from DecisionTreeRegressor_variable_prescriber import ai_prescription_support
 from autoencoder_exercise_selector import exercise_selector
-from pages.coach_functions import show
+from coach_functions import show
 
 
 def coach_page():
