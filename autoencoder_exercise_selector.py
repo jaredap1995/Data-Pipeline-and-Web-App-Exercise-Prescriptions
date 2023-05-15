@@ -302,7 +302,7 @@ def exercise_selector(conn):
                 else:
                     raise e
     
-    # modifications=st.session_state['modifications']
+    modifications=None
     if modifications is not None or st.session_state.modified_df:
         st.session_state.modified_df = True
         for df in workout_dfs:
