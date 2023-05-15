@@ -223,6 +223,9 @@ def exercise_selector(conn):
     if 'exercise_selector' not in st.session_state:
         st.session_state.exercise_selector = False
 
+    if ['modifications'] not in st.session_state:
+        st.session_state.modifications = None
+
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
     exercise_vectors = corpus_build(exercises)
