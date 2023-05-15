@@ -279,7 +279,7 @@ def exercise_selector(conn):
                 else:
                     raise e
             if st.form_submit_button('Submit'):
-                st.write('I am very tired')
+                st.write(modifications)
 
 
 
