@@ -230,6 +230,10 @@ def exercise_selector(conn):
     if 'modified_df' not in st.session_state:
         st.session_state.modified_df = False
 
+    if 'workout_dfs' not in st.session_state:
+        st.session_state.workout_dfs = []
+        workout_dfs = st.session_state.workout_dfs
+
     df, volume_loads, exercises, scaled_VL, input_tokenizer, pad_sequences = load_prepare_data(conn)
 
     exercise_vectors = corpus_build(exercises)
@@ -246,8 +250,8 @@ def exercise_selector(conn):
             if num_workouts != len(original_exercise):
                 st.error('Number of workouts must equal number of exercises')
             try:
-                st.session_state['workout_dfs']=[]
-                workout_dfs=st.session_state.workout_dfs
+                # st.session_state['workout_dfs']=[]
+                # workout_dfs=st.session_state.workout_dfs
                 for ex in original_exercise:
                     exercise_options=df[df['Exercise']==ex]
                     VL_range=get_intensity_range(exercise_options, intensity)
