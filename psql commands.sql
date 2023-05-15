@@ -335,6 +335,7 @@ exercise_id INTEGER NOT NULL REFERENCES exercises(exercise) ON DELETE CASCADE,
 sets INTEGER NOT NULL,
 reps INTEGER NOT NULL,
 weight INTEGER NOT NULL,
+original_exercise_for_predictions INTEGER REFERENCES exercises(id) on DELETE CASCADE; 
 PRIMARY KEY (id)
 );
 

@@ -303,7 +303,21 @@ def exercise_selector(conn):
         st.session_state.modified_df = True
         st.experimental_data_editor(modifications)
         if st.button('Submit Modifications'):
-            st.write('hello')
+            cursor=conn.cursor()
+            for idx, row in modifications.iterrows():
+                st.write(row)
+                st.stop()
+                cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(row['Exercise'],))
+                exists = cursor.fetchone()[0]
+                if not exists:
+                    cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (row['Exercise'],))
+                cursor.execute('''
+                    INSERT INTO predictions (exercise_id, client_id, weight, sets, reps, original_exercise_for_predictions) 
+                    VALUES ((SELECT id FROM exercises WHERE exercise = %s LIMIT 1), 
+                    (SELECT id FROM client WHERE name = %s), %s, %s, %s, 
+                    (SELECT id FROM exercises WHERE exercise = %s LIMIT 1))
+                    ''', (row['Exercise'], st.session_state['name'], row['Weight'], row['Sets'], row['Reps'], original_exercise[0]))
+                cursor.execute("INSERT INTO training_data")
 
 
 
