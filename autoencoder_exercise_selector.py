@@ -301,7 +301,7 @@ def exercise_selector(conn):
     modifications=st.session_state['modifications']
     if modifications is not None or st.session_state.modified_df:
         st.session_state.modified_df = True
-        st.experimental_data_editor(modifications)
+        modifications=st.experimental_data_editor(modifications)
         if st.button('Submit Modifications'):
             cursor=conn.cursor()
             for idx, row in modifications.iterrows():
