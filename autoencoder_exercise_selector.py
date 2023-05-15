@@ -239,7 +239,7 @@ def exercise_selector(conn):
         provide_suggestions=st.form_submit_button('Provide suggestions')
     if provide_suggestions or st.session_state.exercise_selector:
         st.session_state.exercise_selector = True
-        if ['modifications'] not in st.session_state:
+        if st.session_state['modifications'] is None:
             try:
                 exercise_options=df[df['Exercise']==original_exercise[0]]
                 VL_range=get_intensity_range(exercise_options, intensity)
