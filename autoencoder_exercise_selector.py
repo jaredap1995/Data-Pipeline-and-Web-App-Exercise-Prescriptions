@@ -353,7 +353,10 @@ def exercise_selector(conn, name):
                     # Clearing session state to bring back to coach page
                     for key in list(st.session_state.keys()):
                         if key != 'name':
-                            del st.session_state[key]
+                            try:
+                                del st.session_state[key]
+                            except:
+                                pass
                     st.experimental_rerun()
 
 
