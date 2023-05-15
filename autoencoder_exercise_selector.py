@@ -311,20 +311,24 @@ def exercise_selector(conn):
 
     if st.session_state['workout_dfs'] or st.session_state.modified_df:
         st.session_state.modified_df = True
+        modifications_list = []
         for df in workout_dfs:
-            modifications=st.experimental_data_editor(df)
+            modifications = st.experimental_data_editor(df)
+            modifications_list.append(modifications)
+            st.write(modifications_list[0])
         if st.button('Submit Modifications'):
             cursor=conn.cursor()
-            for idx, row in modifications.iterrows():
-                cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(row['Exercise'],))
-                exists = cursor.fetchone()[0]
-                if not exists:
-                    cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (row['Exercise'],))
-                cursor.execute('''
-                    INSERT INTO training_data (exercise_id, client_id, weight, sets, reps) 
-                    VALUES ((SELECT id FROM exercises WHERE exercise = %s LIMIT 1), 
-                    (SELECT id FROM client WHERE name = %s), %s, %s, %s)
-                    ''', (row['Exercise'], st.session_state['name'], row['Weight'], row['Sets'], row['Reps']))
+            for modifications in modifications_list:
+                for idx, row in modifications.iterrows():
+                    cursor.execute("SELECT EXISTS(SELECT 1 FROM exercises WHERE exercise=%s);",(row['Exercise'],))
+                    exists = cursor.fetchone()[0]
+                    if not exists:
+                        cursor.execute("INSERT INTO exercises (exercise) VALUES (%s);", (row['Exercise'],))
+                    cursor.execute('''
+                        INSERT INTO training_data (exercise_id, client_id, weight, sets, reps) 
+                        VALUES ((SELECT id FROM exercises WHERE exercise = %s LIMIT 1), 
+                        (SELECT id FROM client WHERE name = %s), %s, %s, %s)
+                        ''', (row['Exercise'], st.session_state['name'], row['Weight'], row['Sets'], row['Reps']))
             conn.commit()
             st.success('Training Data Updated')
 
