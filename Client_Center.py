@@ -12,7 +12,7 @@ from miscellaneous.track_weight_changes import track_weight_changes
 import time
 import datetime
 from miscellaneous.track_workouts import track_workouts
-from track_block_progress import show_progress_in_block
+from miscellaneous.track_block_progress import show_progress_in_block
 from psycopg2_database_files.in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 from miscellaneous.visualization_functions import pull_visuals
 from name_selector import name_function

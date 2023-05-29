@@ -7,7 +7,7 @@ import itertools
 import math
 import re
 import streamlit as st
-from track_block_progress import ordering_function_for_performed_workouts, check_if_workout_performed
+from miscellaneous.track_block_progress import ordering_function_for_performed_workouts, check_if_workout_performed
 import time
 
 
