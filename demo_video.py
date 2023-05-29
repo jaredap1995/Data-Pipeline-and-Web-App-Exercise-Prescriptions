@@ -36,7 +36,7 @@ def demo_video_function():
                 right: 0;
                 bottom: 0;
                 margin: auto;
-                animation: fade-in-out 35s linear forwards;
+                animation: fade-in-out 315s linear forwards;
             }
 
             .myvideo:paused {
