@@ -205,6 +205,6 @@ def prescribe_block(conn, name):
     if st.session_state.block:
         record_block(conn, name, st.session_state['block'], length_of_block)
         st.success('Block Uploaded to Database Successfully. Rerunning to update state.')
-        time.sleep(4)
+        time.sleep(8)
         st.session_state['block']=[]
         st.experimental_rerun()
