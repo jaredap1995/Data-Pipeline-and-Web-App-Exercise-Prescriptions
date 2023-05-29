@@ -51,8 +51,7 @@ def home_page():
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
 """
 )
-    st.write("""### Want to see a demo of the application? Click the button below! 👇""")
-    st.markdown("""And be sure to check out the demonstration video in the Coach Center Page as well!""")
+    st.write("""### Want to see a demo of the application? Click the button below! 👇 And be sure to check out the demonstration video in the Coach Center Page as well!""")
     demo = demo_video_function()
      
    # st.button('Demo')
