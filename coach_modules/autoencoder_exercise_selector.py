@@ -267,7 +267,7 @@ def exercise_selector(conn, name):
                     semantic_vl_exercises_list=exercises[similar_exercise_indices]
                 # Load the trained model from a file and tokeinze for regression
 
-                    loaded_regressor = joblib.load('DTR_exercise_variables.joblib')
+                    loaded_regressor = joblib.load('./ai_models/DTR_exercise_variables.joblib')
                     token_exercise=input_tokenizer.texts_to_sequences(semantic_vl_exercises_list)
                     token_exercise=np.asarray(token_exercise)
                     token_exercise=pad_sequences(token_exercise, maxlen=6, padding='pre')
