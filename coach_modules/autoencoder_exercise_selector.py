@@ -12,7 +12,7 @@ import gensim
 from sklearn.metrics.pairwise import cosine_similarity
 import joblib
 from coach_functions import create_a_block
-from record_prescriptions import record_block
+from psycopg2_database_files.record_prescriptions import record_block
 
 
 def convert_to_int(arr):

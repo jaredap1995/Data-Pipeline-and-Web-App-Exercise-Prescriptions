@@ -3,11 +3,11 @@ import streamlit as st
 import numpy as np
 import psycopg2
 from collections import defaultdict
-from update_block import update_workout_in_block
+from psycopg2_database_files.update_block import update_workout_in_block
 import time
 from collections import OrderedDict
 import datetime
-from in_progress_functions import test, check_if_in_progress_exists, update_in_progress_workout
+from psycopg2_database_files.in_progress_functions import test, check_if_in_progress_exists, update_in_progress_workout
 
 
 

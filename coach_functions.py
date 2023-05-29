@@ -4,7 +4,7 @@ import datetime
 import time
 import streamlit as st
 import psycopg2
-from record_prescriptions import record_block
+from psycopg2_database_files.record_prescriptions import record_block
 
 
 

@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from collections import defaultdict
 import time
-from update_actuals import update_workout
+from psycopg2_database_files.update_actuals import update_workout
 
 def retrieve_block(conn, name):
 

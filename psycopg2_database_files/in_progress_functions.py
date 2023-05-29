@@ -3,7 +3,7 @@ import pandas as pd
 import psycopg2
 import datetime
 import time
-from update_block import update_workout_in_block
+from psycopg2_database_files.update_block import update_workout_in_block
 from collections import defaultdict
 import numpy as np
 

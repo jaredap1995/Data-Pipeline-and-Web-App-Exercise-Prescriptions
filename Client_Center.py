@@ -3,18 +3,18 @@ import random
 import pandas as pd
 import numpy as np
 import streamlit as st
-from clean_workouts import clean_workouts
-from grab_all_workouts import grab_all_workouts
-from intensity_classification import intensity_classification
-from grab_workbook_drive import grab_workbook_from_drive
-from record_workout import record_workout 
-from track_weight_changes import track_weight_changes
+from excel_file_parsing_modules.clean_workouts import clean_workouts
+from excel_file_parsing_modules.grab_all_workouts import grab_all_workouts
+from excel_file_parsing_modules.intensity_classification import intensity_classification
+from excel_file_parsing_modules.grab_workbook_drive import grab_workbook_from_drive
+from psycopg2_database_files.record_workout import record_workout 
+from miscellaneous.track_weight_changes import track_weight_changes
 import time
 import datetime
-from track_workouts import track_workouts
+from miscellaneous.track_workouts import track_workouts
 from track_block_progress import show_progress_in_block
-from in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
-from visualization_functions import pull_visuals
+from psycopg2_database_files.in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
+from miscellaneous.visualization_functions import pull_visuals
 from name_selector import name_function
 
 def load_workouts(name):

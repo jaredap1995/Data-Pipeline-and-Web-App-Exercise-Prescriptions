@@ -5,9 +5,9 @@ import datetime
 import pandas as pd
 import numpy as np
 from name_selector import name_function
-from open_AI_new_workout import GPT_Coach
-from DecisionTreeRegressor_variable_prescriber import ai_prescription_support
-from autoencoder_exercise_selector import exercise_selector
+from coach_modules.open_AI_new_workout import GPT_Coach
+from coach_modules.DecisionTreeRegressor_variable_prescriber import ai_prescription_support
+from coach_modules.autoencoder_exercise_selector import exercise_selector
 from coach_functions import show
 
 
