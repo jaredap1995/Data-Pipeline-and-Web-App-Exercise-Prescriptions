@@ -46,6 +46,9 @@ def app_2():
     st.session_state['conn'] = psycopg2.connect(**st.secrets.psycopg2_credentials)
     conn = st.session_state['conn']
 
+    if 'change_name' not in st.session_state:
+        st.session_state['change_name']=False
+
     if 'name' not in st.session_state:
         st.session_state['name'] = None
 
