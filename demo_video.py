@@ -57,8 +57,8 @@ def demo_video_function():
                 0% {
                     opacity: 0;
                 }
-                2% {opacity: 1;}
-                98% {
+                1% {opacity: 1;}
+                99% {
                     opacity: 1;
                 }
                 100% {
