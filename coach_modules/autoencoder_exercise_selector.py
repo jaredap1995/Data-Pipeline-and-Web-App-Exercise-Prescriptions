@@ -190,7 +190,7 @@ def load_model_make_predictions(input_data):
     # autoencoder.compile(optimizer='adam', loss='mean_squared_error')
     # autoencoder.fit(input_data, input_data, epochs=100, batch_size=32, shuffle=True)
 
-    autoencoder= tf.keras.models.load_model('autoencoder_exercise_selector.h5')
+    autoencoder= tf.keras.models.load_model('./ai_models/autoencoder_exercise_selector.h5')
     encoder=tf.keras.models.Model(input_layer, encoded)
     encoded_exercises = encoder.predict(input_data)
     similarity_matrix = cosine_similarity(encoded_exercises)
