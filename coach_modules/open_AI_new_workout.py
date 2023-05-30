@@ -91,7 +91,7 @@ def generate_text(prompt, model="gpt-3.5-turbo", max_tokens=700, n=1, stop=None,
 
 def GPT_Coach(name):
     # Load JSON data from file
-    with open("all_workout_data.json", "r") as f:
+    with open("./miscellaneous/all_workouts.json", "r") as f:
         workout_data = json.load(f)
 
 
