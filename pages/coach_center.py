@@ -16,7 +16,10 @@ def coach_page():
     home_text_1=st.markdown(
     """
     # Welcome to the Coaching Webpage!
-    As a coach, we understand your need for a platform that facilitates seamless and efficient management of your clients' training data.""")
+    As a coach, we understand your need for a platform that facilitates seamless and efficient management of your clients' training data.
+    
+    ### 👈 Select your client's name from the drop down menu to the left to begin! Or, select a demo video to see how the platform works! 👇
+    """)
 
     col1, col2 =st.columns([5, 5, ])
     with col1:
@@ -27,10 +30,7 @@ def coach_page():
         if st.button("View OpenAI Coach Demo"):
             st.write("OpenAI Coach Demo")
 
-
     home_text_2=st.markdown("""
-    ### 👈 Select your client's name from the drop down menu to the left to begin!
-
     Our webpage is designed to assist coaches in various aspects of their job, providing you with advanced tools and features. Here's what you can do:
 
     ## 1. Upload Your Clients' Training Data
