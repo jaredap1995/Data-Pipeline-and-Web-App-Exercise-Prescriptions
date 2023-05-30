@@ -99,12 +99,14 @@ def GPT_Coach(name):
     openai.organization = st.secrets.open_AI_credentials.org
     openai.api_key = st.secrets.open_AI_credentials.api_key
 
-    
-    st.write("Generating your workout from previous workouts. This may take a few seconds. Please be patient :)")
-    res = generate_text(truncate_prompt(format_prompt(find_matching_workout(name, workout_data)),2500))
+    st.warning("Generating your workout from previous workouts. This may take a few seconds. Please be patient :)")
     try:
+        res = generate_text(truncate_prompt(format_prompt(find_matching_workout(name, workout_data)),2500))
         df=pd.read_html(res, flavor='html5lib')[0]
         st.dataframe(df)
+    except openai.error.OpenAIError as e:
+        st.error("An OpenAI error occurred usually due to an overload of requests to the API. Please try again in a few minutes.")
+        st.error(str(e))
     except:
         st.warning("""If the output below does not make sense, please try again. If the problem persists, please contact the developer.""")
         st.write(res)
