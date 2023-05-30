@@ -24,7 +24,7 @@ def coach_page():
     ### Or, select a demo video to see how the platform works! 👇
     """)
 
-    col1, col2 =st.columns([5, 5, ])
+    col1, col2 =st.columns([3, 3])
     with col1:
         demo_coach_function_1()
 
