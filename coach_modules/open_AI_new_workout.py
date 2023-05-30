@@ -106,6 +106,5 @@ def GPT_Coach(name):
         df=pd.read_html(res, flavor='html5lib')[0]
         st.dataframe(df)
     except:
-        st.warning("""Hmmm, something seems to have gone wrong, if the output below does not make sense,
-        please unselect and reselect your name. If the problem persists, please contact the developer.""")
+        st.warning("""If the output below does not make sense, please try again. If the problem persists, please contact the developer.""")
         st.write(res)
