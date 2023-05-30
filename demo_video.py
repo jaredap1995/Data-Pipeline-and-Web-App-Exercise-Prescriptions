@@ -7,7 +7,7 @@ from streamlit.components.v1 import html
 
 def demo_video_function():
     if st.button('See User Demo'):
-        st.write("""Because of file size please give the video a few seconds to load!""")
+        st.warning("""Because of file size please give the video a few seconds to load!""")
 
 
         with open("./miscellaneous/compressed_new.mp4", "rb") as f:
