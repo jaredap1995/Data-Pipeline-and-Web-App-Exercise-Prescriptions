@@ -19,54 +19,8 @@ def demo_video_function():
                     Your browser does not support HTML5 video.
                 </video>
             """
-
-        # Define the CSS for the animation
-        css = """
-        <style>
-            #video-container {
-                position: relative;
-                width: 640px;
-                height: 360px;
-            }
-            .myvideo {
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                margin: auto;
-                animation: fade-in-out 315s linear forwards;
-            }
-
-            .myvideo:paused {
-                opacity: 0;
-            }
-
-            .myvideo.playing {
-                animation: none;
-            }
-            .myvideo.playing + .overlay {
-                display: none;
-            }
-            .myvideo.ended + .overlay {
-                animation: fadeout 5s forwards;
-            }
-
-            @keyframes fade-in-out {
-                0% {
-                    opacity: 0;
-                }
-                1% {opacity: 1;}
-                99% {
-                    opacity: 1;
-                }
-                100% {
-                    opacity: 0;
-                }
-                }
-        </style>
-        """
+        with open ("./miscellaneous/video_fade.css", "r") as f:
+            css = f.read()
 
         # Render the videos and CSS
         my_html=f"""<style>{css}</style>"""
