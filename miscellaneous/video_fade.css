@@ -14,15 +14,7 @@
     animation: fade-in-out 315s linear forwards;
 }
 
-#myaudio {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-}
-
-.myvideo:paused,
-#myaudio:paused {
+.myvideo:paused {
     opacity: 0;
 }
 
@@ -40,8 +32,8 @@
     0% {
         opacity: 0;
     }
-    5% {opacity: 1;}
-    90% {
+    1% {opacity: 1;}
+    99% {
         opacity: 1;
     }
     100% {
