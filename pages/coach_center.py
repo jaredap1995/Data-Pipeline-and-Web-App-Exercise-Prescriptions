@@ -9,14 +9,26 @@ from coach_modules.open_AI_new_workout import GPT_Coach
 from coach_modules.DecisionTreeRegressor_variable_prescriber import ai_prescription_support
 from coach_modules.autoencoder_exercise_selector import exercise_selector
 from coach_functions import show
+from miscellaneous.demo_coach_1 import demo_coach_function_1
 
 
 def coach_page():
-    home_text=st.markdown(
+    home_text_1=st.markdown(
     """
     # Welcome to the Coaching Webpage!
-    As a coach, we understand your need for a platform that facilitates seamless and efficient management of your clients' training data. 
-    
+    As a coach, we understand your need for a platform that facilitates seamless and efficient management of your clients' training data.""")
+
+    col1, col2 =st.columns([5, 5, ])
+    with col1:
+        if st.button("View Autoencoder Coach Demo"):
+            demo_coach_function_1()
+
+    with col2:
+        if st.button("View OpenAI Coach Demo"):
+            st.write("OpenAI Coach Demo")
+
+
+    home_text_2=st.markdown("""
     ### 👈 Select your client's name from the drop down menu to the left to begin!
 
     Our webpage is designed to assist coaches in various aspects of their job, providing you with advanced tools and features. Here's what you can do:
@@ -34,9 +46,6 @@ def coach_page():
     This platform provides personalized exercise variable recommendations, developed from your clients' training data. This means each workout, each exercise, and each set is optimized to your client's specific requirements, enhancing workout efficacy and coaching success.
 
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
-
-   
-
 """
 )
 
