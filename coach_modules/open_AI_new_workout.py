@@ -34,6 +34,7 @@ def truncate_prompt(prompt, max_tokens):
 
 def format_prompt(workout_data, goal=None, muscle_focus=None):
     all_workouts = []
+    st.write(workout_data)
     for workouts in workout_data.values():
         all_workouts.extend(workouts)
 
