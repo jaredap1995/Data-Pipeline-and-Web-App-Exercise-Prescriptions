@@ -6,11 +6,11 @@ from streamlit.components.v1 import html
 
 
 def demo_coach_function_1():
-    if st.button('See Coach Demo for Autoencoder and Decision Tree'):
+    if st.button('View Autoencoder Coach Demo'):
         st.warning("""Because of file size please give the video a few seconds to load!""")
 
 
-        with open("./miscellaneous/compressed_coach-1.mp4", "rb") as f:
+        with open("./miscellaneous/compressed_coach_1.mp4", "rb") as f:
             video_bytes = f.read()
             video_str = "data:video/mp4;base64,%s" % base64.b64encode(video_bytes).decode()
             video_html = f"""
