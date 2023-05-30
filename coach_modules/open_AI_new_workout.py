@@ -34,12 +34,17 @@ def truncate_prompt(prompt, max_tokens):
 
 def format_prompt(workout_data, goal=None, muscle_focus=None):
     all_workouts = []
-    for workout in workout_data.values():
-        all_workouts.extend(workout)
+    for workouts in workout_data.values():
+        all_workouts.extend(workouts)
 
-    workout_str = "\n".join([f"- {item['exercise']} (Weight: {item['weight']} lbs, Sets: {item['sets']}, Reps: {item['reps']})" for item in all_workouts if 'exercise' in item])
+    workout_str = "\n".join([
+        f"- {item['exercise']} (Weight: {item['weight']}, Sets: {item['sets']}, Reps: {item['reps']}, " +
+        f"Upper/Lower: {item['upper_lower']}, Push/Pull: {item['push_pull']}, Exercise Movement: {item['exercise_movement']})" 
+        for item in all_workouts if 'exercise' in item
+    ])
     prompt = workout_str
     return prompt
+
 
 
 def parse_output(output):
