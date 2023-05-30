@@ -10,6 +10,7 @@ from coach_modules.DecisionTreeRegressor_variable_prescriber import ai_prescript
 from coach_modules.autoencoder_exercise_selector import exercise_selector
 from coach_functions import show
 from miscellaneous.demo_coach_1 import demo_coach_function_1
+from miscellaneous.demo_coach_2 import demo_coach_function_2
 
 
 def coach_page():
@@ -25,11 +26,10 @@ def coach_page():
 
     col1, col2 =st.columns([5, 5, ])
     with col1:
-            demo_coach_function_1()
+        demo_coach_function_1()
 
     with col2:
-        if st.button("View OpenAI Coach Demo"):
-            st.write("OpenAI Coach Demo")
+        demo_coach_function_2()
 
     home_text_2=st.markdown("""
     Our webpage is designed to assist coaches in various aspects of their job, providing you with advanced tools and features. Here's what you can do:

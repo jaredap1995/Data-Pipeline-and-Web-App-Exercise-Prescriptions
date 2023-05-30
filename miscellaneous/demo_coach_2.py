@@ -5,8 +5,8 @@ from streamlit.components.v1 import html
 
 
 
-def demo_coach_function_1():
-    if st.button('View Autoencoder Coach Demo'):
+def demo_coach_function_2():
+    if st.button('View OpenAI Coach Demo'):
         st.warning("""Because of file size please give the video a few seconds to load!""")
 
 
