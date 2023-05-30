@@ -20,7 +20,7 @@ def coach_page():
     
     ### 👈 Select your client's name from the drop down menu to the left to begin! 
     
-    Or, select a demo video to see how the platform works! 👇
+    ### Or, select a demo video to see how the platform works! 👇
     """)
 
     col1, col2 =st.columns([5, 5, ])
