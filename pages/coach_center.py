@@ -25,7 +25,6 @@ def coach_page():
 
     col1, col2 =st.columns([5, 5, ])
     with col1:
-        if st.button("View Autoencoder Coach Demo"):
             demo_coach_function_1()
 
     with col2:
