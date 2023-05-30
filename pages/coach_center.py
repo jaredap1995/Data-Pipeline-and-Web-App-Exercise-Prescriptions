@@ -18,7 +18,9 @@ def coach_page():
     # Welcome to the Coaching Webpage!
     As a coach, we understand your need for a platform that facilitates seamless and efficient management of your clients' training data.
     
-    ### 👈 Select your client's name from the drop down menu to the left to begin! Or, select a demo video to see how the platform works! 👇
+    ### 👈 Select your client's name from the drop down menu to the left to begin! 
+    
+    Or, select a demo video to see how the platform works! 👇
     """)
 
     col1, col2 =st.columns([5, 5, ])
