@@ -16,7 +16,7 @@ from miscellaneous.track_block_progress import show_progress_in_block
 from psycopg2_database_files.in_progress_functions import test, update_in_progress_workout, check_if_in_progress_exists
 from miscellaneous.visualization_functions import pull_visuals
 from name_selector import name_function
-from demo_video import demo_video_function
+from miscellaneous.demo_video import demo_video_function
 
 def load_workouts(name):
     workbook=grab_workbook_from_drive(name)
