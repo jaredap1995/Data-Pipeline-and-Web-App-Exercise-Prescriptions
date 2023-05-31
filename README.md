@@ -1,5 +1,5 @@
 ## Data Pipeline and Web Application for Exercise Workout App
-This is a full data pipeline developed from personal client excel spreadsheets created during my time as a personal trainer. The web application is designed for current and new business clients to access their personally designed workouts and made with a focus on expediting the exercise prescription, tracking, and recording progress.
+This is a full data pipeline developed from personal client excel spreadsheets created during my time as a personal trainer. The web application is designed for current and new business clients to access their personally designed workouts and made with a focus on expediting the exercise prescription, tracking, and recording process.
 
 ## Web Application
 The web application is accessible through the following link: https://jaredperezhpc.streamlit.app/
