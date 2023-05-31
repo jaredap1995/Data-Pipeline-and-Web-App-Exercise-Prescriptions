@@ -13,6 +13,10 @@ The pipeline was necessary because of the nature of the messy raw excel files, w
   - Access previous workouts
   - Call on previous training to inform future training
   - Quickly Visualize training over time
+ ![user workout](./images/unsubmitted_workout.png "Unsubmitted Workout")
+ ![user workout](./images/submitted_workout.png "Submitted Workout")
+ ![user workout](./images/weight_over_time.png "Weight Over Time")
+
 
 ## Challenges and Progress
 Various challenges were encountered, including: 
