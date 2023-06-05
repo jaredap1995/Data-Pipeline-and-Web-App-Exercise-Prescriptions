@@ -46,7 +46,9 @@ def home_page():
 
     demo = demo_video_function()
 
-    home_text_2=st.markdown("""### Want to know about the features this application provides?
+    home_text_2=st.markdown("""
+    
+    ### Want to know about the features this application provides?
 
     Get a custom exercise program tailored to your health and fitness goals that is updated every 4 weeks as you progress!
     Track your workouts across your training program and stay on top of your progress with intuitive visualizations to see how far you've come.
