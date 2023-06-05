@@ -47,6 +47,8 @@ def home_page():
     demo = demo_video_function()
 
     home_text_2=st.markdown("""### Want to know about the features this application provides?
+
+
     - Get a custom exercise program tailored to your health and fitness goals that is updated every 4 weeks as you progress!
     - Track your workouts across your training program and stay on top of your progress with intuitive visualizations to see how far you've come.
     - Expedite Training Prescriptions with a custom built encoder-decoder AI model configured with Attention Mechanism to suggest new exercises based on your previous workouts.
@@ -54,7 +56,6 @@ def home_page():
     - Get additional supplemenatry workouts anytime, anywhere, at no extra cost. 
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
 """)
-    st.write("""### Want to see a demo of the application? Click the button below! 👇 And be sure to check out the demonstration video in the Coach Center Page as well!""")
 
      
 
