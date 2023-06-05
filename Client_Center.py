@@ -42,12 +42,14 @@ def home_page():
 
     ### 👈 If you are a client select your name from the drop down menu to the left to begin!
 
-    ### 👇 For a demo of the application, click the button below! And Be sure to check out the demo on the Coach Page as well!""")
+    ### 👇 For a demo of the application, click the button below!""")
 
     demo = demo_video_function()
 
     home_text_2=st.markdown("""
     
+    - Be sure to check out the demo on the Coach Page as well!
+
     ### Want to know about the features this application provides?
 
     - Get a custom exercise program tailored to your health and fitness goals that is updated every 4 weeks as you progress!
