@@ -34,7 +34,7 @@ def show_existing_workout(files, selected_intensity):
 
 def home_page():
     st.write("# Welcome!")
-    home_text=st.markdown(
+    home_text_1=st.markdown(
     """
     Thank you for visiting my application! 😃
     As this site is constantly evolving I appreciate your patience as I rapidly iterate and 
@@ -42,20 +42,21 @@ def home_page():
 
     ### 👈 If you are a client select your name from the drop down menu to the left to begin!
 
-    ### Want to know about the features this application provides?
+    ### For a demo of the application, click the button below! 👇""")
+
+    demo = demo_video_function()
+
+    home_text_2=st.markdown("""### Want to know about the features this application provides?
     - Get a custom exercise program tailored to your health and fitness goals that is updated every 4 weeks as you progress!
     - Track your workouts across your training program and stay on top of your progress with intuitive visualizations to see how far you've come.
     - Expedite Training Prescriptions with a custom built encoder-decoder AI model configured with Attention Mechanism to suggest new exercises based on your previous workouts.
     - Track your Volume-Load across workouts, weeks, and months to monitor injury risk and optimize performance!
     - Get additional supplemenatry workouts anytime, anywhere, at no extra cost. 
     - Any questions? Got some ideas for me? Hate the website? Shoot me an email! jaredaperez1995@gmail.com
-"""
-)
+""")
     st.write("""### Want to see a demo of the application? Click the button below! 👇 And be sure to check out the demonstration video in the Coach Center Page as well!""")
-    demo = demo_video_function()
+
      
-   # st.button('Demo')
-    return home_text
 
     
 
