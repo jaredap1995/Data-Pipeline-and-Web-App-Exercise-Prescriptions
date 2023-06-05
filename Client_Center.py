@@ -42,7 +42,7 @@ def home_page():
 
     ### 👈 If you are a client select your name from the drop down menu to the left to begin!
 
-    ### For a demo of the application, click the button below! 👇""")
+    ### 👇 For a demo of the application, click the button below! And Be sure to check out the demo on the Coach Page as well!""")
 
     demo = demo_video_function()
 
