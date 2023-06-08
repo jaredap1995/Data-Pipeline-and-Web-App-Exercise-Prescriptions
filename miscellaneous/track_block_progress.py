@@ -181,8 +181,6 @@ def show_progress_in_block(conn, name):
     num_weeks = len(dfs) // num_workouts
 
     actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=num_workouts, dfs=dfs, actuals=actuals)
-    st.write(actuals)
-    st.stop()
     dfs=[i.reset_index() for i in dfs]
 
     if len(actuals) == len(dfs):
