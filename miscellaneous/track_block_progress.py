@@ -48,11 +48,6 @@ def ordering_function_for_performed_workouts(num_workouts, num_weeks, dfs, actua
 
 
         order=pd.Series(order)
-        st.write(order)
-        st.write(df['Exercise'])
-        st.write(df['Exercise'].unique())
-        st.write(df)
-        st.stop()
         # apply the ordering to the "Exercise" column of the dataframe
         df['Exercise'] = pd.Categorical(df['Exercise'], categories=order, ordered=True)
         df.sort_values('Exercise', inplace=True)
