@@ -49,8 +49,11 @@ def ordering_function_for_performed_workouts(num_workouts, num_weeks, dfs, actua
 
         order=pd.Series(order)
         # apply the ordering to the "Exercise" column of the dataframe
-        df['Exercise'] = pd.Categorical(df['Exercise'], categories=order, ordered=True)
-        df.sort_values('Exercise', inplace=True)
+        try:
+            df['Exercise'] = pd.Categorical(df['Exercise'], categories=order, ordered=True)
+            df.sort_values('Exercise', inplace=True)
+        except:
+            pass
         
         
     return actuals
@@ -181,7 +184,6 @@ def show_progress_in_block(conn, name):
     num_weeks = len(dfs) // num_workouts
 
     actuals=ordering_function_for_performed_workouts(num_weeks=num_weeks, num_workouts=num_workouts, dfs=dfs, actuals=actuals)
-    
     dfs=[i.reset_index() for i in dfs]
 
     if len(actuals) == len(dfs):
