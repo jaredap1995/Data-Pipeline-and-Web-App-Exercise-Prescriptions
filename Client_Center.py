@@ -67,6 +67,12 @@ def home_page():
 def app():
     st.set_page_config(page_title="Exercise Tracking", layout='wide')
 
+    st.write("""This page is currently under maintenance! Please check back again later! 😃
+
+    If you need to reach me please email me at jaredaperez1995@gmail.com
+    
+    """)
+
     #Initialize session state
     if 'exercise_selection' not in st.session_state:
         st.session_state['exercise_selection']=False
