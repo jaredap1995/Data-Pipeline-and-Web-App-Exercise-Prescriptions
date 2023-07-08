@@ -104,8 +104,12 @@ def app():
     if 'name' not in st.session_state:
         st.session_state['name']=None
     
-    st.session_state['name']=name_function()
-    name = st.session_state['name']
+    ##########
+    # st.session_state['name']=name_function()
+    # name = st.session_state['name']
+    #########
+
+    name = None #This is here temporarily until I move the database so home page can be displayed but not the rest of the app
     if not name:
         home_page()
     else:
