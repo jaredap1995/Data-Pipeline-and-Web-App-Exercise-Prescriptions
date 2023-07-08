@@ -67,11 +67,6 @@ def home_page():
 def app():
     st.set_page_config(page_title="Exercise Tracking", layout='wide')
 
-    st.write("""This page is currently under maintenance! Please check back again later! 😃
-
-    If you need to reach me please email me at jaredaperez1995@gmail.com
-    
-    """)
 
     #Initialize session state
     if 'exercise_selection' not in st.session_state:
@@ -114,6 +109,12 @@ def app():
     if not name:
         home_page()
     else:
+        st.write("""This page is currently under maintenance! Please check back again later! 😃
+
+        If you need to reach me please email me at jaredaperez1995@gmail.com
+    
+        """)
+        st.stop()
         with psycopg2.connect(**st.secrets.psycopg2_credentials) as conn:
             st.session_state['conn']=conn
 
