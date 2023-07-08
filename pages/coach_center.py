@@ -53,22 +53,27 @@ def coach_page():
 
 
 def app_2():
-    st.session_state['conn'] = psycopg2.connect(**st.secrets.psycopg2_credentials)
-    conn = st.session_state['conn']
+    name = None #This is here temporarily until I move the database so home page can be displayed but not the rest of the app
+    
+    """Original code """
+    ####################
+    # st.session_state['conn'] = psycopg2.connect(**st.secrets.psycopg2_credentials)
+    # conn = st.session_state['conn']
 
-    if 'change_name' not in st.session_state:
-        st.session_state['change_name']=False
+    # if 'change_name' not in st.session_state:
+    #     st.session_state['change_name']=False
 
-    if 'name' not in st.session_state:
-        st.session_state['name'] = None
+    # if 'name' not in st.session_state:
+    #     st.session_state['name'] = None
 
-    st.session_state['name']=name_function()
-    name=st.session_state['name']
-    # st.write(st.session_state['name'])
+    # st.session_state['name']=name_function()
+    # name=st.session_state['name']
+    ################
 
     if not name:
         coach_page()
     else:
+        st.stop()
         st.header(f'You are in Coach Mode for {name}. Please Select an Option Below')
         show(st.session_state['name'], st.session_state['conn'])
         with st.sidebar:
