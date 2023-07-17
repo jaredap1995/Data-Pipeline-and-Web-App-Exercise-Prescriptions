@@ -112,8 +112,7 @@ def app():
     name = None #This is here temporarily until I move the database so home page can be displayed but not the rest of the app
     with st.sidebar:
         st.write("""The client portal is currently under maintenance as I migrate the database. Please check back again later! 😃
-
-        If you need to reach me please email me at jaredaperez1995@gmail.com
+                 If you need to reach me please email me at jaredaperez1995@gmail.com
     
         """)
 
