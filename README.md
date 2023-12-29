@@ -3,6 +3,7 @@ This is a full data pipeline developed from personal client excel spreadsheets c
 
 ## Web Application
 The web application is accessible through the following link: https://jaredperezhpc.streamlit.app/
+- Thi Application is Sunset. If you would like to explore the page and link please reach out to me directly via email and I can restart the server.
 
 ### Be sure to check out the demo videos on both the Coach Center and Client Center Page!
   - The application allows clients to access all of their previous training data, record and track their progress throughout the workouts and   training blocks, generate new workouts with the use of the OpenAI API and a personally developed autoencoder and Decision Tree Regressor.
